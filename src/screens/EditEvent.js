@@ -64,7 +64,7 @@ const Container = styled("div")`
   }
 `;
 
-class CreateEvent extends Component {
+class EditEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -74,7 +74,7 @@ class CreateEvent extends Component {
       options: ""
     };
     this.handleAddButton = this.handleAddButton.bind(this);
-    this.handleCreateButton = this.handleCreateButton.bind(this);
+    this.handleSaveButton = this.handleSaveButton.bind(this);
     this.handleChangeName = this.handleChangeName.bind(this);
     this.handleChangeDescription = this.handleChangeDescription.bind(this);
     this.handdleChangeOptions = this.handdleChangeOptions.bind(this);
@@ -125,18 +125,19 @@ class CreateEvent extends Component {
       options: e.target.value
     });
   }
-  handleCreateButton() {
+  handleSaveButton() {
     // post data to server
     if (
       this.state.name != "" &&
       this.state.description != "" &&
       this.state.options != ""
     ) {
-      alert("Create event successfully!!!");
+      alert("Save event successfully!!!");
     } else {
       alert("Don't let input empty");
     }
   }
+
   onChange = date => this.setState({ date });
   render() {
     return (
@@ -147,10 +148,10 @@ class CreateEvent extends Component {
             className="content"
             id="name"
             placeholder="Type name of event"
-            required
             onChange={this.handleChangeName}
             onBlur={this.validateName}
             value={this.state.name}
+            required
           />
           <label id="warningName">Please type name of event</label>
         </div>
@@ -197,12 +198,12 @@ class CreateEvent extends Component {
         <button
           className="createButton"
           type="submit"
-          onClick={this.handleCreateButton}
+          onClick={this.handleSaveButton}
         >
-          Create Event
+          Save
         </button>
       </Container>
     );
   }
 }
-export default CreateEvent;
+export default EditEvent;
