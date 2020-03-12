@@ -9,10 +9,10 @@ const Container = styled("div")`
   width: 50%;
   margin: auto;
   border-radius: 5px;
-  background-color: #f2f2f2;
+  background-color: #F4F4F4;
   padding: 20px;
   margin-top: 50px;
-
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   .text-input {
     height: 100px;
     width: 80%;
