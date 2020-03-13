@@ -3,14 +3,26 @@ import axios from "axios";
 import styled from "styled-components";
 import EventTable from "../components/EventTable";
 import { Link } from "react-router-dom";
+
+const Button = styled.button`
+  background: ${props => (props.primary ? "#b042b4" : "white")};
+  color: ${props => (props.primary ? "white" : "#b042b4")};
+  font-size: 1em;
+  margin: 1em 3em;
+  padding: 0.25em 1em;
+  margin-right: 5em;
+  border: 2px solid #b042b4;
+  border-radius: 3em;
+
+  :hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.19);
+  }
+`;
 const Container = styled("div")`
-  justify-self: center;
-  position: relative;
   width: 50%;
   margin: auto;
   border-radius: 5px;
-  background-color: #F4F4F4;
-  padding: 20px;
+  background-color: #f2f2f2;
   margin-top: 50px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   .text-input {
@@ -20,8 +32,10 @@ const Container = styled("div")`
   }
   .text {
     height: 30%;
-    width: 80%;
-    margin-bottom: 10px;
+    padding-top: 30px;
+  }
+  .eventName,.eventDescription{
+    margin-left: 50px;
   }
   .content {
     width: 100%;
@@ -30,29 +44,36 @@ const Container = styled("div")`
     border-radius: 4px;
     box-sizing: border-box;
     resize: vertical;
-    margin-top: 10px;
     background-color: white;
+
   }
-  .subButton {
-    background-color: #b042b4;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 50px;
-  }
+    
   .subButton:hover {
     background-color: #810785;
   }
 
   .table {
     margin-left: 50px;
+    margin-bottom: 0px;
   }
   .groupButton {
-    margin-top: 50px;
+    margin-top: 0px;
   }
 `;
+const Title = styled("div")`
+  background-color: white;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  height: 4em;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  h3{
+    text-align: center;
+    line-height: 60px;
+    color: #b042b4;
+  }
+  margin-bottom:20px;
+`
 
 class EventDetail extends Component {
   constructor(props) {
@@ -68,16 +89,15 @@ class EventDetail extends Component {
     var obj = {
       id: "3f3a6241-f992-48f0-a988-6b3eb9a5e230",
       name: "Party",
-      description: "Hello Party",
+      description: "A Party For Everyone",
       created_at: "2020-03-10 09:29:24",
       updated_at: "2020-03-10 09:29:24"
     };
     return (
-      <div className="text-input">
-        <div className="text">Name</div>
-        <text className="content" id="name">
+      <div>
+        <h2 className="eventName">
           {obj.name}
-        </text>
+        </h2>
       </div>
     );
   }
@@ -85,16 +105,15 @@ class EventDetail extends Component {
     var obj = {
       id: "3f3a6241-f992-48f0-a988-6b3eb9a5e230",
       name: "Party",
-      description: "Hello Party",
+      description: "A Party For Everyone",
       created_at: "2020-03-10 09:29:24",
       updated_at: "2020-03-10 09:29:24"
     };
     return (
-      <div className="text-input">
-        <div className="text">Description</div>
-        <text className="content" id="description">
+      <div>
+        <p className="eventDescription" >
           {obj.description}
-        </text>
+        </p>
       </div>
     );
   }
@@ -102,6 +121,7 @@ class EventDetail extends Component {
   render() {
     return (
       <Container>
+        <Title><h3>Event Detail</h3></Title>
         {this.fetchName()}
         {this.fetchDescription()}
         <div className="table">
@@ -111,14 +131,14 @@ class EventDetail extends Component {
 
         <div className="groupButton">
           <Link to="/createResponse">
-            <button className="subButton" type="submit">
+            <Button  type="submit">
               Create Response
-            </button>
+            </Button>
           </Link>
           <Link to="/editEvent">
-            <button className="subButton" type="submit">
+            <Button  type="submit">
               Edit Event
-            </button>
+            </Button>
           </Link>
         </div>
       </Container>

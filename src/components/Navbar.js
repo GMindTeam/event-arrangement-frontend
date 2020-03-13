@@ -43,8 +43,7 @@ const Button = styled.button`
   border-radius: 3em;
   float: right;
   :hover {
-    border: 2px solid #9c27b0;
-    color: #9c27b0;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.19);
   }
 `;
 

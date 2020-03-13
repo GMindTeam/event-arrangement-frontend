@@ -5,42 +5,52 @@ import { Route, Link, Switch, BrowserRouter } from "react-router-dom";
 import ReponseDetail from "../screens/ResponseDetail";
 
 const Table = styled.div`
-  border-collapse: collapse;
-  width: 100%;
+  margin-top: 15px;
+  max-width: 90%;
   th,
   td {
-    border: 1px solid #868585;
+    /* border: 1px solid #868585; */
   }
   th,
   td {
     text-align: left;
-    padding: 10px;
+    width: 10%;
+    /* padding: 10px; */
   }
   tr:nth-child(odd) {
-    background-color: white;
+    background-color: #fafafa;
   }
   tr:nth-child(even) {
-    background-color: white;
+    background-color: #fafafa;
   }
   tr:nth-child(1) {
-    background-color: #d980dc;
+    background-color: white;
   }
   .groupResponseButton {
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 1px;
-    margin-top: 1px;
+    background: ${props => (props.primary ? "#b042b4" : "white")};
+  color: ${props => (props.primary ? "white" : "#b042b4")};
+  font-size: 1em;
+  border-radius: 3em;
+  margin: 0.1em 0.1em;
+  float: left;
+  :hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.19);
+  }
   }
   #editResponseButton {
-    background-color: #f99006;
+    background-color: #00C851;
+    border: 0px solid #9c27b0;
+    color: white;
+    padding: 0.1em 1em;
   }
   #deleteResponseButton {
-    background-color: #3ce929;
+    background-color: #ff3547;
+    border: 0px solid #9c27b0;
+    color: white;
+    padding: 0.1em 1em;
   }
 `;
+
 
 class EventTable extends Component {
   constructor(props) {
@@ -54,11 +64,11 @@ class EventTable extends Component {
       return responsedetail.map((object, i) => {
         var tmp = object.answer;
         if (tmp == 1) {
-          return <th>Yes</th>;
+          return <td>Yes</td>;
         } else if (tmp == 2) {
-          return <th>No</th>;
+          return <td>No</td>;
         } else {
-          return <th>Thinking</th>;
+          return <td>Thinking</td>;
         }
       });
     }
@@ -120,8 +130,8 @@ class EventTable extends Component {
           <tr>
             <th>{object.nameuser}</th>
             {this.fetchOption(object.responsedetail)}
-            <th>{object.comment}</th>
-            <th>
+            <td>{object.comment}</td>
+            <td>
               <Link to="/responseDetail">
                 <button
                   className="groupResponseButton"
@@ -139,7 +149,7 @@ class EventTable extends Component {
               >
                 Delete
               </button>
-            </th>
+            </td>
           </tr>
         );
       });
@@ -176,7 +186,7 @@ class EventTable extends Component {
       <div>
         <Table>
           <tr>
-            <th />
+            <th>Name</th>
             {this.fetchTitle()}
             <th>Comment</th>
             <th>Actions</th>

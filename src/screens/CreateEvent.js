@@ -12,8 +12,7 @@ const Button = styled.button`
   border-radius: 3em;
   display: block;
   :hover {
-    border: 2px solid #9c27b0;
-    color: #9c27b0;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.19);
   }
   height: 30%;
 `;
@@ -215,6 +214,11 @@ class CreateEvent extends Component {
           />
           <label id="warningOptions">Please type options</label>
         </div>
+        <ul>
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ul>
         <div className="calendar">
           {/* <button className="icon-calendar">this is icon</button> */}
           <DateTimePicker onChange={this.onChange} value={this.state.date} />
