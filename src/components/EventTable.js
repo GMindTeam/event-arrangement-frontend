@@ -66,9 +66,9 @@ class EventTable extends Component {
 
   handleDeleteButton(e) {
     e.preventDefault();
-    if (!confirm("Are your sure you want to delete this item?")) {
-      return false;
-    }
+    // if (!confirm("Are your sure you want to delete this item?")) {
+    //   return false;
+    // }
     // xử lý delete
     // let url = window.Laravel.baseUrl + '/api/users/' + this.props.obj.id
     // axios.delete(url)

@@ -16,6 +16,7 @@ const NavBar = styled("nav")`
   justify-content: space-evenly;
   flex-flow: row nowrap;
   align-items: center;
+  
 
   .nav-link {
     display: flex;
