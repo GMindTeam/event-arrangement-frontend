@@ -2,21 +2,6 @@ import React, { Component } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import DateTimePicker from "react-datetime-picker";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-const Button = styled.button`
-  background: ${props => (props.primary ? "#b042b4" : "white")};
-  color: ${props => (props.primary ? "white" : "#b042b4")};
-  font-size: 1em;
-  border: 2px solid #b042b4;
-  border-radius: 3em;
-  display: block;
-  :hover {
-    border: 2px solid #9c27b0;
-    color: #9c27b0;
-  }
-  height: 30%;
-`;
 
 const Container = styled("div")`
   justify-self: center;
@@ -25,9 +10,9 @@ const Container = styled("div")`
   margin: auto;
   border-radius: 5px;
   background-color: #f2f2f2;
-  padding: 0px;
+  padding: 20px;
   margin-top: 50px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
   .text-input {
     height: 100px;
     width: 80%;
@@ -35,7 +20,6 @@ const Container = styled("div")`
   }
   .text {
     height: 30%;
-    padding-top: 30px;
   }
   .content {
     width: 100%;
@@ -45,35 +29,31 @@ const Container = styled("div")`
     box-sizing: border-box;
     resize: vertical;
   }
-  .react-datetime-picker{
-    background-color : white;
+  button {
+    background-color: #b042b4;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
   }
-  .createButton{
-    
-    padding: 0.25em 1em;
-    margin: 20px -50px;
-    /* margin-bottom: 20px; */
-    position: relative;
-    /* top: 60%; */
-    left: 50%;
-    bottom: 10px;
+  button:hover {
+    background-color: #810785;
   }
-  .addButton{
-    margin-left: 25px;
-    color: ${props => (props.primary ? "white" : "#b042b4")};
-  }
-  
-  .react-datetime-picker__button:enabled:hover .react-datetime-picker__button__icon, .react-datetime-picker__button:enabled:focus .react-datetime-picker__button__icon {
-    stroke: #b042b4;
-}
 
-
+  .addButton {
+    margin-top: 10px;
+    margin-left: 10px;
+  }
+  .createButton {
+    margin-top: 50px;
+    margin-left: 50px;
+  }
 
   .calendar {
-
+    margin-top: 50px;
     margin-left: 50px;
     display: flex;
-    margin-top: 90px;
   }
 
   #warningName,
@@ -83,21 +63,8 @@ const Container = styled("div")`
     color: red;
   }
 `;
-const Title = styled("div")`
-  background-color: white;
-  align-items: center;
-  border-bottom: 1px solid #ccc;
-  height: 4em;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  h3{
-    text-align: center;
-    line-height: 60px;
-    color: #b042b4;
-  }
-`
 
-class CreateEvent extends Component {
+class EditEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -107,7 +74,7 @@ class CreateEvent extends Component {
       options: ""
     };
     this.handleAddButton = this.handleAddButton.bind(this);
-    this.handleCreateButton = this.handleCreateButton.bind(this);
+    this.handleSaveButton = this.handleSaveButton.bind(this);
     this.handleChangeName = this.handleChangeName.bind(this);
     this.handleChangeDescription = this.handleChangeDescription.bind(this);
     this.handdleChangeOptions = this.handdleChangeOptions.bind(this);
@@ -158,33 +125,33 @@ class CreateEvent extends Component {
       options: e.target.value
     });
   }
-  handleCreateButton() {
+  handleSaveButton() {
     // post data to server
     if (
       this.state.name != "" &&
       this.state.description != "" &&
       this.state.options != ""
     ) {
-      alert("Create event successfully!!!");
+      alert("Save event successfully!!!");
     } else {
       alert("Don't let input empty");
     }
   }
+
   onChange = date => this.setState({ date });
   render() {
     return (
       <Container>
-        <Title><h3>Create Event</h3></Title>
         <div className="text-input">
           <label className="text">Name</label>
           <input
             className="content"
             id="name"
             placeholder="Type name of event"
-            required
             onChange={this.handleChangeName}
             onBlur={this.validateName}
             value={this.state.name}
+            required
           />
           <label id="warningName">Please type name of event</label>
         </div>
@@ -202,7 +169,7 @@ class CreateEvent extends Component {
           <label id="warningDescription">Please type description</label>
         </div>
         <div className="text-input">
-          <label className="text">Options</label>
+          <label className="textarea">Options</label>
           <textarea
             className="content"
             id="options"
@@ -219,29 +186,24 @@ class CreateEvent extends Component {
           {/* <button className="icon-calendar">this is icon</button> */}
           <DateTimePicker onChange={this.onChange} value={this.state.date} />
 
-            <FontAwesomeIcon icon="plus-circle" 
+          <button
             className="addButton"
             type="submit"
-            size="2x"
-            onClick={this.handleAddButton}/>
-         
-          
-        <br></br>
-         
-
-
-        </div>
-        <Button
-            className="createButton"
-            type="submit"
-            onClick={this.handleCreateButton}
+            onClick={this.handleAddButton}
           >
-            Create Event
-        </Button>
+            Add option
+          </button>
+        </div>
 
-
+        <button
+          className="createButton"
+          type="submit"
+          onClick={this.handleSaveButton}
+        >
+          Save
+        </button>
       </Container>
     );
   }
 }
-export default CreateEvent;
+export default EditEvent;
