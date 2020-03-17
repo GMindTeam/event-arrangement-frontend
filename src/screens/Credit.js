@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 
 const Container = styled("div")`
   background-color: #fafafa;
@@ -23,13 +23,13 @@ const Container = styled("div")`
     text-align: center;
     font-weight: 700;
   }
-  h3,h4{
+  h3,
+  h4 {
     font-family: "Roboto", sans-serif;
     text-align: center;
     font-weight: 300;
     padding: 10px;
   }
-
 
   .one {
     grid-column: 1 / 3;

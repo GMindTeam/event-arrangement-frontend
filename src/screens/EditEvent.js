@@ -98,7 +98,7 @@ const Title = styled("div")`
   }
 `;
 
-class CreateEvent extends Component {
+class EditEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -172,38 +172,19 @@ class CreateEvent extends Component {
       });
     }
   }
-  handleCreateButton(e) {
+  handleCreateButton() {
     // post data to server
     var obj = [...this.state.options];
-    console.log(obj);
     if (
       this.state.name !== "" &&
       this.state.description !== "" &&
-      obj.length !== 0
+      obj.length === 0
     ) {
-      e.preventDefault();
-      let url = "https://miniproject-271309.appspot.com/api/event";
-
-      const data = {
-        name: this.state.name,
-        description: this.state.description,
-        options: this.state.options
-      };
-      axios
-        .post(url, data)
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      alert("Create event successfully!!!");
     } else {
       this.validateName();
       this.validateDescription();
       this.validateOptions();
-      console.log(this.state.name);
-      console.log(this.state.description);
-      console.log(this.state.options);
       alert("Don't let input empty");
     }
   }
@@ -236,6 +217,7 @@ class CreateEvent extends Component {
             onChange={this.handleChangeDescription}
             onBlur={this.validateDescription}
             value={this.state.description}
+            required
           />
           <label id="warningDescription">Please type description</label>
         </div>
@@ -282,4 +264,4 @@ class CreateEvent extends Component {
     );
   }
 }
-export default CreateEvent;
+export default EditEvent;

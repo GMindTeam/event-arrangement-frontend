@@ -1,9 +1,13 @@
 import React from "react";
-import { Route, Link, Router, Switch, BrowserRouter } from "react-router-dom";
+import { Route, Link, Switch, BrowserRouter } from "react-router-dom";
 import CreateEvent from "../screens/CreateEvent";
 import Credit from "../screens/Credit";
 import EventDetail from "../screens/EventDetail";
-import styled from "styled-components/macro";
+import styled from "styled-components";
+import EventTable from "../components/EventTable";
+import ResponseDetail from "../screens/ResponseDetail";
+import CreateResponse from "../screens/CreateResponse";
+import EditEvent from "../screens/EditEvent";
 
 const NavBar = styled("nav")`
   background-color: #b042b4;
@@ -38,8 +42,7 @@ const Button = styled.button`
   border-radius: 3em;
   float: right;
   :hover {
-    border: 2px solid #9c27b0;
-    color: #9c27b0;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.19);
   }
 `;
 
@@ -62,6 +65,12 @@ class Navbar extends React.Component {
                   <Button>Create Event</Button>
                 </Link>
               </li>
+
+              <li className="link">
+                <Link to="/event/">
+                  <Button>Event Detail</Button>
+                </Link>
+              </li>
             </ul>
           </NavBar>
 
@@ -71,9 +80,17 @@ class Navbar extends React.Component {
             <Route path="/credit">
               <Credit />
             </Route>
-
             <Route path="/create">
               <CreateEvent />
+            </Route>
+            <Route path="/responseDetail">
+              <ResponseDetail />
+            </Route>
+            <Route path="/createResponse">
+              <CreateResponse />
+            </Route>
+            <Route path="/editEvent">
+              <EditEvent />
             </Route>
             <Switch>
               <Route path="/event/:eventID" component={EventDetail} />
