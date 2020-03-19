@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "./style";
 
-function EventRow() {
+function EventRow(props) {
   // const [loading, setLoading] = useState(true);
   function handleDeleteButton(e) {
     e.preventDefault();
@@ -11,9 +11,15 @@ function EventRow() {
     }
     alert("Delete successfully");
   }
+  useEffect(() => {
+    console.log(props.obj);
+    return () => {
+      
+    }
+  })
   function fetchOption() {
-    if (this.props.obj.response_detail_list instanceof Array) {
-      return this.props.obj.response_detail_list.map((object, i) => {
+    if (props.obj.response_detail_list instanceof Array) {
+      return props.obj.response_detail_list.map((object, i) => {
         var tmp = object.response_answer;
         if (tmp === "1") {
           return <td>Yes</td>;
@@ -28,16 +34,16 @@ function EventRow() {
 
     return (
       <tr>
-        <td>{this.props.obj.response_nameUser}</td>
+        <td>{props.obj.response_nameUser}</td>
         {fetchOption()}
-        <td>{this.props.obj.response_comment}</td>
+        <td>{props.obj.response_comment}</td>
         <td>
           <Link
             to={
               "/editResponse/" +
-              this.props.obj.response_id +
+              props.obj.response_id +
               "&" +
-              this.props.eventid
+              props.eventid
             }
           >
             <Button
@@ -52,7 +58,7 @@ function EventRow() {
             className="groupResponseButton"
             id="deleteResponseButton"
             type="submit"
-            onClick={this.handleDeleteButton}
+            onClick={handleDeleteButton}
           >
             Delete
           </Button>

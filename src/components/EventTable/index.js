@@ -29,11 +29,11 @@ function EventTable(props) {
       <Table>
         <tr>
           <th>Name</th>
-          {fetchTitle}
+          {fetchTitle()}
           <th>Comment</th>
           <th>Actions</th>
         </tr>
-        {fetchRows}
+        {fetchRows()}
       </Table>
     </div>
   );
