@@ -1,4 +1,68 @@
 import styled from "styled-components";
+export const CopyLinkStyle = styled.div`
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+input {
+    border: 0;
+    background-color: transparent;
+    color: #fff;
+    font-size: .9em;
+    padding: 0.4em;
+    width: 80%;
+}
+
+button {
+  background-color: #fff;
+    border: 0;
+    border-radius: 4px;
+    color: #b042b4;
+    float: right;
+    padding: 0.5em;
+    text-transform: uppercase;
+    width: 5em;
+}
+
+.copy-link-container {
+    width: 500px;
+    float:right;
+    margin-right: 50px;
+}
+
+.copy-link-container:not(:first-of-type) {
+    margin-top: 1em;
+}
+
+.copy-link {
+    background-color: #1C7EAD;
+    border-radius: 6px 6px 6px 6px;
+    color: #fff;
+    padding: .5em;
+    overflow: hidden;
+}
+
+.copy-link-icon {
+    position: relative;
+    left: 10px;
+    top: 15px;
+}
+
+.copy-link-inner {
+background-color: #b042b4;
+border: 0;
+border-radius: 5px;
+padding: 0.5em;
+float: right;
+width: 80%;
+}
+
+`;
+
 const Button = styled.button`
   background: ${props => (props.primary ? "#b042b4" : "white")};
   color: ${props => (props.primary ? "white" : "#b042b4")};

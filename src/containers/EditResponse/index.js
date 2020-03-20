@@ -10,14 +10,13 @@ function ResponseDetail(props) {
 
   const [name, setName] = useState('');
   const [comment, setComment] = useState("")
-  const [loading1, setLoading1] = useState(true);
-  const [loading2, setLoading2] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [responseDetail, setResponseDetail] = useState([]);
   const [options, setOption] = useState([]);
   useEffect(() => {
     let url =
       "https://miniproject-271309.appspot.com/api/responsedetail?responseid=" +
-      this.props.match.params.responseid;
+      props.match.params.responseid;
     axios
       .get(url)
       .then(response => {
@@ -34,6 +33,7 @@ function ResponseDetail(props) {
       .get(url1)
       .then(response => {
         setOption(response.data);
+        setLoading(false);
         console.log("options", options);
       })
       .catch(function (error) {
@@ -74,7 +74,7 @@ function ResponseDetail(props) {
     }
   }
 
-  if (loading1 || loading2) {
+  if (loading) {
     return <RingLoader />;
   }
   return (

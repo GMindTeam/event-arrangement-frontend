@@ -4,8 +4,12 @@ import { Table } from "./style";
 
 function EventTable(props) {
   const [titles] = useState(props.titles);
-  const [responselist] = useState(props.obj.responselist[0]);
+  const [responselist,setResponseList] = useState([]);
   useEffect(() => {
+    if(props.obj.responselist instanceof Array)
+    {
+      setResponseList(props.obj.responselist[0]);
+    }
   })
 
   function fetchRows() {
