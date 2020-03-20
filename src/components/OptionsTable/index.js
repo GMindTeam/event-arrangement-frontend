@@ -1,5 +1,5 @@
 import React, { Component, useEffect } from "react";
-import { OptionRow } from "../../components";
+import OptionRow from "../../components/OptionRow";
 import { Table } from "./style";
 
 function  OptionsTable (props) {

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { EventRow } from "../../components";
+import EventRow from "../../components/EventRow";
 import { Table } from "./style";
 
 function EventTable(props) {
-  const [titles] = useState(props.titles);
   const [responselist,setResponseList] = useState([]);
   useEffect(() => {
     if(props.obj.responselist instanceof Array)
@@ -21,8 +20,8 @@ function EventTable(props) {
   }
 
   function fetchTitle() {
-    if (titles instanceof Array) {
-      return titles.map((object) => {
+    if (props.titles instanceof Array) {
+      return props.titles.map((object) => {
         return <th> {object.content}</th>;
       });
     }

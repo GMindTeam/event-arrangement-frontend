@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { EventTable } from "../../components";
+import EventTable  from "../../components/EventTable";
 import { Link } from "react-router-dom";
 import { BounceLoader } from "react-spinners";
 import { Container, Button, Title, CopyLinkStyle } from "./style";

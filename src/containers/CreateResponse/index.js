@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ResponseTable } from "../../components";
+import ResponseTable from "../../components/ResponseRow";
 import { Container, Button, Title } from "./style";
 
 function CreateResponse(props) {

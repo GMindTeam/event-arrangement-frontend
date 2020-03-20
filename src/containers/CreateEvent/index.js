@@ -3,7 +3,7 @@ import axios from "axios";
 import {Redirect} from "react-router-dom"
 import DateTimePicker from "react-datetime-picker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { OptionsTable } from "../../components";
+import OptionsTable from "../../components/OptionsTable";
 import { Button, Container, Title } from "./style";
 import { BounceLoader } from "react-spinners";
 function CreateEvent(props) {

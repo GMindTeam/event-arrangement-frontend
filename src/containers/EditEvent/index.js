@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import DateTimePicker from "react-datetime-picker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { OptionsTable } from "../../components";
+import OptionsTable  from "../../components/OptionsTable";
 
 import { Container, Button, Title } from "./style";
 function EditEvent(props) {

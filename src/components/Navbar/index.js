@@ -1,13 +1,11 @@
 import React from "react";
 import { Route, Link, Switch, BrowserRouter } from "react-router-dom";
-import {
-  Credit,
-  CreateEvent,
-  EditEvent,
-  EditResponse,
-  EventDetail,
-  CreateResponse
-} from "../../containers";
+import CreateEvent from "../../containers/CreateEvent";
+import CreateResponse from "../../containers/CreateResponse";
+import Credit from "../../containers/Credit";
+import EditEvent from "../../containers/EditEvent";
+import EditResponse from "../../containers/EditResponse";
+import EventDetail from "../../containers/EventDetail";
 import { Nav ,Button} from "./style";
 
 export default function NavBar() {

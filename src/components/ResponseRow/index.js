@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 
 
 function ResponseRow(props) {
-  const [responses] = useState(props.obj);
+
 
 
   return (
     <tr>
-      <td>{this.state.responses.content}</td>
+      <td>{props.obj.content}</td>
       <td>
-        <input type="radio" name={responses.content} />
+        <input type="radio" name={props.obj.content} />
       </td>
       <td>
-        <input type="radio" name={responses.content} />
+        <input type="radio" name={props.obj.content} />
       </td>
       <td>
-        <input type="radio" name={responses.content} />
+        <input type="radio" name={props.obj.content} />
       </td>
     </tr>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { ResponseTable } from "../../components";
+import ResponseTable from "../../components/ResponseTable";
 import { RingLoader } from "react-spinners";
 
 import { Button, Container, Title } from "./style";
