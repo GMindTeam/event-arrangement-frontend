@@ -1,21 +1,25 @@
-import React from "react";
+import React ,{useEffect}from "react";
 
 
 function ResponseRow(props) {
-
+useEffect(() => {
+  return () => {
+    
+  }
+}, [])
 
 
   return (
     <tr>
-      <td>{props.obj.content}</td>
+      <td>{props.title.content}</td>
       <td>
-        <input type="radio" name={props.obj.content} />
+        <input type="radio" name={props.title.content} />
       </td>
       <td>
-        <input type="radio" name={props.obj.content} />
+        <input type="radio" name={props.title.content} />
       </td>
       <td>
-        <input type="radio" name={props.obj.content} />
+        <input type="radio" name={props.title.content} />
       </td>
     </tr>
   );

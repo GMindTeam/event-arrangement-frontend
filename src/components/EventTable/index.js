@@ -14,7 +14,7 @@ function EventTable(props) {
   function fetchRows() {
     if (responselist instanceof Array) {
       return responselist.map((object, i) => {
-        return <EventRow key={i} obj={object} eventid={props.obj.id} />;
+        return <EventRow handler={props.handler} key={i} obj={object} eventid={props.obj.id} />;
       });
     }
   }
@@ -34,7 +34,7 @@ function EventTable(props) {
           <th>Name</th>
           {fetchTitle()}
           <th>Comment</th>
-          <th>Actions</th>
+          <th className="ActionHeader">Actions</th>
         </tr>
         {fetchRows()}
       </Table>

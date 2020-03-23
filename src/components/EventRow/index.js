@@ -12,7 +12,6 @@ function EventRow(props) {
     alert("Delete successfully");
   }
   useEffect(() => {
-    console.log(props.obj);
     return () => {
       
     }
@@ -34,26 +33,17 @@ function EventRow(props) {
 
     return (
       <tr>
-        <td>{props.obj.response_nameUser}</td>
+        <td className="responseContent">{props.obj.response_nameUser}</td>
         {fetchOption()}
         <td>{props.obj.response_comment}</td>
-        <td>
-          <Link
-            to={
-              "/editResponse/" +
-              props.obj.response_id +
-              "&" +
-              props.eventid
-            }
+        <td id="action">
+          <Button
+            className="groupResponseButton"
+            id="editResponseButton"
+            onClick={props.handler}
           >
-            <Button
-              className="groupResponseButton"
-              id="editResponseButton"
-              type="submit"
-            >
-              Edit
-            </Button>
-          </Link>
+            Edit
+          </Button>
           <Button
             className="groupResponseButton"
             id="deleteResponseButton"

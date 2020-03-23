@@ -15,9 +15,12 @@ export default function OptionRow(props) {
 
   return (
     <tr>
-      <td>{index + 1}</td>
-      <td>{option}</td>
+      <th>{index + 1}</th>
+      <td className="optionContent">{option}</td>
+      <td>
       <Button onClick={handleDeleteButton}>Delete</Button>
+      </td>
+      
     </tr>
   );
 }

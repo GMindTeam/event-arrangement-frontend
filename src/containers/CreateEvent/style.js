@@ -66,7 +66,7 @@ const Container = styled("div")`
   .calendar {
     margin-left: 50px;
     display: flex;
-    margin-top: 90px;
+    margin-top: 30px;
   }
   #warningName,
   #warningDescription,
@@ -75,8 +75,9 @@ const Container = styled("div")`
     color: red;
   }
   .OptionsTable {
-    width: 100%;
-    margin-top: 10px;
+    height: 100px;
+    width: 80%;
+    margin-left: 50px;
   }
 `;
 const Title = styled("div")`
@@ -84,6 +85,7 @@ const Title = styled("div")`
   align-items: center;
   border-bottom: 1px solid #ccc;
   height: 4em;
+  margin-bottom: 30px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   h3 {

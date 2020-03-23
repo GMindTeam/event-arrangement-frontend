@@ -97,6 +97,8 @@ const Container = styled("div")`
   .eventName,
   .eventDescription {
     margin-left: 50px;
+    margin-right: 50px;
+    word-wrap: break-word;
   }
   .content {
     width: 100%;
@@ -114,6 +116,7 @@ const Container = styled("div")`
   .table {
     margin-left: 50px;
     margin-bottom: 0px;
+    margin-right: 50px;
   }
   .groupButton {
     margin-top: 0px;
@@ -125,6 +128,7 @@ const Title = styled("div")`
   align-items: center;
   border-bottom: 1px solid #ccc;
   height: 4em;
+  
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   h3 {

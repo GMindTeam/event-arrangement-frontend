@@ -5,8 +5,11 @@ import { Link } from "react-router-dom";
 import { BounceLoader } from "react-spinners";
 import { Container, Button, Title, CopyLinkStyle } from "./style";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import CreateResponse from "../CreateResponse";
 function EventDetail(props) {
   const [event, setEvent] = useState("");
+  const [isOpentEditResponse, setIsOpentEditResponse] = useState(false);
+  const [isOpenCreateResponse, setIsOpenCreateResponse] = useState(false);
   const [loading, setLoading] = useState(true);
   const [titles, setTitle] = useState("");
   const [link, setLink] = useState("");
@@ -38,7 +41,7 @@ function EventDetail(props) {
       .catch(function (error) {
         console.log(error);
       });
-
+      
     return () => {
 
     }
@@ -58,10 +61,18 @@ function EventDetail(props) {
   //     </div>
   //   );
   // }
-
+  function handleEditResponse() {
+    if(isOpenCreateResponse) setIsOpenCreateResponse(false);
+    setIsOpentEditResponse(true);
+  }
   function handleCopy() {
     if (copied) return 'copied';
     return 'copy';
+  }
+  function handleCreateResponse()
+  {
+    if(isOpentEditResponse) setIsOpentEditResponse(false);
+    setIsOpenCreateResponse(true);
   }
 
   if (loading) {
@@ -72,6 +83,7 @@ function EventDetail(props) {
     />;
   }
   return (
+    <div>
     <Container>
       <Title>
         <h3>Event Detail</h3>
@@ -98,18 +110,21 @@ function EventDetail(props) {
     </div>
     <div className="table">
       <div className="text">Options</div>
-      <EventTable obj={event} titles={titles} />
+      <EventTable handler={handleEditResponse} obj={event} titles={titles} />
     </div>
 
     <div className="groupButton">
-      <Link to="/createResponse">
-        <Button type="submit">Create Response</Button>
-      </Link>
+      <Button onClick={handleCreateResponse}>Create Response</Button>
       <Link to={"/editEvent/" + event.id}>
         <Button type="submit">Edit Event</Button>
       </Link>
     </div>
       </Container >
+      <div>
+        {isOpenCreateResponse ? <CreateResponse type="create" titles={titles} obj={event}></CreateResponse> : ""}
+        {isOpentEditResponse ? <CreateResponse type="edit" titles={titles} obj={event}></CreateResponse> : ""}
+      </div>
+      </div>
     );
 }
 

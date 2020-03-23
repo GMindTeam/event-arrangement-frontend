@@ -21,7 +21,6 @@ function ResponseDetail(props) {
       .get(url)
       .then(response => {
         setResponseDetail(response.data);
-        console.log("responsedetail", responseDetail);
       })
       .catch(function (error) {
         console.log(error);
@@ -34,7 +33,6 @@ function ResponseDetail(props) {
       .then(response => {
         setOption(response.data);
         setLoading(false);
-        console.log("options", options);
       })
       .catch(function (error) {
         console.log(error);
