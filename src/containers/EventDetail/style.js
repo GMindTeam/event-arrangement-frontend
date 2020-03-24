@@ -121,6 +121,10 @@ const Container = styled("div")`
   .groupButton {
     margin-top: 0px;
   }
+  .countDown{
+    margin-right:50px;
+    float:right;
+  }
 `;
 
 const Title = styled("div")`
