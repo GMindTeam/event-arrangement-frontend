@@ -3,7 +3,6 @@ import { Route, Link, Switch, BrowserRouter } from "react-router-dom";
 import CreateEvent from "../../containers/CreateEvent";
 import CreateResponse from "../../containers/CreateResponse";
 import Credit from "../../containers/Credit";
-import EditResponse from "../../containers/EditResponse";
 import EventDetail from "../../containers/EventDetail";
 import { Nav ,Button} from "./style";
 
@@ -15,7 +14,7 @@ export default function NavBar() {
           <Nav>
             <ul className="nav-link">
               <Link to="/create">
-                <img src={require("../../images/logo.PNG")} />
+                <img alt="Logo" src={require("../../images/logo.PNG")} />
               </Link>
 
               <li className="link">

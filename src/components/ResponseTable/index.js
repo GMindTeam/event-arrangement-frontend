@@ -1,14 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Table } from "./style";
 import ResponseRow from "../ResponseRow"
 
 function ResponseTable(props) {
-  useEffect(() => {
-    console.log(props.titles);
-    return () => {
-      
-    }
-  }, [])
+
   function fetchOption() {
     let titles = props.titles;
     if (titles instanceof Array) {
