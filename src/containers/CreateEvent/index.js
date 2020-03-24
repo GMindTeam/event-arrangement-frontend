@@ -1,69 +1,35 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {Redirect} from "react-router-dom"
+import { Redirect } from "react-router-dom"
 import DateTimePicker from "react-datetime-picker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { OptionsTable } from "../../components";
 import { Button, Container, Title } from "./style";
 import { BounceLoader } from "react-spinners";
+import { withFormik, Form, Field } from "formik";
+import * as Yup from 'yup'
+import DateTimeRangePicker from "@wojtekmaj/react-datetimerange-picker";
+
 function CreateEvent(props) {
-  const [date,setDate] = useState(new Date());
-  const [eventID,setEventID] = useState("");
+  const [date, setDate] = useState();
+  const [eventID, setEventID] = useState("");
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState('');
   const [options, setOption] = useState([]);
-  function handleAddButton() {
-    var str = date.toString();
-    str = str.substring(0, 25);
-    var obj = [...options];
-    obj.push(str);
-    setOption(obj);
-  }
-  function validateName() {
-    if (name === "") {
-      document.getElementById("warningName").style.display = "inline";
-    } else {
-      document.getElementById("warningName").style.display = "none";
+
+  function handleCalendar() {
+    var text = "";
+    text = props.values.option;
+    if (date !== undefined) {
+      text = text + date + "\n";
     }
+    console.log(text);
   }
-  function validateDescription() {
-    if (description === "") {
-      document.getElementById("warningDescription").style.display = "inline";
-    } else {
-      document.getElementById("warningDescription").style.display = "none";
-    }
-  }
-  function validateOptions() {
-    var obj = [...options];
-    if (obj.length === 0) {
-      document.getElementById("warningOptions").style.display = "inline";
-    } else {
-      document.getElementById("warningOptions").style.display = "none";
-    }
-  }
-  function handleChangeName(e) {
-    setName(e.target.value);
-  }
-  function handleChangeDescription(e) {
-    setDescription(e.target.value);
-  }
-  function handleChangeOptions() { }
-  function handleChange(newOptions) {
-    setOption(newOptions);
-  }
-  function handleOnKeyDown(e) {
-    if (e.key === "Enter") {
-      var obj = [...options];
-      var option = document.getElementById("options").value;
-      obj.push(option);
-      setOption(obj);
-    }
-  }
+ 
   function handleCreateButton(e) {
     // post data to server
     var obj = [...options];
-setLoading(true);
+    setLoading(true);
     if (
       name !== "" &&
       description !== "" &&
@@ -86,7 +52,6 @@ setLoading(true);
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       }
-
       axios.post(url, qs.stringify(requestBody), config)
         .then(response => {
           setEventID(response.data.id);
@@ -96,97 +61,103 @@ setLoading(true);
           console.log(error);
         });
     } else {
-      validateName();
-      validateDescription();
-      validateOptions();
-      alert("Don't let input empty");
+      alert("Don't let inputs empty");
     }
   }
-  if(eventID===''){
-    if(loading === false)
-    return (
-      <Container>
-        <Title>
-          <h3>Create Event</h3>
-        </Title>
-        <div className="text-input">
-          <label className="text">Name</label>
-          <input
-            className="content"
-            id="name"
-            placeholder="Type name of event"
-            required
-            onChange={handleChangeName}
-            onBlur={validateName}
-            value={name}
-          />
-          <label id="warningName">Please type name of event</label>
-        </div>
-        <div className="text-input">
-          <label className="text">Description</label>
-          <input
-            className="content"
-            id="description"
-            placeholder="Type description"
-            onChange={handleChangeDescription}
-            onBlur={validateDescription}
-            value={description}
-          />
-          <label id="warningDescription">Please type description</label>
-        </div>
-        <div className="text-input">
-          <label className="text">Options</label>
-          <input
-            className="content"
-            id="options"
-            placeholder="Type options"
-            onChange={handleChangeOptions}
-            onBlur={validateOptions}
-            onKeyDown={handleOnKeyDown}
-            // value={this.state.options}
-            required
-          />
-          <label id="warningOptions">Please type options</label>
-          <OptionsTable
-            obj={options}
-            handleChange={handleChange}
-          />
-        </div>
-        <div className="calendar">
-          {/* <button className="icon-calendar">this is icon</button> */}
-          <DateTimePicker onChange={(date) => setDate(date)} value={date} />
-  
-          <FontAwesomeIcon
-            icon="plus-circle"
-            className="addButton"
-            type="submit"
-            size="2x"
-            onClick={handleAddButton}
-          />
-  
-          <br />
-        </div>
-        <Button
-          className="createButton"
-          type="submit"
-          onClick={handleCreateButton}
-        >
-          Create Event
+  if (eventID === '') {
+    if (loading === false)
+      return (
+        <Container>
+          <Title>
+            <h3>Create Event</h3>
+          </Title>
+          <Form>
+            <div className="text-input" error={props.touched.title && !!props.errors.title}>
+              <label className="text" css={"font-weight: bold;"}>Title</label> <br />
+              <Field name="title" render={({ field }) => (
+                <input
+                  className="content"
+                  id="name"
+                  placeholder="Type title of event"
+                  {...field}
+                />
+              )} />
+              {props.touched.title && <label id="warningName">{props.errors.title}</label>}
+            </div>
+            <div className="text-input" error={props.touched.description && !!props.errors.description}>
+              <label className="text">Description</label>
+              <Field name="description" render={({ field }) => (
+                <input
+                  className="content"
+                  id="description"
+                  placeholder="Type description"
+                  {...field}
+                />
+              )} />
+              {props.touched.description && <label id="warningDescription">{props.errors.description}</label>}
+            </div>
+            <div className="sub-container">
+              <div className="left">
+                <div className="text-input" error={props.touched.option && !!props.errors.option}>
+                  <label className="text">Options</label>
+                  <Field name="option" render={({ field }) => (
+                    <textarea
+                      className="content"
+                      id="options"
+                      placeholder="Type options"
+                      {...field}
+                    />
+                  )} />
+                  {props.touched.option && <label id="warningOptions">{props.errors.option}</label>}
+                </div>
+              </div>
+              <div className="right">
+                <DateTimeRangePicker
+                  onChange={date => setDate(date)}
+                  value={date}
+                  onCalendarClose={handleCalendar}
+                />
+              </div>
+            </div>
+            <Button
+              className="createButton"
+              type="submit"
+              onClick={handleCreateButton}
+            >
+              Create Event
           </Button>
-      </Container>
-    );
-    else{
-      return <BounceLoader 
-      css={"margin:0 auto;margin-top:50px;"}
-      size={150}
-      color={"#b042b4"}
+          </Form>
+        </Container>
+      );
+    else {
+      return <BounceLoader
+        css={"margin:0 auto;margin-top:50px;"}
+        size={150}
+        color={"#b042b4"}
       />;
     }
   }
-  
-  else{
-     return <Redirect to={"/event/"+eventID} />
+
+  else {
+    return <Redirect to={"/event/" + eventID} />
   }
 }
+const FormikForm = withFormik({
+  mapPropsToValues() {
+    return {
+      title: "",
+      description: "",
+      option: ""
+    };
+  },
+  validationSchema: Yup.object().shape({
+    title: Yup.string()
+      .required('Title is required'),
+    description: Yup.string()
+      .required('Description is required'),
+    option: Yup.string()
+      .required('Option is required')
+  }),
+})(CreateEvent);
 
-export default CreateEvent;
+export default FormikForm;

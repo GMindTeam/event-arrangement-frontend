@@ -29,7 +29,7 @@ const Container = styled("div")`
     margin-left: 50px;
   }
   .text {
-    height: 30%;
+    height: 100%;
     padding-top: 30px;
   }
   .content {
@@ -71,12 +71,23 @@ const Container = styled("div")`
   #warningName,
   #warningDescription,
   #warningOptions {
-    display: none;
     color: red;
   }
-  .OptionsTable {
+  .sub-container {
+    display: flex;
+    height: 200px;
     width: 100%;
-    margin-top: 10px;
+  }
+  .right {
+    width: 40%;
+    height: 100%;
+  }
+  .DateTimeRangePicker {
+    width: 100%;
+  }
+  #options {
+    height: 150px;
+    overflow: auto;
   }
 `;
 const Title = styled("div")`
