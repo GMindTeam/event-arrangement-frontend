@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import {Redirect} from "react-router-dom"
 import DateTimePicker from "react-datetime-picker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -64,29 +63,21 @@ function CreateEvent(props) {
   function handleCreateButton(e) {
     // post data to server
     var obj = [...options];
-setLoading(true);
+    setLoading(true);
     if (
       name !== "" &&
       description !== "" &&
       obj.length !== 0
     ) {
       e.preventDefault();
-      let url = "https://miniproject-271309.appspot.com/api/event";
       const requestBody = {
         "name": name,
         "description": description,
         "options": []
       };
-      options.map(obj => {
-        requestBody.options.push({ "content": obj })
+      options.map((obj) => {
+        return requestBody.options.push({ "content": obj })
       });
-      var qs = require('qs');
-      const config = {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }
-
       createEvent(requestBody)
         .then(response => {
           setEventID(response.data.id);

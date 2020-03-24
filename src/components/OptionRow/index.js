@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button } from "./style";
 
 export default function OptionRow(props) {
-  const [option, setOption] = useState(props.obj);
-  const [index, setIndex] = useState(props.index);
 
   function handleDeleteButton(e) {
     e.preventDefault();
@@ -15,8 +13,8 @@ export default function OptionRow(props) {
 
   return (
     <tr>
-      <th>{index + 1}</th>
-      <td className="optionContent">{option}</td>
+      <th>{props.index + 1}</th>
+      <td className="optionContent">{props.obj}</td>
       <td>
       <Button onClick={handleDeleteButton}>Delete</Button>
       </td>

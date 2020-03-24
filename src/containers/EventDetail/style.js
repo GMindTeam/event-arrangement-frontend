@@ -9,12 +9,14 @@ body {
 }
 
 input {
-    border: 0;
+  border: 0;
     background-color: transparent;
     color: #fff;
     font-size: .9em;
-    padding: 0.4em;
+    padding: 0.6em;
     width: 80%;
+    height: 50px;
+    font-size: 16px;
 }
 
 button {
@@ -23,13 +25,14 @@ button {
     border-radius: 4px;
     color: #b042b4;
     float: right;
-    padding: 0.5em;
+    padding: 1.1em .5em;
+    font-size: .95em;
     text-transform: uppercase;
-    width: 5em;
+    width: 7em;
 }
 
 .copy-link-container {
-    width: 500px;
+    width: 550px;
     float:right;
     margin-right: 50px;
 }
@@ -58,7 +61,7 @@ border: 0;
 border-radius: 5px;
 padding: 0.5em;
 float: right;
-width: 80%;
+width: 100%;
 }
 
 `;
