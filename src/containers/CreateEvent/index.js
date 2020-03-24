@@ -5,6 +5,7 @@ import DateTimePicker from "react-datetime-picker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { OptionsTable } from "../../components";
 import { Button, Container, Title } from "./style";
+import { createEvent } from './../../api/index';
 import { BounceLoader } from "react-spinners";
 function CreateEvent(props) {
   const [date,setDate] = useState(new Date());
@@ -87,7 +88,7 @@ setLoading(true);
         }
       }
 
-      axios.post(url, qs.stringify(requestBody), config)
+      createEvent(requestBody)
         .then(response => {
           setEventID(response.data.id);
           setLoading(false);
