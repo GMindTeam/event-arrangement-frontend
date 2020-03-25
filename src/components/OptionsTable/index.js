@@ -5,19 +5,20 @@ import { Table } from "./style";
 function  OptionsTable (props) {
 
   function deleteRow(key) {
-    var arr = [...props.options];
+    var arr = [...props.obj];
     arr.splice(key, 1);
+    props.obj = arr;
     return props.handleChange(arr);
   }
   function fetchRows() {
-    if (props.options instanceof Array) {
-      return props.options.map((option, i) => {
+    if (props.obj instanceof Array) {
+      return props.obj.map((object, i) => {
         return (
           <OptionRow
-            option={option}
+            obj={object}
             key={i}
             index={i}
-            deleteRow={deleteRow}
+            deleteRow={deleteRow.bind(this)}
           />
         );
       });

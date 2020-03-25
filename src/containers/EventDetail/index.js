@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import EventTable from "../../components/EventTable";
 import { Link } from "react-router-dom";
 import { BounceLoader } from "react-spinners";
@@ -6,20 +6,14 @@ import { Container, Button, Title, CopyLinkStyle } from "./style";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import CreateResponse from "../CreateResponse";
 import { getEventDetail, getOptions } from "../../api";
-import { EventContext } from "../../components/EventContext";
-import { OptionContext } from "../../components/OptionContext";
-import { appPath } from '../../config/constants';
-import { routePath } from '../../config/routes';
 function EventDetail(props) {
-  const [event, setEvent] = useContext(EventContext);
-  const [loading, setLoading] = useState(true);
-  const [, setOption] = useContext(OptionContext);
+  const [event, setEvent] = useState("");
   const [eventCopy, setEventCopy] = useState("");
   const [countDown, setCountDown] = useState(0);
   const [isOpentEditResponse, setIsOpentEditResponse] = useState(false);
 
   const [isOpenCreateResponse, setIsOpenCreateResponse] = useState(false);
-
+  const [loading, setLoading] = useState(true);
   const [titles, setTitle] = useState("");
   const [link, setLink] = useState("");
   const [copied, setCopied] = useState(false);
@@ -36,15 +30,16 @@ function EventDetail(props) {
           console.log(error);
         });
     })();
-  }, [countDown, eventCopy, props.match.params.eventID, setEvent]);
+  }, [countDown, eventCopy, props.match.params.eventID]);
 
 
   useEffect(() => {
-    setLink(appPath.domain + props.match.params.eventID);
+    setLink('http://localhost:3000/event/' + props.match.params.eventID);
     getEventDetail(props.match.params.eventID)
       .then(response => {
         setEvent(response.data);
         setLoading(false);
+
       })
       .catch(function (error) {
         console.log(error);
@@ -56,11 +51,12 @@ function EventDetail(props) {
       .then(response => {
         setTitle(response.data);
 
+
       })
       .catch(function (error) {
         console.log(error);
       });
-  }, [props.match.params.eventID, setEvent]);
+  }, [props.match.params.eventID]);
 
 
   function handleEditResponse() {
@@ -74,13 +70,9 @@ function EventDetail(props) {
     newEvent.responselist = newResponseList;
     setEvent(newEvent);
   }
-  function handleEditEvent() {
-    let titlesTemp = [...titles];
-    let OptionArr = [];
-    titlesTemp.map((singleTitle) => {
-      return OptionArr.push(singleTitle.content);
-    });
-    setOption(OptionArr);
+  function handleCopy() {
+    if (copied) return 'copied';
+    return 'copy';
   }
   function handleCreateResponse() {
     if (isOpentEditResponse) setIsOpentEditResponse(false);
@@ -108,7 +100,7 @@ function EventDetail(props) {
                 onChange={({ target: { value } }) => setCopied(false)} />
               <CopyToClipboard text={link}
                 onCopy={() => setCopied(true)}>
-                <button >{copied ? "copied" : "copy"}</button>
+                <button >{handleCopy()}</button>
               </CopyToClipboard>
             </div>
           </div>
@@ -122,21 +114,21 @@ function EventDetail(props) {
         </div>
         <div className="table">
           <div className="text">Options</div>
-          <EventTable handlerEdit={handleEditResponse} handleChange={handleChange} event={event} titles={titles} />
+          <EventTable handlerEdit={handleEditResponse} handleChange={handleChange} obj={event} titles={titles} />
         </div>
         <div className="countDown">
           <h3>This table will refresh in {countDown} second!</h3>
         </div>
         <div className="groupButton">
           <Button onClick={handleCreateResponse}>Create Response</Button>
-          <Link to={routePath.editEvent + event.id}>
-            <Button type="submit" onClick={handleEditEvent}>Edit Event</Button>
+          <Link to={"/editEvent/" + event.id}>
+            <Button type="submit">Edit Event</Button>
           </Link>
         </div>
       </Container >
       <div>
-        {isOpenCreateResponse ? <CreateResponse type="create" titles={titles}></CreateResponse> : ""}
-        {isOpentEditResponse ? <CreateResponse type="edit" titles={titles}></CreateResponse> : ""}
+        {isOpenCreateResponse ? <CreateResponse type="create" titles={titles} obj={event}></CreateResponse> : ""}
+        {isOpentEditResponse ? <CreateResponse type="edit" titles={titles} obj={event}></CreateResponse> : ""}
       </div>
     </div>
   );

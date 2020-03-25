@@ -7,6 +7,7 @@ export const CopyLinkStyle = styled.div`
 body {
     font-family: Arial, sans-serif;
 }
+
 input {
   border: 0;
     background-color: transparent;
