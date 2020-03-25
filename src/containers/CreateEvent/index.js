@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import {Redirect} from "react-router-dom"
 import DateTimePicker from "react-datetime-picker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { OptionsTable } from "../../components";
+import OptionsTable from "../../components/OptionsTable";
 import { Button, Container, Title } from "./style";
 import { createEvent } from './../../api/index';
 import { BounceLoader } from "react-spinners";
@@ -64,30 +63,21 @@ function CreateEvent(props) {
   function handleCreateButton(e) {
     // post data to server
     var obj = [...options];
-setLoading(true);
+    setLoading(true);
     if (
       name !== "" &&
       description !== "" &&
       obj.length !== 0
     ) {
       e.preventDefault();
-      let url = "https://miniproject-271309.appspot.com/api/event";
       const requestBody = {
         "name": name,
         "description": description,
         "options": []
       };
-      options.map(obj => {
-        requestBody.options.push({ "content": obj })
+      options.map((obj) => {
+        return requestBody.options.push({ "content": obj })
       });
-      var qs = require('qs');
-      console.log(requestBody);
-      const config = {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }
-
       createEvent(requestBody)
         .then(response => {
           setEventID(response.data.id);
@@ -104,78 +94,159 @@ setLoading(true);
     }
   }
   if(eventID===''){
-    if(loading === false)
-    return (
-      <Container>
-        <Title>
-          <h3>Create Event</h3>
-        </Title>
-        <div className="text-input">
-          <label className="text">Name</label>
-          <input
-            className="content"
-            id="name"
-            placeholder="Type name of event"
-            required
-            onChange={handleChangeName}
-            onBlur={validateName}
-            value={name}
-          />
-          <label id="warningName">Please type name of event</label>
-        </div>
-        <div className="text-input">
-          <label className="text">Description</label>
-          <input
-            className="content"
-            id="description"
-            placeholder="Type description"
-            onChange={handleChangeDescription}
-            onBlur={validateDescription}
-            value={description}
-          />
-          <label id="warningDescription">Please type description</label>
-        </div>
-        <div className="text-input">
-          <label className="text">Options</label>
-          <input
-            className="content"
-            id="options"
-            placeholder="Type options"
-            onChange={handleChangeOptions}
-            onBlur={validateOptions}
-            onKeyDown={handleOnKeyDown}
-            // value={this.state.options}
-            required
-          />
-          <label id="warningOptions">Please type options</label>
-          <OptionsTable
-            obj={options}
-            handleChange={handleChange}
-          />
-        </div>
-        <div className="calendar">
-          {/* <button className="icon-calendar">this is icon</button> */}
-          <DateTimePicker onChange={(date) => setDate(date)} value={date} />
-  
-          <FontAwesomeIcon
-            icon="plus-circle"
-            className="addButton"
-            type="submit"
-            size="2x"
-            onClick={handleAddButton}
-          />
-  
-          <br />
-        </div>
-        <Button
-          className="createButton"
-          type="submit"
-          onClick={handleCreateButton}
-        >
-          Create Event
-          </Button>
-      </Container>
-    );
+    if(loading === false ) 
+    {
+      if(props.type ==="create")
+      {
+        return (
+          <Container>
+            <Title>
+              <h3>Create Event</h3>
+            </Title>
+            <div className="text-input">
+              <label className="text">Name</label>
+              <input
+                className="content"
+                id="name"
+                placeholder="Type name of event"
+                required
+                onChange={handleChangeName}
+                onBlur={validateName}
+                value={name}
+              />
+              <label id="warningName">Please type name of event</label>
+            </div>
+            <div className="text-input">
+              <label className="text">Description</label>
+              <input
+                className="content"
+                id="description"
+                placeholder="Type description"
+                onChange={handleChangeDescription}
+                onBlur={validateDescription}
+                value={description}
+              />
+              <label id="warningDescription">Please type description</label>
+            </div>
+            <div className="text-input">
+              <label className="text">Options</label>
+              <input
+                className="content"
+                id="options"
+                placeholder="Type options"
+                onChange={handleChangeOptions}
+                onBlur={validateOptions}
+                onKeyDown={handleOnKeyDown}
+                // value={this.state.options}
+                required
+              />
+              <label id="warningOptions">Please type options</label>
+    
+            </div>
+            <OptionsTable
+                obj={options}
+                handleChange={handleChange}
+              />
+            <div className="calendar">
+              {/* <button className="icon-calendar">this is icon</button> */}
+              <DateTimePicker onChange={(date) => setDate(date)} value={date} />
+      
+              <FontAwesomeIcon
+                icon="plus-circle"
+                className="addButton"
+                type="submit"
+                size="2x"
+                onClick={handleAddButton}
+              />
+      
+              <br />
+            </div>
+            <Button
+              className="createButton"
+              type="submit"
+              onClick={handleCreateButton}
+            >
+              Create Event
+              </Button>
+          </Container>
+        );
+      }
+      else{
+        return (
+          <Container>
+            <Title>
+              <h3>Edit Event</h3>
+            </Title>
+            <div className="text-input">
+              <label className="text">Name</label>
+              <input
+                className="content"
+                id="name"
+                placeholder="Type name of event"
+                required
+                onChange={handleChangeName}
+                onBlur={validateName}
+                value={name}
+              />
+              <label id="warningName">Please type name of event</label>
+            </div>
+            <div className="text-input">
+              <label className="text">Description</label>
+              <input
+                className="content"
+                id="description"
+                placeholder="Type description"
+                onChange={handleChangeDescription}
+                onBlur={validateDescription}
+                value={description}
+              />
+              <label id="warningDescription">Please type description</label>
+            </div>
+            <div className="text-input">
+              <label className="text">Options</label>
+              <input
+                className="content"
+                id="options"
+                placeholder="Type options"
+                onChange={handleChangeOptions}
+                onBlur={validateOptions}
+                onKeyDown={handleOnKeyDown}
+                // value={this.state.options}
+                required
+              />
+              <label id="warningOptions">Please type options</label>
+    
+            </div>
+            <OptionsTable
+                obj={options}
+                handleChange={handleChange}
+              />
+            <div className="calendar">
+              {/* <button className="icon-calendar">this is icon</button> */}
+              <DateTimePicker onChange={(date) => setDate(date)} value={date} />
+      
+              <FontAwesomeIcon
+                icon="plus-circle"
+                className="addButton"
+                type="submit"
+                size="2x"
+                onClick={handleAddButton}
+              />
+      
+              <br />
+            </div>
+            <Button
+              className="createButton"
+              type="submit"
+              onClick={handleCreateButton}
+            >
+              Edit Event
+              </Button>
+          </Container>
+        );
+      }
+    }
+    
     else{
       return <BounceLoader 
       css={"margin:0 auto;margin-top:50px;"}

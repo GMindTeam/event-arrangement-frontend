@@ -1,18 +1,21 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { Button } from "./style";
-
+import { deleteResponse} from "../../api/"
 function EventRow(props) {
-  // const [loading, setLoading] = useState(true);
   function handleDeleteButton(e) {
     e.preventDefault();
     if (!window.confirm("Are your sure you want to delete this item?")) {
       return false;
     }
-    alert("Delete successfully");
+    deleteResponse('',props.obj.response_id)
+        .catch(function (error) {
+          console.log(error);
+        });
+        alert('Deleting. When it done table will refresh');
+    // return props.deleteRow(props.index);
+        
   }
   useEffect(() => {
-    console.log(props.obj);
     return () => {
       
     }
@@ -34,34 +37,25 @@ function EventRow(props) {
 
     return (
       <tr>
-        <td>{props.obj.response_nameUser}</td>
+        <td className="responseContent">{props.obj.response_nameUser}</td>
         {fetchOption()}
         <td>{props.obj.response_comment}</td>
-        <td>
-          <Link
-            to={
-              "/editResponse/" +
-              props.obj.response_id +
-              "&" +
-              props.eventid
-            }
+        <td id="action">
+          <Button
+            className="groupResponseButton"
+            id="editResponseButton"
+            onClick={props.handlerEdit}
           >
-            <Button
-              className="groupResponseButton"
-              id="editResponseButton"
-              type="submit"
-            >
-              Edit
-            </Button>
-          </Link>
+            Edit
+          </Button>
           <Button
             className="groupResponseButton"
             id="deleteResponseButton"
-            type="submit"
             onClick={handleDeleteButton}
           >
             Delete
           </Button>
+         
         </td>
       </tr>
     );

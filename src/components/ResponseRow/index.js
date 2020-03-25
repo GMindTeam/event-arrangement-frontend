@@ -1,21 +1,25 @@
-import React, { useState } from "react";
+import React ,{useEffect}from "react";
 
 
 function ResponseRow(props) {
-  const [responses] = useState(props.obj);
+useEffect(() => {
+  return () => {
+    
+  }
+}, [])
 
 
   return (
     <tr>
-      <td>{this.state.responses.content}</td>
+      <td>{props.title.content}</td>
       <td>
-        <input type="radio" name={responses.content} />
+        <input type="radio" name={props.title.content} />
       </td>
       <td>
-        <input type="radio" name={responses.content} />
+        <input type="radio" name={props.title.content} />
       </td>
       <td>
-        <input type="radio" name={responses.content} />
+        <input type="radio" name={props.title.content} />
       </td>
     </tr>
   );

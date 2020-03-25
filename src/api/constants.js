@@ -1,11 +1,13 @@
 export const METHOD = {
   GET: 'get',
   POST: 'post',
-  UPDATE: 'udpate',
-  PATCH: 'patch',
+  PUT: 'put',
   DELETE: 'delete',
 }
 
 export const mainApiPath = {
-  event: 'event'
+  event: 'event/',
+  response: 'response/',
+  option: 'option/',
+  responsedetail: 'responsedetail/'
 }

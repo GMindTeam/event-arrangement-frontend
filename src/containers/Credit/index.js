@@ -1,7 +1,9 @@
 import React from "react";
+
 import { Container } from "./style";
 
 function Credit() {
+
   return (
     <Container>
       <div className="one">
@@ -11,7 +13,7 @@ function Credit() {
         <h4>Nguyen Thi Minh Phuong</h4>
       </div>
       <div className="two">
-        <img className="cowell" src={require("../../images/cowell.jpg")} />
+        <img className="cowell" alt="Co-Well" src={require("../../images/cowell.jpg")} />
       </div>
     </Container>
   );
