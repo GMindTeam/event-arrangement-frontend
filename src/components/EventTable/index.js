@@ -5,16 +5,16 @@ import { Table } from "./style";
 function EventTable(props) {
   const [responselist,setResponseList] = useState([]);
   useEffect(() => {
-    if(props.event.responselist instanceof Array)
+    if(props.obj.responselist instanceof Array)
     {
-      setResponseList(props.event.responselist);
+      setResponseList(props.obj.responselist);
     }
-  },[props.event.responselist])
+  },[props.obj.responselist])
 
   function fetchRows() {
     if (responselist instanceof Array) {
-      return responselist.map((response, i) => {
-        return <EventRow handlerEdit={props.handlerEdit} deleteRow={deleteRow} response={response} index={i} eventid={props.event.id} />;
+      return responselist.map((object, i) => {
+        return <EventRow handlerEdit={props.handlerEdit} deleteRow={deleteRow} obj={object} index={i} eventid={props.obj.id} />;
       });
     }
   }
@@ -26,8 +26,8 @@ function EventTable(props) {
   }
   function fetchTitle() {
     if (props.titles instanceof Array) {
-      return props.titles.map((title) => {
-        return <th> {title.content}</th>;
+      return props.titles.map((object) => {
+        return <th> {object.content}</th>;
       });
     }
   }
