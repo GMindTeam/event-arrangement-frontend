@@ -1,24 +1,39 @@
-import React, { useState } from "react";
-import {Redirect} from "react-router-dom"
+import React, { useState, useContext, useEffect } from "react";
+import { Redirect } from "react-router-dom"
 import DateTimePicker from "react-datetime-picker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import OptionsTable from "../../components/OptionsTable";
 import { Button, Container, Title } from "./style";
-import { createEvent } from './../../api/index';
+import { createEvent,editEvent } from './../../api/index';
 import { BounceLoader } from "react-spinners";
+import { EventContext } from "../../components/EventContext";
+import { OptionContext } from "../../components/OptionContext";
+
 function CreateEvent(props) {
-  const [date,setDate] = useState(new Date());
-  const [eventID,setEventID] = useState("");
-  const [name, setName] = useState('');
+  const [event,] = useContext(EventContext);
+  const [options, setOption] = useContext(OptionContext);
+  const [date, setDate] = useState(new Date());
+  const [eventID, setEventID] = useState("");
+  const [name, setName] = useState(event.name);
   const [loading, setLoading] = useState(false);
-  const [description, setDescription] = useState('');
-  const [options, setOption] = useState([]);
+  const [description, setDescription] = useState(event.description);
+  const [isEditSuccessful, setIsEditSuccessful] = useState(false);
+  useEffect(() => {
+    if (props.type === "create") {
+      setName('');
+      setDescription('');
+      setOption([]);
+    }
+    return () => {
+
+    }
+  }, [props.type, setOption])
   function handleAddButton() {
     var str = date.toString();
     str = str.substring(0, 25);
-    var obj = [...options];
-    obj.push(str);
-    setOption(obj);
+    var option = [...options];
+    option.push(str);
+    setOption(option);
   }
   function validateName() {
     if (name === "") {
@@ -62,6 +77,7 @@ function CreateEvent(props) {
   }
   function handleCreateButton(e) {
     // post data to server
+
     var obj = [...options];
     setLoading(true);
     if (
@@ -75,10 +91,11 @@ function CreateEvent(props) {
         "description": description,
         "options": []
       };
-      options.map((obj) => {
-        return requestBody.options.push({ "content": obj })
+      options.map((option) => {
+        return requestBody.options.push({ "content": option })
       });
-      createEvent(requestBody)
+      if (props.type === "create") {
+        createEvent(requestBody)
         .then(response => {
           setEventID(response.data.id);
           setLoading(false);
@@ -86,6 +103,17 @@ function CreateEvent(props) {
         .catch(function (error) {
           console.log(error);
         });
+      }
+      else{
+        editEvent(requestBody,event.id)
+        .then(response => {
+          setIsEditSuccessful(true);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      }
+
     } else {
       validateName();
       validateDescription();
@@ -93,11 +121,13 @@ function CreateEvent(props) {
       alert("Don't let input empty");
     }
   }
-  if(eventID===''){
-    if(loading === false ) 
-    {
-      if(props.type ==="create")
-      {
+  if(isEditSuccessful === true)
+  {
+    return <Redirect to={"/event/" + event.id} />
+  }
+  if (eventID === '') {
+    if (loading === false) {
+      if (props.type === "create") {
         return (
           <Container>
             <Title>
@@ -141,16 +171,16 @@ function CreateEvent(props) {
                 required
               />
               <label id="warningOptions">Please type options</label>
-    
+
             </div>
             <OptionsTable
-                obj={options}
-                handleChange={handleChange}
-              />
+              options={options}
+              handleChange={handleChange}
+            />
             <div className="calendar">
               {/* <button className="icon-calendar">this is icon</button> */}
               <DateTimePicker onChange={(date) => setDate(date)} value={date} />
-      
+
               <FontAwesomeIcon
                 icon="plus-circle"
                 className="addButton"
@@ -158,7 +188,7 @@ function CreateEvent(props) {
                 size="2x"
                 onClick={handleAddButton}
               />
-      
+
               <br />
             </div>
             <Button
@@ -171,7 +201,7 @@ function CreateEvent(props) {
           </Container>
         );
       }
-      else{
+      else {
         return (
           <Container>
             <Title>
@@ -215,16 +245,16 @@ function CreateEvent(props) {
                 required
               />
               <label id="warningOptions">Please type options</label>
-    
+
             </div>
             <OptionsTable
-                obj={options}
-                handleChange={handleChange}
-              />
+              options={options}
+              handleChange={handleChange}
+            />
             <div className="calendar">
               {/* <button className="icon-calendar">this is icon</button> */}
               <DateTimePicker onChange={(date) => setDate(date)} value={date} />
-      
+
               <FontAwesomeIcon
                 icon="plus-circle"
                 className="addButton"
@@ -232,7 +262,7 @@ function CreateEvent(props) {
                 size="2x"
                 onClick={handleAddButton}
               />
-      
+
               <br />
             </div>
             <Button
@@ -246,18 +276,18 @@ function CreateEvent(props) {
         );
       }
     }
-    
-    else{
-      return <BounceLoader 
-      css={"margin:0 auto;margin-top:50px;"}
-      size={150}
-      color={"#b042b4"}
+
+    else {
+      return <BounceLoader
+        css={"margin:0 auto;margin-top:50px;"}
+        size={150}
+        color={"#b042b4"}
       />;
     }
   }
-  
-  else{
-     return <Redirect to={"/event/"+eventID} />
+
+  else {
+    return <Redirect to={"/event/" + eventID} />
   }
 }
 
