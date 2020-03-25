@@ -1,8 +1,6 @@
-import React, { Component } from "react";
-import axios from "axios";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 
-const Container = styled("div")`
+export const Container = styled("div")`
   background-color: #fafafa;
   justify-self: center;
   position: relative;
@@ -23,13 +21,13 @@ const Container = styled("div")`
     text-align: center;
     font-weight: 700;
   }
-  h3,h4{
+  h3,
+  h4 {
     font-family: "Roboto", sans-serif;
     text-align: center;
     font-weight: 300;
     padding: 10px;
   }
-
 
   .one {
     grid-column: 1 / 3;
@@ -44,21 +42,3 @@ const Container = styled("div")`
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   }
 `;
-
-function Credit() {
-  return (
-    <Container>
-      <div className="one">
-        <h1>Credit</h1>
-        <h3>Create by</h3>
-        <h4>Nguyen Quoc Duy</h4>
-        <h4>Nguyen Thi Minh Phuong</h4>
-      </div>
-      <div className="two">
-        <img className="cowell" src={require("../images/cowell.jpg")} />
-      </div>
-    </Container>
-  );
-}
-
-export default Credit;
