@@ -5,7 +5,6 @@ import CreateResponse from "../../containers/CreateResponse";
 import Credit from "../../containers/Credit";
 import EventDetail from "../../containers/EventDetail";
 import { Nav ,Button} from "./style";
-import { routePath} from "../../config/routes";
 
 export default function NavBar() {
 
@@ -14,15 +13,15 @@ export default function NavBar() {
         <div>
           <Nav>
             <ul className="nav-link">
-              <Link to={routePath.createEvent}>
+              <Link to="/create">
                 <img alt="Logo" src={require("../../images/logo.PNG")} />
               </Link>
 
               <li className="link">
-                <Link to={routePath.credit}>Credit</Link>
+                <Link to="/credit">Credit</Link>
               </li>
               <li className="link">
-                <Link to={routePath.createEvent}>
+                <Link to="/create">
                   <Button>CreateEvent</Button>
                 </Link>
               </li>
@@ -34,17 +33,20 @@ export default function NavBar() {
           {/* A <Switch> looks through its children <Route>s and
         renders the first one that matches the current URL. */}
           <Switch>
-            <Route path={routePath.credit}>
+            <Route path="/credit">
               <Credit />
             </Route>
-            <Route path={routePath.createEvent}>
+            <Route path="/create">
               <CreateEvent type="create"/>
             </Route>
-            <Route path={routePath.editEvent}>
+            <Route path="/createResponse">
+              <CreateResponse />
+            </Route>
+            <Route path="/editEvent">
               <CreateEvent type="edit" />
             </Route>
             <Switch>
-              <Route path={routePath.eventDetail} component={EventDetail} />
+              <Route path="/event/:eventID" component={EventDetail} />
             </Switch>
           </Switch>
         </div>
