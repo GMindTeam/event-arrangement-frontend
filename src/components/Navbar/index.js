@@ -1,13 +1,9 @@
 import React from "react";
 import { Route, Link, Switch, BrowserRouter } from "react-router-dom";
-import {
-  Credit,
-  CreateEvent,
-  EditEvent,
-  EditResponse,
-  EventDetail,
-  CreateResponse
-} from "../../containers";
+import CreateEvent from "../../containers/CreateEvent";
+import CreateResponse from "../../containers/CreateResponse";
+import Credit from "../../containers/Credit";
+import EventDetail from "../../containers/EventDetail";
 import { Nav ,Button} from "./style";
 
 export default function NavBar() {
@@ -18,7 +14,7 @@ export default function NavBar() {
           <Nav>
             <ul className="nav-link">
               <Link to="/create">
-                <img src={require("../../images/logo.PNG")} />
+                <img alt="Logo" src={require("../../images/logo.PNG")} />
               </Link>
 
               <li className="link">
@@ -41,17 +37,13 @@ export default function NavBar() {
               <Credit />
             </Route>
             <Route path="/create">
-              <CreateEvent />
+              <CreateEvent type="create"/>
             </Route>
-            <Route
-              path="/editResponse/:responseid&:eventid"
-              component={EditResponse}
-            />
             <Route path="/createResponse">
               <CreateResponse />
             </Route>
             <Route path="/editEvent">
-              <EditEvent />
+              <CreateEvent type="edit" />
             </Route>
             <Switch>
               <Route path="/event/:eventID" component={EventDetail} />

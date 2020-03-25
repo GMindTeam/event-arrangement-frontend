@@ -90,6 +90,7 @@ const Title = styled("div")`
   align-items: center;
   border-bottom: 1px solid #ccc;
   height: 4em;
+  margin-bottom: 30px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   h3 {

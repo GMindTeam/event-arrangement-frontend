@@ -1,11 +1,9 @@
-import React, { Component, useEffect } from "react";
-import { OptionRow } from "../../components";
+import React   from "react";
+import OptionRow from "../OptionRow";
 import { Table } from "./style";
 
 function  OptionsTable (props) {
-  useEffect(()=>{
 
-  })
   function deleteRow(key) {
     var arr = [...props.obj];
     arr.splice(key, 1);

@@ -3,6 +3,7 @@ import axios from "axios";
 import { Redirect } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Container, Title } from "./style";
+import { createEvent } from './../../api/index';
 import { BounceLoader } from "react-spinners";
 import { withFormik, Form, Field } from "formik";
 import * as Yup from 'yup'
@@ -59,14 +60,13 @@ function CreateEvent(props) {
       props.values.option !== ""
     ) {
       e.preventDefault();
-      let url = "https://miniproject-271309.appspot.com/api/event";
       const requestBody = {
         "name": props.values.title,
         "description": props.values.description,
         "options": []
       };
-      options.map(obj => {
-        requestBody.options.push({ "content": obj })
+      options.map((obj) => {
+        return requestBody.options.push({ "content": obj })
       });
       var qs = require('qs');
       console.log(requestBody);

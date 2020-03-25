@@ -1,28 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { EventRow } from "../../components";
+import EventRow from "../EventRow";
 import { Table } from "./style";
 
 function EventTable(props) {
-  const [titles] = useState(props.titles);
   const [responselist,setResponseList] = useState([]);
   useEffect(() => {
     if(props.obj.responselist instanceof Array)
     {
-      setResponseList(props.obj.responselist[0]);
+      setResponseList(props.obj.responselist);
     }
-  })
+  },[props.obj.responselist])
 
   function fetchRows() {
     if (responselist instanceof Array) {
       return responselist.map((object, i) => {
-        return <EventRow key={i} obj={object} eventid={props.obj.id} />;
+        return <EventRow handlerEdit={props.handlerEdit} deleteRow={deleteRow} obj={object} index={i} eventid={props.obj.id} />;
       });
     }
   }
-
+  function deleteRow(key) {
+    var arr = [...responselist];
+    arr.splice(key, 1);
+    setResponseList(arr);
+    return props.handleChange(arr);
+  }
   function fetchTitle() {
-    if (titles instanceof Array) {
-      return titles.map((object) => {
+    if (props.titles instanceof Array) {
+      return props.titles.map((object) => {
         return <th> {object.content}</th>;
       });
     }
@@ -35,7 +39,7 @@ function EventTable(props) {
           <th>Name</th>
           {fetchTitle()}
           <th>Comment</th>
-          <th>Actions</th>
+          <th className="ActionHeader">Actions</th>
         </tr>
         {fetchRows()}
       </Table>

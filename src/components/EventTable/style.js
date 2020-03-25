@@ -15,17 +15,29 @@ const Button = styled.button`
 `;
 
 const Table = styled.div`
+  .ActionHeader{
+    min-width:150px;
+  }
   margin-top: 15px;
-  max-width: 90%;
+  max-width: 100%;
+  white-space:nowrap;
+  overflow-x:scroll;
   background-color: #fafafa;
   th,
   td {
-  }
-  th,
-  td {
     text-align: left;
-    /* padding: 10px; */
     width: 10%;
+    border-top: 1px solid #dee2e6;
+    padding: 0em 1em;
+    vertical-align: middle;
+  }
+  .responseContent{
+    
+    padding: 0.75em 1em;
+
+  }
+  th{
+    padding: 0.75em 1em;
   }
   tr:nth-child(odd) {
     background-color: #fafafa;

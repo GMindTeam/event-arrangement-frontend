@@ -16,6 +16,7 @@
     "axios": "0.19.2",
     "font-awesome": "^4.7.0",
     "formik": "^2.1.4",
+    "humps": "^2.0.1",
     "react": "16.12.0",
     "react-copy-to-clipboard": "^5.0.2",
     "react-datetime-picker": "2.9.0",
