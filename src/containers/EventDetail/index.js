@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useEffect, useState, useContext } from "react";
+=======
+import React, { useEffect, useState } from "react";
+>>>>>>> 04db4bbf76e438d90e8825f5990b39cc0242097e
 import EventTable from "../../components/EventTable";
 import { Link } from "react-router-dom";
 import { BounceLoader } from "react-spinners";
@@ -6,6 +10,7 @@ import { Container, Button, Title, CopyLinkStyle } from "./style";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import CreateResponse from "../CreateResponse";
 import { getEventDetail, getOptions } from "../../api";
+<<<<<<< HEAD
 import { EventContext } from "../../components/EventContext";
 import { OptionContext } from "../../components/OptionContext";
 import { appPath } from '../../config/constants';
@@ -13,9 +18,14 @@ function EventDetail(props) {
   const [event, setEvent] = useContext(EventContext);
   const [loading, setLoading] = useState(true);
   const [, setOption] = useContext(OptionContext);
+=======
+function EventDetail(props) {
+  const [event, setEvent] = useState("");
+>>>>>>> 04db4bbf76e438d90e8825f5990b39cc0242097e
   const [eventCopy, setEventCopy] = useState("");
   const [countDown, setCountDown] = useState(0);
   const [isOpentEditResponse, setIsOpentEditResponse] = useState(false);
+
   const [isOpenCreateResponse, setIsOpenCreateResponse] = useState(false);
 
   const [titles, setTitle] = useState("");
@@ -34,15 +44,27 @@ function EventDetail(props) {
           console.log(error);
         });
     })();
+<<<<<<< HEAD
   }, [countDown, eventCopy, props.match.params.eventID, setEvent]);
 
 
   useEffect(() => {
     setLink(appPath.domain + props.match.params.eventID);
+=======
+  }, [countDown, eventCopy, props.match.params.eventID]);
+
+
+  useEffect(() => {
+    setLink('http://localhost:3000/event/' + props.match.params.eventID);
+>>>>>>> 04db4bbf76e438d90e8825f5990b39cc0242097e
     getEventDetail(props.match.params.eventID)
       .then(response => {
         setEvent(response.data);
         setLoading(false);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 04db4bbf76e438d90e8825f5990b39cc0242097e
       })
       .catch(function (error) {
         console.log(error);
@@ -54,11 +76,19 @@ function EventDetail(props) {
       .then(response => {
         setTitle(response.data);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 04db4bbf76e438d90e8825f5990b39cc0242097e
       })
       .catch(function (error) {
         console.log(error);
       });
+<<<<<<< HEAD
   }, [props.match.params.eventID, setEvent]);
+=======
+  }, [props.match.params.eventID]);
+>>>>>>> 04db4bbf76e438d90e8825f5990b39cc0242097e
 
 
   function handleEditResponse() {
@@ -72,6 +102,7 @@ function EventDetail(props) {
     newEvent.responselist = newResponseList;
     setEvent(newEvent);
   }
+<<<<<<< HEAD
   function handleEditEvent() {
     let titlesTemp = [...titles];
     let OptionArr = [];
@@ -79,6 +110,11 @@ function EventDetail(props) {
       return OptionArr.push(singleTitle.content);
     });
     setOption(OptionArr);
+=======
+  function handleCopy() {
+    if (copied) return 'copied';
+    return 'copy';
+>>>>>>> 04db4bbf76e438d90e8825f5990b39cc0242097e
   }
   function handleCreateResponse() {
     if (isOpentEditResponse) setIsOpentEditResponse(false);
@@ -106,7 +142,11 @@ function EventDetail(props) {
                 onChange={({ target: { value } }) => setCopied(false)} />
               <CopyToClipboard text={link}
                 onCopy={() => setCopied(true)}>
+<<<<<<< HEAD
                 <button >{copied ? "copied" : "copy"}</button>
+=======
+                <button >{handleCopy()}</button>
+>>>>>>> 04db4bbf76e438d90e8825f5990b39cc0242097e
               </CopyToClipboard>
             </div>
           </div>
@@ -120,7 +160,11 @@ function EventDetail(props) {
         </div>
         <div className="table">
           <div className="text">Options</div>
+<<<<<<< HEAD
           <EventTable handlerEdit={handleEditResponse} handleChange={handleChange} event={event} titles={titles} />
+=======
+          <EventTable handlerEdit={handleEditResponse} handleChange={handleChange} obj={event} titles={titles} />
+>>>>>>> 04db4bbf76e438d90e8825f5990b39cc0242097e
         </div>
         <div className="countDown">
           <h3>This table will refresh in {countDown} second!</h3>
@@ -128,7 +172,11 @@ function EventDetail(props) {
         <div className="groupButton">
           <Button onClick={handleCreateResponse}>Create Response</Button>
           <Link to={"/editEvent/" + event.id}>
+<<<<<<< HEAD
             <Button type="submit" onClick={handleEditEvent}>Edit Event</Button>
+=======
+            <Button type="submit">Edit Event</Button>
+>>>>>>> 04db4bbf76e438d90e8825f5990b39cc0242097e
           </Link>
         </div>
       </Container >
