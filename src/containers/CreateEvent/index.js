@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Redirect } from "react-router-dom"
-import DateTimePicker from "react-datetime-picker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Container, Title } from "./style";
 import { BounceLoader } from "react-spinners";
@@ -9,37 +8,61 @@ import { withFormik, Form, Field } from "formik";
 import * as Yup from 'yup'
 import DateTimeRangePicker from "@wojtekmaj/react-datetimerange-picker";
 
+
 function CreateEvent(props) {
   const [date, setDate] = useState();
   const [eventID, setEventID] = useState("");
-  const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
-  const [description, setDescription] = useState('');
-  const [options, setOption] = useState([]);
 
-  function handleCalendar() {
-    var text = "";
-    text = props.values.option;
-    if (date !== undefined) {
-      text = text + date + "\n";
+  function convert(str) {
+    var mnths = {
+      Jan: "01",
+      Feb: "02",
+      Mar: "03",
+      Apr: "04",
+      May: "05",
+      Jun: "06",
+      Jul: "07",
+      Aug: "08",
+      Sep: "09",
+      Oct: "10",
+      Nov: "11",
+      Dec: "12"
     }
-    console.log(text);
+    str = str.split(" ");
+    var newDate = mnths[str[1]] + "/" + str[2] + "/" + str[3];
+    return (new Date(newDate).getTime())
   }
- 
+  function formatDate(str) {
+    var days = {
+      1: "Thứ 2",
+      2: "Thứ 3",
+      3: "Thứ 4",
+      4: "Thứ 5",
+      5: "Thứ 6",
+      6: "Thứ 7",
+      7: "Chủ nhật"
+    }
+    var day = days[str.getDay()];
+    var year = str.getFullYear();
+    var month = str.getMonth() + 1;
+    var date = str.getDate();
+    return (day + ", " + year + "/" + ((month < 10) ? ("0" + month) : month) + "/" + ((date < 10) ? ("0" + date) : date));
+  }
   function handleCreateButton(e) {
     // post data to server
-    var obj = [...options];
+    var options = props.values.option.split("\n");
     setLoading(true);
     if (
-      name !== "" &&
-      description !== "" &&
-      obj.length !== 0
+      props.values.title !== "" &&
+      props.values.description !== "" &&
+      props.values.option !== ""
     ) {
       e.preventDefault();
       let url = "https://miniproject-271309.appspot.com/api/event";
       const requestBody = {
-        "name": name,
-        "description": description,
+        "name": props.values.title,
+        "description": props.values.description,
         "options": []
       };
       options.map(obj => {
@@ -106,17 +129,51 @@ function CreateEvent(props) {
                       id="options"
                       placeholder="Type options"
                       {...field}
+
                     />
                   )} />
                   {props.touched.option && <label id="warningOptions">{props.errors.option}</label>}
                 </div>
               </div>
               <div className="right">
-                <DateTimeRangePicker
-                  onChange={date => setDate(date)}
-                  value={date}
-                  onCalendarClose={handleCalendar}
-                />
+                <Field name="datetime" render={({ field, form }) => (
+                  <DateTimeRangePicker
+                    {...field}
+                    onChange={date => setDate(date)}
+                    value={date}
+                    onCalendarClose={() => {
+                      var text = date + "";
+                      var oldText = props.values.option;
+                      oldText = oldText.trim("\n");
+                      var listDate = text.split(",");
+                      var startDate = listDate[0];
+                      startDate = startDate.replace(",", " ");
+                      var numbersd = convert(startDate);
+                      var endDate = listDate[1];
+                      var numbered = 0;
+                      if (date !== undefined) {
+                        if (endDate !== undefined) {
+                          endDate = endDate.replace(",", " ");
+                          numbered = convert(endDate);
+                        }
+                        if (endDate === undefined) {
+                          var text = new Date(numbersd);
+                          var newtext = formatDate(text);
+                          oldText = oldText + "\n" + newtext + " 18:00~";
+                        } else {
+                          while (numbersd <= numbered) {
+                            var text = new Date(numbersd);
+                            var newtext = formatDate(text);
+                            oldText = oldText + "\n" + newtext + " 18:00~";
+                            numbersd += 86400000;
+                          }
+                        }
+                      }
+                      form.setFieldValue("option", oldText.trim("\n"));
+                      
+                    }}
+                  />
+                )} />
               </div>
             </div>
             <Button

@@ -57,16 +57,11 @@ const Container = styled("div")`
     color: ${props => (props.primary ? "white" : "#b042b4")};
   }
 
-  .react-datetime-picker__button:enabled:hover
-    .react-datetime-picker__button__icon,
-  .react-datetime-picker__button:enabled:focus
-    .react-datetime-picker__button__icon {
-    stroke: #b042b4;
-  }
-  .calendar {
-    margin-left: 50px;
-    display: flex;
-    margin-top: 90px;
+  .react-datetimerange-picker__inputGroup,
+  .react-datetimerange-picker__range-divider,
+  .react-datetimerange-picker__clear-button{
+    display: none;
+
   }
   #warningName,
   #warningDescription,
