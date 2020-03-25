@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import React, { useState, useContext, useEffect } from "react";
 import { Redirect } from "react-router-dom"
-=======
-import React, { useState } from "react";
-import {Redirect} from "react-router-dom"
->>>>>>> 04db4bbf76e438d90e8825f5990b39cc0242097e
 import DateTimePicker from "react-datetime-picker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import OptionsTable from "../../components/OptionsTable";
@@ -96,18 +91,11 @@ function CreateEvent(props) {
         "description": description,
         "options": []
       };
-<<<<<<< HEAD
       options.map((option) => {
         return requestBody.options.push({ "content": option })
       });
       if (props.type === "create") {
         createEvent(requestBody)
-=======
-      options.map((obj) => {
-        return requestBody.options.push({ "content": obj })
-      });
-      createEvent(requestBody)
->>>>>>> 04db4bbf76e438d90e8825f5990b39cc0242097e
         .then(response => {
           setEventID(response.data.id);
           setLoading(false);

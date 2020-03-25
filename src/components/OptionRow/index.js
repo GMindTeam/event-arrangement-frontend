@@ -14,11 +14,7 @@ export default function OptionRow(props) {
   return (
     <tr>
       <th>{props.index + 1}</th>
-<<<<<<< HEAD
       <td className="optionContent">{props.option}</td>
-=======
-      <td className="optionContent">{props.obj}</td>
->>>>>>> 04db4bbf76e438d90e8825f5990b39cc0242097e
       <td>
       <Button onClick={handleDeleteButton}>Delete</Button>
       </td>

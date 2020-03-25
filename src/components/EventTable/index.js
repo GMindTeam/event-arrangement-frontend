@@ -7,7 +7,6 @@ function EventTable(props) {
   useEffect(() => {
     if(props.event.responselist instanceof Array)
     {
-<<<<<<< HEAD
       setResponseList(props.event.responselist);
     }
   },[props.event.responselist])
@@ -16,16 +15,6 @@ function EventTable(props) {
     if (responselist instanceof Array) {
       return responselist.map((response, i) => {
         return <EventRow handlerEdit={props.handlerEdit} deleteRow={deleteRow} response={response} index={i} eventid={props.event.id} />;
-=======
-      setResponseList(props.obj.responselist);
-    }
-  },[props.obj.responselist])
-
-  function fetchRows() {
-    if (responselist instanceof Array) {
-      return responselist.map((object, i) => {
-        return <EventRow handlerEdit={props.handlerEdit} deleteRow={deleteRow} obj={object} index={i} eventid={props.obj.id} />;
->>>>>>> 04db4bbf76e438d90e8825f5990b39cc0242097e
       });
     }
   }

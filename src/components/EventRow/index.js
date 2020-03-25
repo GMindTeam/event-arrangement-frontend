@@ -7,11 +7,7 @@ function EventRow(props) {
     if (!window.confirm("Are your sure you want to delete this item?")) {
       return false;
     }
-<<<<<<< HEAD
     deleteResponse('',props.response.response_id)
-=======
-    deleteResponse('',props.obj.response_id)
->>>>>>> 04db4bbf76e438d90e8825f5990b39cc0242097e
         .catch(function (error) {
           console.log(error);
         });
