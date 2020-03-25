@@ -61,6 +61,13 @@ const Container = styled("div")`
   .react-datetimerange-picker__range-divider,
   .react-datetimerange-picker__clear-button{
     display: none;
+  }
+  .react-datetimerange-picker__calendar-button__icon 
+  .react-datetimerange-picker__button__icon {
+
+  }
+  .react-datetimerange-picker__calendar-button 
+  .react-datetimerange-picker__button{
 
   }
   #warningName,
@@ -76,6 +83,7 @@ const Container = styled("div")`
   .right {
     width: 40%;
     height: 100%;
+    margin-left: 10px;
   }
   .DateTimeRangePicker {
     width: 100%;

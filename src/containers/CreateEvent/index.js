@@ -68,23 +68,17 @@ function CreateEvent(props) {
       options.map((obj) => {
         return requestBody.options.push({ "content": obj })
       });
-      var qs = require('qs');
-      console.log(requestBody);
-      const config = {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }
-      axios.post(url, qs.stringify(requestBody), config)
+      createEvent(requestBody)
         .then(response => {
           setEventID(response.data.id);
           setLoading(false);
         })
         .catch(function (error) {
           console.log(error);
-        });
+        })
     } else {
-      alert("Don't let inputs empty");
+      setLoading(false);
+      return <Redirect to={""} />
     }
   }
   if (eventID === '') {
@@ -96,24 +90,24 @@ function CreateEvent(props) {
           </Title>
           <Form>
             <div className="text-input" error={props.touched.title && !!props.errors.title}>
-              <label className="text" css={"font-weight: bold;"}>Title</label> <br />
+              <label className="text">Event Title</label> <br />
               <Field name="title" render={({ field }) => (
                 <input
                   className="content"
                   id="name"
-                  placeholder="Type title of event"
+                  placeholder="Enter event title"
                   {...field}
                 />
               )} />
               {props.touched.title && <label id="warningName">{props.errors.title}</label>}
             </div>
             <div className="text-input" error={props.touched.description && !!props.errors.description}>
-              <label className="text">Description</label>
+              <label className="text">Event Description</label> <br/>
               <Field name="description" render={({ field }) => (
                 <input
                   className="content"
                   id="description"
-                  placeholder="Type description"
+                  placeholder="Enter event description"
                   {...field}
                 />
               )} />
@@ -122,14 +116,14 @@ function CreateEvent(props) {
             <div className="sub-container">
               <div className="left">
                 <div className="text-input" error={props.touched.option && !!props.errors.option}>
-                  <label className="text">Options</label>
+                  <label className="text">Event Options</label> <br />
+                  <label className="text"></label>
                   <Field name="option" render={({ field }) => (
                     <textarea
                       className="content"
                       id="options"
-                      placeholder="Type options"
+                      placeholder="Enter event options"
                       {...field}
-
                     />
                   )} />
                   {props.touched.option && <label id="warningOptions">{props.errors.option}</label>}
@@ -170,7 +164,7 @@ function CreateEvent(props) {
                         }
                       }
                       form.setFieldValue("option", oldText.trim("\n"));
-                      
+                      setDate();
                     }}
                   />
                 )} />
