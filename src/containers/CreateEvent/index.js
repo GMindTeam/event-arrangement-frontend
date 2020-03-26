@@ -1,20 +1,35 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useContext, useEffect } from "react";
 import { Redirect } from "react-router-dom"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Container, Title } from "./style";
-import { createEvent } from './../../api/index';
+import { createEvent, editEvent } from './../../api/index';
 import { BounceLoader } from "react-spinners";
+import { EventContext } from "../../components/EventContext";
+import { OptionContext } from "../../components/OptionContext";
 import { withFormik, Form, Field } from "formik";
-import * as Yup from 'yup'
 import DateTimeRangePicker from "@wojtekmaj/react-datetimerange-picker";
-
+import * as Yup from 'yup'
+import { routePath } from '../../config/routes'
 
 function CreateEvent(props) {
-  const [date, setDate] = useState();
+  const [event,] = useContext(EventContext);
+  const [title, setTitle] = useState(event.name);
+  const [description, setDescription] = useState(event.description);
+  const [options, setOption] = useContext(OptionContext);
+  const [date, setDate] = useState(new Date());
   const [eventID, setEventID] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(0);
 
+  const [isEditSuccessful, setIsEditSuccessful] = useState(false);
+  useEffect(() => {
+    if (props.type === "create") {
+      setTitle('');
+      setDescription('');
+      // setOption('');
+    }
+    return () => {
+
+    }
+  }, [props.type])
   function convert(str) {
     var mnths = {
       Jan: "01",
@@ -50,147 +65,165 @@ function CreateEvent(props) {
     var date = str.getDate();
     return (day + ", " + year + "/" + ((month < 10) ? ("0" + month) : month) + "/" + ((date < 10) ? ("0" + date) : date));
   }
-  function handleCreateButton(e) {
+  function handleCreateOrEditButton(e) {
     // post data to server
-    var options = props.values.option.split("\n");
-    setLoading(true);
+    var optionSplited = options.split("\n");
+    setLoading(1);
     if (
       props.values.title !== "" &&
       props.values.description !== "" &&
-      props.values.option !== ""
+      props.values.options !== ""
     ) {
       e.preventDefault();
       const requestBody = {
-        "name": props.values.title,
-        "description": props.values.description,
+        "name": title,
+        "description": description,
         "options": []
       };
-      options.map((obj) => {
-        return requestBody.options.push({ "content": obj })
+      optionSplited.map((option) => {
+        return requestBody.options.push({ "content": option })
       });
-      createEvent(requestBody)
-        .then(response => {
-          setEventID(response.data.id);
-          setLoading(false);
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
-    } else {
-      setLoading(false);
+      if (props.type === "create") {
+        createEvent(requestBody)
+          .then(response => {
+            setEventID(response.data.id);
+            setLoading(2);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+      else {
+        editEvent(requestBody, event.id)
+          .then(() => {
+            setIsEditSuccessful(true);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+    } else {  //when all the field is not filled it will show the error
+      setLoading(0);
       return <Redirect to={""} />
     }
   }
-  if (eventID === '') {
-    if (loading === false)
-      return (
-        <Container>
-          <Title>
-            <h3>Create Event</h3>
-          </Title>
-          <Form>
-            <div className="text-input" error={props.touched.title && !!props.errors.title}>
-              <label className="text">Event Title</label> <br />
-              <Field name="title" render={({ field }) => (
-                <input
-                  className="content"
-                  id="name"
-                  placeholder="Enter event title"
-                  {...field}
-                />
-              )} />
-              {props.touched.title && <label id="warningName">{props.errors.title}</label>}
-            </div>
-            <div className="text-input" error={props.touched.description && !!props.errors.description}>
-              <label className="text">Event Description</label> <br/>
-              <Field name="description" render={({ field }) => (
-                <input
-                  className="content"
-                  id="description"
-                  placeholder="Enter event description"
-                  {...field}
-                />
-              )} />
-              {props.touched.description && <label id="warningDescription">{props.errors.description}</label>}
-            </div>
-            <div className="sub-container">
-              <div className="left">
-                <div className="text-input" error={props.touched.option && !!props.errors.option}>
-                  <label className="text">Event Options</label> <br />
-                  <label className="text"></label>
-                  <Field name="option" render={({ field }) => (
-                    <textarea
-                      className="content"
-                      id="options"
-                      placeholder="Enter event options"
-                      {...field}
-                    />
-                  )} />
-                  {props.touched.option && <label id="warningOptions">{props.errors.option}</label>}
-                </div>
-              </div>
-              <div className="right">
-                <Field name="datetime" render={({ field, form }) => (
-                  <DateTimeRangePicker
+  if (isEditSuccessful === true) {    //when edit successful will redirect to event detail
+    return <Redirect to={routePath.eventDetail + event.id} />
+  }
+  if (loading === 0) {   //when have not click create or edit button yet
+    return (
+      <Container>
+        <Title>
+          {props.type === 'create' ? <h3>Create Event</h3> : <h3>Edit Event</h3>}
+        </Title>
+        <Form>
+          <div className="text-input" error={props.touched.title && !!props.errors.title}>
+            <label className="text">Event Title</label> <br />
+            <Field name="title" render={({ field }) => (
+              <input
+                className="content"
+                id="name"
+                placeholder="Enter event title"
+                {...field}
+                value={title}
+                onChange={(e) => { setTitle(e.target.value) }}
+              />
+            )} />
+            {props.touched.title && <label id="warningName">{props.errors.title}</label>}
+          </div>
+          <div className="text-input" error={props.touched.description && !!props.errors.description}>
+            <label className="text">Event Description</label> <br />
+            <Field name="description" render={({ field }) => (
+              <input
+                className="content"
+                id="description"
+                placeholder="Enter event description"
+                {...field}
+                value={description}
+                onChange={(e) => { setDescription(e.target.value) }}
+              />
+            )} />
+            {props.touched.description && <label id="warningDescription">{props.errors.description}</label>}
+          </div>
+          <div className="sub-container">
+            <div className="left">
+              <div className="text-input" error={props.touched.option && !!props.errors.option}>
+                <label className="text">Event Options</label> <br />
+                <label className="text"></label>
+                <Field name="option" render={({ field }) => (
+                  <textarea
+                    className="content"
+                    id="options"
+                    placeholder="Enter event options"
                     {...field}
-                    onChange={date => setDate(date)}
-                    value={date}
-                    onCalendarClose={() => {
-                      var text = date + "";
-                      var oldText = props.values.option;
-                      oldText = oldText.trim("\n");
-                      var listDate = text.split(",");
-                      var startDate = listDate[0];
-                      startDate = startDate.replace(",", " ");
-                      var numbersd = convert(startDate);
-                      var endDate = listDate[1];
-                      var numbered = 0;
-                      if (date !== undefined) {
-                        if (endDate !== undefined) {
-                          endDate = endDate.replace(",", " ");
-                          numbered = convert(endDate);
-                        }
-                        if (endDate === undefined) {
+                    // value={options}
+                    // onChange={(e) => { setOption(e.target.value) }}
+                  />
+                )} />
+                {props.touched.option && <label id="warningOptions">{props.errors.option}</label>}
+              </div>
+            </div>
+            <div className="right">
+              <Field name="datetime" render={({ field, form }) => (
+                <DateTimeRangePicker
+                  {...field}
+                  onChange={date => setDate(date)}
+                  value={date}
+                  onCalendarClose={() => {
+                    var text = date + "";
+                    var oldText = props.values.option;
+                    oldText = oldText.trim("\n");
+                    var listDate = text.split(",");
+                    var startDate = listDate[0];
+                    startDate = startDate.replace(",", " ");
+                    var numbersd = convert(startDate);
+                    var endDate = listDate[1];
+                    var numbered = 0;
+                    if (date !== undefined) {
+                      if (endDate !== undefined) {
+                        endDate = endDate.replace(",", " ");
+                        numbered = convert(endDate);
+                      }
+                      if (endDate === undefined) {
+                        var text = new Date(numbersd);
+                        var newtext = formatDate(text);
+                        oldText = oldText + "\n" + newtext + " 18:00~";
+                      } else {
+                        while (numbersd <= numbered) {
                           var text = new Date(numbersd);
                           var newtext = formatDate(text);
                           oldText = oldText + "\n" + newtext + " 18:00~";
-                        } else {
-                          while (numbersd <= numbered) {
-                            var text = new Date(numbersd);
-                            var newtext = formatDate(text);
-                            oldText = oldText + "\n" + newtext + " 18:00~";
-                            numbersd += 86400000;
-                          }
+                          numbersd += 86400000;
                         }
                       }
-                      form.setFieldValue("option", oldText.trim("\n"));
-                      setDate();
-                    }}
-                  />
-                )} />
-              </div>
+                    }
+                    form.setFieldValue("option", oldText.trim("\n"));
+                    setDate();
+                  }}
+                />
+              )} />
+              <Button
+                className="createButton"
+                type="submit"
+                onClick={handleCreateOrEditButton}
+              >
+                {props.type === 'create' ? 'Create Event' : 'Edit Event'}
+              </Button>
             </div>
-            <Button
-              className="createButton"
-              type="submit"
-              onClick={handleCreateButton}
-            >
-              Create Event
-          </Button>
-          </Form>
-        </Container>
-      );
-    else {
-      return <BounceLoader
-        css={"margin:0 auto;margin-top:50px;"}
-        size={150}
-        color={"#b042b4"}
-      />;
-    }
+          </div>
+        </Form>
+      </Container>
+    );
   }
-
-  else {
-    return <Redirect to={"/event/" + eventID} />
+  if (loading === 1) {  //when click and senting the request
+    return <BounceLoader
+      css={"margin:0 auto;margin-top:50px;"}
+      size={150}
+      color={"#b042b4"}
+    />;
+  }
+  else {    //when server return response.It mean create successful
+    return <Redirect to={routePath.eventDetail + eventID} />
   }
 }
 const FormikForm = withFormik({
