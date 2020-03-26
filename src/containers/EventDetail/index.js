@@ -76,9 +76,9 @@ function EventDetail(props) {
   }
   function handleEditEvent() {
     let titlesTemp = [...titles];
-    let OptionArr = [];
+    let OptionArr = '';
     titlesTemp.map((singleTitle) => {
-      return OptionArr.push(singleTitle.content);
+      return OptionArr+=singleTitle.content + '\n';
     });
     setOption(OptionArr);
   }

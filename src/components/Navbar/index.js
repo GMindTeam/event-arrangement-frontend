@@ -41,10 +41,10 @@ export default function NavBar() {
               <CreateEvent type="create"/>
             </Route>
             <Route path={routePath.editEvent}>
-              <CreateEvent type="edit" />
+              <CreateEvent type="edit"/>
             </Route>
             <Switch>
-              <Route path={routePath.eventDetail} component={EventDetail} />
+              <Route path={routePath.eventDetailNavBar} component={EventDetail} />
             </Switch>
           </Switch>
         </div>
