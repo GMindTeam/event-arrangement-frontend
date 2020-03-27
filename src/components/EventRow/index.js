@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { Button } from "./style";
 import { deleteResponse} from "../../api/"
 function EventRow(props) {
@@ -14,6 +14,10 @@ function EventRow(props) {
         alert('Deleting. When it done table will refresh');
     // return props.deleteRow(props.index);
         
+  }
+  function handleEditButton(e) {
+    e.preventDefault();
+    props.handlerEdit(props.response);
   }
   useEffect(() => {
     return () => {
@@ -45,7 +49,7 @@ function EventRow(props) {
           <Button
             className="groupResponseButton"
             id="editResponseButton"
-            onClick={props.handlerEdit}
+            onClick={handleEditButton}
           >
             Edit
           </Button>

@@ -24,7 +24,7 @@ function CreateEvent(props) {
     if (props.type === "create") {
       setTitle('');
       setDescription('');
-      // setOption('');
+      setOption('');
     }
     return () => {
 
@@ -51,13 +51,14 @@ function CreateEvent(props) {
   }
   function formatDate(str) {
     var days = {
+      0: "Chủ nhật",
       1: "Thứ 2",
       2: "Thứ 3",
       3: "Thứ 4",
       4: "Thứ 5",
       5: "Thứ 6",
       6: "Thứ 7",
-      7: "Chủ nhật"
+      
     }
     var day = days[str.getDay()];
     var year = str.getFullYear();
@@ -68,11 +69,12 @@ function CreateEvent(props) {
   function handleCreateOrEditButton(e) {
     // post data to server
     var optionSplited = options.split("\n");
+    
     setLoading(1);
     if (
-      props.values.title !== "" &&
-      props.values.description !== "" &&
-      props.values.options !== ""
+      (title !== "" ) &&
+      (description !== "" )
+      // (options !== ""|| props.value.options !== "")
     ) {
       e.preventDefault();
       const requestBody = {
@@ -81,7 +83,8 @@ function CreateEvent(props) {
         "options": []
       };
       optionSplited.map((option) => {
-        return requestBody.options.push({ "content": option })
+        if(option !== "")
+          requestBody.options.push({ "content": option })
       });
       if (props.type === "create") {
         createEvent(requestBody)
@@ -145,25 +148,23 @@ function CreateEvent(props) {
             )} />
             {props.touched.description && <label id="warningDescription">{props.errors.description}</label>}
           </div>
-          <div className="sub-container">
-            <div className="left">
-              <div className="text-input" error={props.touched.option && !!props.errors.option}>
+          <div className="sub">
+              <div className="text-input" error={props.touched.options && !!props.errors.options}>
                 <label className="text">Event Options</label> <br />
                 <label className="text"></label>
-                <Field name="option" render={({ field }) => (
+                <Field name="options" render={({ field }) => (
                   <textarea
                     className="content"
                     id="options"
                     placeholder="Enter event options"
                     {...field}
-                    // value={options}
-                    // onChange={(e) => { setOption(e.target.value) }}
+                    value={options}
+                    onChange={(e) => { setOption(e.target.value) }}
                   />
                 )} />
-                {props.touched.option && <label id="warningOptions">{props.errors.option}</label>}
-              </div>
+                {props.touched.options && <label id="warningOptions">{props.errors.options}</label>}
             </div>
-            <div className="right">
+            <div className="calendar">
               <Field name="datetime" render={({ field, form }) => (
                 <DateTimeRangePicker
                   {...field}
@@ -171,8 +172,7 @@ function CreateEvent(props) {
                   value={date}
                   onCalendarClose={() => {
                     var text = date + "";
-                    var oldText = props.values.option;
-                    oldText = oldText.trim("\n");
+                    var oldText = options.trim("\n");
                     var listDate = text.split(",");
                     var startDate = listDate[0];
                     startDate = startDate.replace(",", " ");
@@ -197,20 +197,21 @@ function CreateEvent(props) {
                         }
                       }
                     }
-                    form.setFieldValue("option", oldText.trim("\n"));
+                    setOption(oldText.trim("\n"));
                     setDate();
                   }}
                 />
               )} />
-              <Button
+              
+            </div>
+          </div>
+          <Button
                 className="createButton"
                 type="submit"
                 onClick={handleCreateOrEditButton}
               >
                 {props.type === 'create' ? 'Create Event' : 'Edit Event'}
               </Button>
-            </div>
-          </div>
         </Form>
       </Container>
     );
@@ -231,7 +232,7 @@ const FormikForm = withFormik({
     return {
       title: "",
       description: "",
-      option: ""
+      options: ""
     };
   },
   validationSchema: Yup.object().shape({
@@ -239,8 +240,8 @@ const FormikForm = withFormik({
       .required('Title is required'),
     description: Yup.string()
       .required('Description is required'),
-    option: Yup.string()
-      .required('Option is required')
+    options: Yup.string()
+      .required('Options is required')
   }),
 })(CreateEvent);
 

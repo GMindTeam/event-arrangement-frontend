@@ -21,6 +21,7 @@ function EventDetail(props) {
   const [isOpenCreateResponse, setIsOpenCreateResponse] = useState(false);
 
   const [titles, setTitle] = useState("");
+  const [responseNeedToEdit, setResponseNeedToEdit] = useState("");
   const [link, setLink] = useState("");
   const [copied, setCopied] = useState(false);
   useEffect(() => {
@@ -63,9 +64,10 @@ function EventDetail(props) {
   }, [props.match.params.eventID, setEvent]);
 
 
-  function handleEditResponse() {
+  function handleEditResponse(response) {
     if (isOpenCreateResponse) setIsOpenCreateResponse(false);
     setIsOpentEditResponse(true);
+    setResponseNeedToEdit(response);
   }
 
   function handleChange(newResponseList) {
@@ -135,8 +137,8 @@ function EventDetail(props) {
         </div>
       </Container >
       <div>
-        {isOpenCreateResponse ? <CreateResponse type="create" titles={titles}></CreateResponse> : ""}
-        {isOpentEditResponse ? <CreateResponse type="edit" titles={titles}></CreateResponse> : ""}
+        {isOpenCreateResponse ? <CreateResponse type="create" titles={titles} eventID={event.id}></CreateResponse> : ""}
+        {isOpentEditResponse ? <CreateResponse type="edit" id titles={titles} eventID={event.id} response={responseNeedToEdit}></CreateResponse> : ""}
       </div>
     </div>
   );

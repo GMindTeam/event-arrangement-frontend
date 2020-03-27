@@ -1,14 +1,57 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Table } from "./style";
 import ResponseRow from "../ResponseRow"
 
 function ResponseTable(props) {
+  const [responselist, setResponseList] = useState();
+  useEffect(() => {
+    var arr = [];
+    if (props.type === "edit") {
+      var titles = [...props.titles];
+      var answerlist = [...props.responselist];
+      for(var i=0; i<titles.length; i++){
+        var obj = {
+          optionid: titles[i].id,
+          content: titles[i].content,
+          answer: answerlist[i].response_answer
+        }
+        arr.push(obj);
+      }
+      setResponseList(arr);
+    }
+    else {
+      if (props.titles instanceof Array) {
+        props.titles.map((title, i) => {
+          var obj = {
+            optionid: title.id,
+            content: title.content,
+            answser: "0"
+          }
+          arr.push(obj)
+        })
+      }
+      setResponseList(arr);
+    }
+    return () => {
+
+    }
+  }, [props.responselist])
 
   function fetchOption() {
-    let titles = props.titles;
-    if (titles instanceof Array) {
-      return titles.map((title, i) => {
-        return <ResponseRow title={title} key={i} />;
+    if (responselist instanceof Array) {
+      return responselist.map((response, i) => {
+        return <ResponseRow row={response} key={i} index={i}
+          handleChange={(anwser) => {
+            var arr = [...responselist];
+            var tmp = {
+              optionid: response.optionid,
+              content: response.content,
+              answer: anwser
+            }
+            arr[i] = tmp
+            setResponseList(arr);
+            return props.handleChangeResponse(arr)
+          }} />;
       });
     }
   }

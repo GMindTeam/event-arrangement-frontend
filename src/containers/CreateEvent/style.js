@@ -46,6 +46,7 @@ const Container = styled("div")`
   .createButton {
     padding: 0.25em 1em;
     margin: 20px -50px;
+    margin-top:100px;
     /* margin-bottom: 20px; */
     position: relative;
     /* top: 60%; */
@@ -80,17 +81,20 @@ const Container = styled("div")`
     height: 200px;
     width: 100%;
   }
-  .right {
-    width: 40%;
-    height: 100%;
-    margin-left: 10px;
+  .sub{
+    width:40%;
+  }
+  .calendar {
+    float:right;
+    margin-top: -80px;
+    margin-right: -10%;
   }
   .DateTimeRangePicker {
     width: 100%;
   }
   #options {
     height: 150px;
-    overflow: auto;
+    width: 100%;
   }
 `;
 const Title = styled("div")`

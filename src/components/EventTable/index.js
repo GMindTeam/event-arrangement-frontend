@@ -14,7 +14,7 @@ function EventTable(props) {
   function fetchRows() {
     if (responselist instanceof Array) {
       return responselist.map((response, i) => {
-        return <EventRow handlerEdit={props.handlerEdit} deleteRow={deleteRow} response={response} index={i} eventid={props.event.id} />;
+        return <EventRow handlerEdit={props.handlerEdit} deleteRow={deleteRow} response={response}  index={i} eventid={props.event.id} />;
       });
     }
   }
