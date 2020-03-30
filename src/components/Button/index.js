@@ -1,7 +1,4 @@
-import { Btn } from "./style";
-import React from "react";
+import { Button } from "./style";
 
-function Button(props) {
-    return <Btn>{props.name}</Btn>;
-}
+
 export default Button;

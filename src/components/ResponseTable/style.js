@@ -1,29 +1,15 @@
 import styled from "styled-components";
+import {theme} from "../../config/mainTheme";
 export const Table = styled.div`
   margin-top: 15px;
-  max-width: 1000%;
-  background-color: #fafafa;
+  max-width: 100%;
+  background-color: ${theme.backgroundColor2};
   th,
   td {
     text-align: left;
     width: 10%;
-    border-top: 1px solid #dee2e6;
+    border-top: 1px solid ${theme.dividerColor2};
     padding: 0.75em 1em;
     vertical-align: middle;
-  }
-  .responseContent{
-    
-    padding: 0.75em 1em;
-
-  }
-
-  tr:nth-child(odd) {
-    background-color: #fafafa;
-  }
-  tr:nth-child(even) {
-    background-color: #fafafa;
-  }
-  tr:nth-child(1) {
-    background-color: white;
   }
 `;

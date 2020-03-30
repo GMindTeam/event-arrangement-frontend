@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import Navbar from "./components/Navbar";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {

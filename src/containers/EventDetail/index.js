@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import EventTable from "../../components/EventTable";
 import { Link } from "react-router-dom";
 import { BounceLoader } from "react-spinners";
-import { Container, Button, Title, CopyLinkStyle } from "./style";
+import { Container, CopyLinkStyle } from "./style";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import CreateResponse from "../CreateResponse";
 import { getEventDetail, getOptions } from "../../api";
@@ -10,6 +10,9 @@ import { EventContext } from "../../components/EventContext";
 import { OptionContext } from "../../components/OptionContext";
 import { appPath } from '../../config/constants';
 import { routePath } from '../../config/routes';
+import  Button from '../../components/Button';
+import  Title from '../../components/Title';
+import {theme} from '../../config/mainTheme'
 function EventDetail(props) {
   const [event, setEvent] = useContext(EventContext);
   const [loading, setLoading] = useState(true);
@@ -93,7 +96,7 @@ function EventDetail(props) {
     return <BounceLoader
       css={"margin:0 auto;margin-top:50px;"}
       size={150}
-      color={"#b042b4"}
+      color={theme.mainColor1}
     />;
   }
   return (

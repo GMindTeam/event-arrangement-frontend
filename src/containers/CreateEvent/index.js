@@ -1,24 +1,29 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Redirect } from "react-router-dom"
-import { Button, Container, Title } from "./style";
+import {  Container } from "./style";
 import { createEvent, editEvent } from './../../api/index';
 import { BounceLoader } from "react-spinners";
 import { EventContext } from "../../components/EventContext";
 import { OptionContext } from "../../components/OptionContext";
-import { withFormik, Form, Field, Formik, FormikProps } from "formik";
+import {  Form, Field, Formik } from "formik";
 import DateTimeRangePicker from "@wojtekmaj/react-datetimerange-picker";
 import * as Yup from 'yup'
 import { routePath } from '../../config/routes'
-
+import Button from '../../components/Button'
+import Title from '../../components/Title'
+import {theme} from '../../config/mainTheme'
 function CreateEvent(props) {
   const [event,] = useContext(EventContext);
-  const [options, setOption] = useContext(OptionContext);
+  const [options,] = useContext(OptionContext);
   const [date, setDate] = useState();
   const [eventID, setEventID] = useState("");
   const [loading, setLoading] = useState(0);
+  const [isCreate, setIsCreate] = useState(false);
 
   const [isEditSuccessful, setIsEditSuccessful] = useState(false);
   useEffect(() => {
+    if(props.type ==="create") setIsCreate(true);
+    else setIsCreate(false);
     return () => {
     }
   }, [props.type])
@@ -75,14 +80,15 @@ function CreateEvent(props) {
 
       <Container>
         <Title>
-          {props.type === 'create' ? <h3>Create Event</h3> : <h3>Edit Event</h3>}
+          {isCreate ? <h3>Create Event</h3> : <h3>Edit Event</h3>}
         </Title>
         <Formik
           initialValues={{
-            title: (props.type === "create") ? "" : event.name,
-            description: (props.type === "create") ? "" : event.description,
-            options: (props.type === "create") ? "" : options
+            title: (isCreate) ? "" : event.name,
+            description: (isCreate) ? "" : event.description,
+            options: (isCreate) ? "" : options
           }}
+          enableReinitialize={true}
           onSubmit={(values) => {
             var optionSplited = values.options.split("\n");
             setLoading(1);
@@ -98,9 +104,10 @@ function CreateEvent(props) {
               };
               optionSplited.map((option) => {
                 if (option !== "")
-                  requestBody.options.push({ "content": option })
+                  return requestBody.options.push({ "content": option })
+                return false;
               });
-              if (props.type === "create") {
+              if (isCreate) {
                 createEvent(requestBody)
                   .then(response => {
                     setEventID(response.data.id);
@@ -183,14 +190,14 @@ function CreateEvent(props) {
                             numbered = convert(endDate);
                           }
                           if (endDate === undefined) {
-                            var text = new Date(numbersd);
+                             text = new Date(numbersd);
                             var newtext = formatDate(text);
                             oldText = oldText + "\n" + newtext + " 18:00~";
                           }
                           else {
                             while (numbersd <= numbered) {
-                              var text = new Date(numbersd);
-                              var newtext = formatDate(text);
+                               text = new Date(numbersd);
+                               newtext = formatDate(text);
                               oldText = oldText + "\n" + newtext + " 18:00~";
                               numbersd += 86400000;
                             }
@@ -203,7 +210,7 @@ function CreateEvent(props) {
                 </div>
               </div>
               <Button className="createButton" type="submit" >
-                {props.type === 'create' ? 'Create Event' : 'Edit Event'}
+                {isCreate? 'Create Event' : 'Edit Event'}
               </Button>
             </Form>)}
         </Formik>
@@ -214,7 +221,7 @@ function CreateEvent(props) {
     return <BounceLoader
       css={"margin:0 auto;margin-top:50px;"}
       size={150}
-      color={"#b042b4"}
+      color={theme.mainColor1}
     />;
   }
   else {    //when server return response.It mean create successful

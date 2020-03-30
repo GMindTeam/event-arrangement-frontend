@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ResponseTable from "../../components/ResponseTable";
-import { Container, Button, Title } from "./style";
-import { withFormik, Form, Field } from "formik";
+import { Container } from "./style";
+import  Button from '../../components/Button';
+import  Title from '../../components/Title';
+import { withFormik, Field } from "formik";
 import * as Yup from 'yup'
 import { createResponse, editResponse } from "../../api";
 function CreateResponse(props) {
@@ -16,7 +18,7 @@ function CreateResponse(props) {
     return () => {
 
     }
-  }, [props.response])
+  }, [props.response, props.type])
   function handleSubmitButton(e) {
     if (props.values.username !== "" && props.values.comment !== "" && props.type === "create" && props.values.checked !== "") {
       e.preventDefault();
