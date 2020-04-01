@@ -1,29 +1,26 @@
 import React, { useEffect } from "react";
 import { Button } from "./style";
-import { deleteResponse} from "../../api/"
 function EventRow(props) {
+
+  useEffect(() => {
+      
+    return () => {
+      
+    }
+  },[props.response.response_id]);
+
   function handleDeleteButton(e) {
     e.preventDefault();
     if (!window.confirm("Are your sure you want to delete this item?")) {
       return false;
     }
-    deleteResponse('',props.response.response_id)
-        .catch(function (error) {
-          console.log(error);
-        });
-        alert('Deleting. When it done table will refresh');
-    // return props.deleteRow(props.index);
-        
+    props.handlerDelete(props.response.response_id);
   }
   function handleEditButton(e) {
     e.preventDefault();
     props.handlerEdit(props.response);
   }
-  useEffect(() => {
-    return () => {
-      
-    }
-  })
+  
   function fetchOption() {
     if (props.response.response_detail_list instanceof Array) {
       return props.response.response_detail_list.map((responseDetail, i) => {

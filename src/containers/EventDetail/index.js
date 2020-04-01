@@ -5,7 +5,7 @@ import { BounceLoader } from "react-spinners";
 import { Container, CopyLinkStyle } from "./style";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import CreateResponse from "../CreateResponse";
-import { getEventDetail, getOptions } from "../../api";
+import { getEventDetail, getOptions,deleteResponse } from "../../api";
 import { EventContext } from "../../components/EventContext";
 import { OptionContext } from "../../components/OptionContext";
 import { appPath } from '../../config/constants';
@@ -49,6 +49,7 @@ function EventDetail(props) {
     getEventDetail(props.match.params.eventID)
       .then(response => {
         setEvent(response.data);
+        setEventCopy(response.data);
         setLoading(false);
       })
       .catch(function (error) {
@@ -60,7 +61,6 @@ function EventDetail(props) {
     getOptions(requestBody)
       .then(response => {
         setTitle(response.data);
-
       })
       .catch(function (error) {
         console.log(error);
@@ -72,6 +72,24 @@ function EventDetail(props) {
     if (isOpenCreateResponse) setIsOpenCreateResponse(false);
     setIsOpentEditResponse(true);
     setResponseNeedToEdit(response);
+    
+  }
+  function handleDeleteResponse(response) {
+    setIsCreating(true);
+    deleteResponse('',response)
+    .catch(function (error) {
+      console.log(error);
+    });
+    setIsCreating(true);
+    getEventDetail(props.match.params.eventID)
+    .then(response => {
+      setEvent(response.data);
+      setEventCopy(response.data);
+      setIsCreating(false);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
     
   }
 
@@ -148,7 +166,7 @@ function EventDetail(props) {
       css={"margin:0 auto;margin-top:50px;"}
       size={150}
       color={theme.mainColor1}
-    /> :  <EventTable handlerEdit={handleEditResponse} handleChange={handleChange} event={event} titles={titles} />}
+    /> :  <EventTable handlerEdit={handleEditResponse} handlerDelete={handleDeleteResponse} handleChange={handleChange} event={event} titles={titles} />}
          
         </div>
         <div className="countDown">
