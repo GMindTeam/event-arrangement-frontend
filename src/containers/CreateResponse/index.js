@@ -10,6 +10,7 @@ function CreateResponse(props) {
   const [name, setName] = useState('');
   const [options, setOptions] = useState([]);
   const [comment, setComment] = useState('');
+  const [isCreating, setIsCreating] = useState(false);
   useEffect(() => {
     if (props.type === "edit") {
       setName(props.response.response_nameUser);
@@ -20,6 +21,7 @@ function CreateResponse(props) {
     }
   }, [props.response, props.type])
   function handleSubmitButton(e) {
+    setIsCreating(true);
     if (props.values.username !== "" && props.values.comment !== "" && props.type === "create" && props.values.checked !== "") {
       e.preventDefault();
       const requestBody = {
@@ -36,7 +38,8 @@ function CreateResponse(props) {
       });
       createResponse(requestBody)
         .then(response => {
-
+          setIsCreating(false);
+          props.submitHandler();
         })
         .catch(function (error) {
           console.log(error);
@@ -58,7 +61,8 @@ function CreateResponse(props) {
       });
       editResponse(requestBody, props.response.response_id)
         .then(response => {
-
+          setIsCreating(false);
+          props.submitHandler();
         })
         .catch(function (error) {
           console.log(error);
@@ -127,13 +131,22 @@ function CreateResponse(props) {
           <label id="warningComment">Please type comment</label>
         </div>
         <div className="groupButton">
-          <Button
+          { isCreating ?<div><Button
             className="subButton"
             type="submit"
             onClick={handleSubmitButton}
+            disabled
           >
             Submit
-            </Button>
+            </Button> <label id="loading">Loading...</label></div> :<Button
+            className="subButton"
+            type="submit"
+            onClick={handleSubmitButton}
+
+          >
+            Submit
+            </Button> }
+          
         </div>
       </Container>
     );

@@ -19,6 +19,7 @@ function EventDetail(props) {
   const [, setOption] = useContext(OptionContext);
   const [eventCopy, setEventCopy] = useState("");
   const [countDown, setCountDown] = useState(0);
+  const [isCreating, setIsCreating] = useState(false);
   const [isOpentEditResponse, setIsOpentEditResponse] = useState(false);
 
   const [isOpenCreateResponse, setIsOpenCreateResponse] = useState(false);
@@ -71,6 +72,7 @@ function EventDetail(props) {
     if (isOpenCreateResponse) setIsOpenCreateResponse(false);
     setIsOpentEditResponse(true);
     setResponseNeedToEdit(response);
+    
   }
 
   function handleChange(newResponseList) {
@@ -78,6 +80,21 @@ function EventDetail(props) {
     var newEvent = event;
     newEvent.responselist = newResponseList;
     setEvent(newEvent);
+  }
+  function submitHandler(){
+    setIsOpenCreateResponse(false);
+    setIsOpentEditResponse(false);
+    setIsCreating(true);
+    getEventDetail(props.match.params.eventID)
+    .then(response => {
+      setEvent(response.data);
+      setEventCopy(response.data);
+      setIsCreating(false);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
   }
   function handleEditEvent() {
     let titlesTemp = [...titles];
@@ -127,10 +144,16 @@ function EventDetail(props) {
         </div>
         <div className="table">
           <div className="text">Options</div>
-          <EventTable handlerEdit={handleEditResponse} handleChange={handleChange} event={event} titles={titles} />
+          {isCreating ? <BounceLoader
+      css={"margin:0 auto;margin-top:50px;"}
+      size={150}
+      color={theme.mainColor1}
+    /> :  <EventTable handlerEdit={handleEditResponse} handleChange={handleChange} event={event} titles={titles} />}
+         
         </div>
         <div className="countDown">
-          <h3>This table will refresh in {countDown} second!</h3>
+          { isCreating ? " " :<h3>This table will refresh in {countDown} second!</h3>}
+          
         </div>
         <div className="groupButton">
           <Button onClick={handleCreateResponse}>Create Response</Button>
@@ -140,8 +163,8 @@ function EventDetail(props) {
         </div>
       </Container >
       <div>
-        {isOpenCreateResponse ? <CreateResponse type="create" titles={titles} eventID={event.id}></CreateResponse> : ""}
-        {isOpentEditResponse ? <CreateResponse type="edit" id titles={titles} eventID={event.id} response={responseNeedToEdit}></CreateResponse> : ""}
+        {isOpenCreateResponse ? <CreateResponse type="create" submitHandler={submitHandler} titles={titles} eventID={event.id}></CreateResponse> : ""}
+        {isOpentEditResponse ? <CreateResponse type="edit" submitHandler={submitHandler} titles={titles} eventID={event.id} response={responseNeedToEdit}></CreateResponse> : ""}
       </div>
     </div>
   );

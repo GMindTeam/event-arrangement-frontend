@@ -44,6 +44,11 @@ const Container = styled("div")`
     display: none;
     color: red;
   }
+  #loading{
+    position: absolute;
+    margin-top: -40px;
+    margin-left: 55%;
+  }
   .groupButton{
     padding: 1px;
   }

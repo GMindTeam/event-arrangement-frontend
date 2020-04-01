@@ -13,4 +13,10 @@ export const Button = styled.button`
   :hover {
     box-shadow: ${theme.buttonShadow};
   }
+  :disabled{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+  box-shadow: none;  
+  }
 `;
