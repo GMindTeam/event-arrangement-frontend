@@ -1,7 +1,8 @@
 import styled from "styled-components";
+import {theme} from "../../config/mainTheme";
 
 export const Container = styled("div")`
-  background-color: #fafafa;
+  background-color: ${theme.backgroundColor2};
   justify-self: center;
   position: relative;
   width: 80%;
@@ -16,14 +17,14 @@ export const Container = styled("div")`
   grid-auto-rows: minmax(100px, auto);
 
   h1 {
-    color: #b042b4;
-    font-family: "Roboto", sans-serif;
+    color: ${theme.mainColor1};
+    font-family: ${theme.fontFamily};
     text-align: center;
     font-weight: 700;
   }
   h3,
   h4 {
-    font-family: "Roboto", sans-serif;
+    font-family: ${theme.fontFamily};
     text-align: center;
     font-weight: 300;
     padding: 10px;
@@ -39,6 +40,6 @@ export const Container = styled("div")`
   }
   .cowell {
     max-width: 15em;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: ${theme.buttonShadow};
   }
 `;

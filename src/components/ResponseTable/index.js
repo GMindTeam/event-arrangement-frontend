@@ -27,7 +27,7 @@ function ResponseTable(props) {
             content: title.content,
             answser: "0"
           }
-          arr.push(obj)
+          return arr.push(obj)
         })
       }
       setResponseList(arr);
@@ -35,7 +35,7 @@ function ResponseTable(props) {
     return () => {
 
     }
-  }, [props.responselist])
+  }, [props.responselist, props.titles,props.type])
 
   function fetchOption() {
     if (responselist instanceof Array) {

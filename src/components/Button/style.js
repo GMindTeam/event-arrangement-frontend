@@ -1,14 +1,16 @@
 import styled from "styled-components";
+import { theme } from "../../config/mainTheme";
 
-export const Btn = styled.button`
+export const Button = styled.button`
   background: white;
-  color:  #b042b4;
+  color: ${theme.mainColor1};
   font-size: 1em;
-  border: 2px solid #b042b4;
+  margin: 1em 3em;
+  padding: 0.25em 1em;
+  margin-right: 5em;
+  border: 2px solid  ${theme.mainColor1};
   border-radius: 3em;
-  display: block;
   :hover {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: ${theme.buttonShadow};
   }
-  height: 30%;
 `;

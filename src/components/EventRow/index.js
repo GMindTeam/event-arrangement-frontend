@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect } from "react";
 import { Button } from "./style";
 import { deleteResponse} from "../../api/"
 function EventRow(props) {

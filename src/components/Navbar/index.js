@@ -1,11 +1,11 @@
 import React from "react";
 import { Route, Link, Switch, BrowserRouter } from "react-router-dom";
 import CreateEvent from "../../containers/CreateEvent";
-import CreateResponse from "../../containers/CreateResponse";
 import Credit from "../../containers/Credit";
 import EventDetail from "../../containers/EventDetail";
-import { Nav ,Button} from "./style";
+import { Nav} from "./style";
 import { routePath} from "../../config/routes";
+import  Button  from "../Button"
 
 export default function NavBar() {
 
