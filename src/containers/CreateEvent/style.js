@@ -29,7 +29,7 @@ const Container = styled("div")`
     margin-left: 50px;
   }
   .text {
-    height: 30%;
+    height: 100%;
     padding-top: 30px;
   }
   .content {
@@ -57,27 +57,40 @@ const Container = styled("div")`
     color: ${props => (props.primary ? "white" : "#b042b4")};
   }
 
-  .react-datetime-picker__button:enabled:hover
-    .react-datetime-picker__button__icon,
-  .react-datetime-picker__button:enabled:focus
-    .react-datetime-picker__button__icon {
-    stroke: #b042b4;
+  .react-datetimerange-picker__inputGroup,
+  .react-datetimerange-picker__range-divider,
+  .react-datetimerange-picker__clear-button{
+    display: none;
   }
-  .calendar {
-    margin-left: 50px;
-    display: flex;
-    margin-top: 30px;
+  .react-datetimerange-picker__calendar-button__icon 
+  .react-datetimerange-picker__button__icon {
+
+  }
+  .react-datetimerange-picker__calendar-button 
+  .react-datetimerange-picker__button{
+
   }
   #warningName,
   #warningDescription,
   #warningOptions {
-    display: none;
     color: red;
   }
-  .OptionsTable {
-    height: 100px;
-    width: 80%;
-    margin-left: 50px;
+  .sub-container {
+    display: flex;
+    height: 200px;
+    width: 100%;
+  }
+  .right {
+    width: 40%;
+    height: 100%;
+    margin-left: 10px;
+  }
+  .DateTimeRangePicker {
+    width: 100%;
+  }
+  #options {
+    height: 150px;
+    overflow: auto;
   }
 `;
 const Title = styled("div")`
