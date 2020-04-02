@@ -2,15 +2,12 @@ import React, { useState, useEffect } from "react";
 
 
 function ResponseRow(props) {
-  const[answer, setAnswer] = useState(props.row.answer);
+  const [answer, setAnswer] = useState('');
   useEffect(() => {
-    console.log(props.row)
+    setAnswer(props.row.answer);
     return () => {
-
     }
-  }, [])
-
-
+  }, [props.row.answer])
   return (
     <tr>
       <td>{props.row.content}</td>

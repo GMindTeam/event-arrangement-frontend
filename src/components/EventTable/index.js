@@ -5,29 +5,29 @@ import { Table } from "./style";
 function EventTable(props) {
   const [responselist,setResponseList] = useState([]);
   useEffect(() => {
-    if(props.obj.responselist instanceof Array)
+    if(props.event.responselist instanceof Array)
     {
-      setResponseList(props.obj.responselist);
+      setResponseList(props.event.responselist);
     }
-  },[props.obj.responselist])
+  },[props.event.responselist])
 
   function fetchRows() {
     if (responselist instanceof Array) {
-      return responselist.map((object, i) => {
-        return <EventRow handlerEdit={props.handlerEdit} deleteRow={deleteRow} obj={object} index={i} eventid={props.obj.id} />;
+      return responselist.map((response, i) => {
+        return <EventRow handlerEdit={props.handlerEdit} handlerDelete={props.handlerDelete} response={response}  index={i} eventid={props.event.id} />;
       });
     }
   }
-  function deleteRow(key) {
-    var arr = [...responselist];
-    arr.splice(key, 1);
-    setResponseList(arr);
-    return props.handleChange(arr);
-  }
+  // function deleteRow(key) {
+  //   var arr = [...responselist];
+  //   arr.splice(key, 1);
+  //   setResponseList(arr);
+  //   return props.handleChange(arr);
+  // }
   function fetchTitle() {
     if (props.titles instanceof Array) {
-      return props.titles.map((object) => {
-        return <th> {object.content}</th>;
+      return props.titles.map((title) => {
+        return <th> {title.content}</th>;
       });
     }
   }

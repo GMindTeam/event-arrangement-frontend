@@ -1,31 +1,32 @@
 import React, { useState, useEffect } from "react";
 import ResponseTable from "../../components/ResponseTable";
-import { Container, Button, Title } from "./style";
-import { withFormik, Form, Field } from "formik";
+import { Container } from "./style";
+import  Button from '../../components/Button';
+import  Title from '../../components/Title';
+import { withFormik, Field } from "formik";
 import * as Yup from 'yup'
 import { createResponse, editResponse } from "../../api";
 function CreateResponse(props) {
   const [name, setName] = useState('');
   const [options, setOptions] = useState([]);
   const [comment, setComment] = useState('');
+  const [isCreating, setIsCreating] = useState(false);
   useEffect(() => {
-    console.log(props)
     if (props.type === "edit") {
-      // phần này chưa chính xác lắm, tại chưa biết đc sửa response nào nên lấy tạm responselist[0]
-      var res = props.obj.responselist[0];
-      setName(res.response_nameUser);
-      setComment(res.response_comment);
+      setName(props.response.response_nameUser);
+      setComment(props.response.response_comment);
     }
     return () => {
 
     }
-  }, [])
+  }, [props.response, props.type])
   function handleSubmitButton(e) {
+    setIsCreating(true);
     if (props.values.username !== "" && props.values.comment !== "" && props.type === "create" && props.values.checked !== "") {
       e.preventDefault();
       const requestBody = {
         "nameuser": props.values.username,
-        "eventid": props.obj.id,
+        "eventid": props.eventID,
         "comment": props.values.comment,
         "responsedetail": []
       };
@@ -35,10 +36,10 @@ function CreateResponse(props) {
           "answer": parseInt(obj.answer)
         })
       });
-      console.log(requestBody)
       createResponse(requestBody)
         .then(response => {
-
+          setIsCreating(false);
+          props.submitHandler();
         })
         .catch(function (error) {
           console.log(error);
@@ -48,7 +49,7 @@ function CreateResponse(props) {
       e.preventDefault();
       const requestBody = {
         "nameuser": name,
-        "eventid": props.obj.id,
+        "eventid": props.eventID,
         "comment": comment,
         "responsedetail": []
       };
@@ -58,10 +59,10 @@ function CreateResponse(props) {
           "answer": parseInt(obj.answer)
         })
       });
-      console.log(requestBody)
-      editResponse(requestBody, props.obj.responselist[0].response_id)
+      editResponse(requestBody, props.response.response_id)
         .then(response => {
-
+          setIsCreating(false);
+          props.submitHandler();
         })
         .catch(function (error) {
           console.log(error);
@@ -71,65 +72,11 @@ function CreateResponse(props) {
       alert("Don't let input empty");
     }
   }
-  if (props.type === "create") {
+
     return (
       <Container>
         <Title>
-          <h3>Create Response</h3>
-        </Title>
-        <div className="text-input" error={props.touched.username && !!props.errors.username}>
-          <label className="text">Your Name</label>
-          <Field name="username" render={({ field, form }) => (
-            <input
-              className="content"
-              id="name"
-              placeholder="Enter your name"
-              {...field}
-            />
-          )} />
-          {props.touched.username && <label>{props.errors.username}</label>}
-          <label id="warningName">Please type your name</label>
-        </div>
-        <div className="table" >
-          <label className="text" >Options</label>
-          <ResponseTable
-            titles={props.titles}
-            handleChangeResponse={(responselist) => {
-              console.log("create", responselist);
-              setOptions(responselist);
-            }} />
-          <label id="warningOption">Please type options</label>
-        </div>
-        <div className="text-input" error={props.touched.comment && !!props.errors.comment}>
-          <label className="text">Comment</label>
-          <Field name="comment" render={({ field, form }) => (
-            <input
-              className="content"
-              id="comment"
-              placeholder="Enter your comment"
-              {...field}
-            />
-          )} />
-          {props.touched.comment && <label>{props.errors.comment}</label>}
-          <label id="warningComment">Please type comment</label>
-        </div>
-        <div className="groupButton">
-          <Button
-            className="subButton"
-            type="submit"
-            onClick={handleSubmitButton}
-          >
-            Submit
-            </Button>
-        </div>
-      </Container>
-    );
-  }
-  if (props.type === "edit") {
-    return (
-      <Container>
-        <Title>
-          <h3>Edit Response</h3>
+        {props.type === "create" ? <h3>Create Response</h3> : <h3>Edit Response</h3>}
         </Title>
         <div className="text-input" error={props.touched.username && !!props.errors.username}>
           <label className="text">Your Name</label>
@@ -151,13 +98,18 @@ function CreateResponse(props) {
         </div>
         <div className="table">
           <label className="text">Options</label>
-          <ResponseTable
-            type="edit"
+          {props.type === "create" ? <ResponseTable
             titles={props.titles}
-            responselist={props.obj.responselist[0].response_detail_list}
             handleChangeResponse={(responselist) => {
               setOptions(responselist);
-            }} />
+            }} /> :<ResponseTable
+            type="edit"
+            titles={props.titles}
+            responselist={props.response.response_detail_list}
+            handleChangeResponse={(responselist) => {
+              setOptions(responselist);
+            }} />}
+          
           <label id="warningOption">Please type options</label>
         </div>
         <div className="text-input" error={props.touched.comment && !!props.errors.comment}>
@@ -179,17 +131,26 @@ function CreateResponse(props) {
           <label id="warningComment">Please type comment</label>
         </div>
         <div className="groupButton">
-          <Button
+          { isCreating ?<div><Button
             className="subButton"
             type="submit"
             onClick={handleSubmitButton}
+            disabled
           >
             Submit
-            </Button>
+            </Button> <label id="loading">Loading...</label></div> :<Button
+            className="subButton"
+            type="submit"
+            onClick={handleSubmitButton}
+
+          >
+            Submit
+            </Button> }
+          
         </div>
       </Container>
     );
-  }
+  
 
 }
 const FormikForm = withFormik({

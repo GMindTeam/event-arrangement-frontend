@@ -8,16 +8,16 @@ function ResponseTable(props) {
     var arr = [];
     if (props.type === "edit") {
       var titles = [...props.titles];
-      var answerlist = [...props.responselist]
+      var answerlist = [...props.responselist];
       for(var i=0; i<titles.length; i++){
         var obj = {
           optionid: titles[i].id,
           content: titles[i].content,
           answer: answerlist[i].response_answer
         }
-        arr.push(obj)
+        arr.push(obj);
       }
-      setResponseList(arr)
+      setResponseList(arr);
     }
     else {
       if (props.titles instanceof Array) {
@@ -27,7 +27,7 @@ function ResponseTable(props) {
             content: title.content,
             answser: "0"
           }
-          arr.push(obj)
+          return arr.push(obj)
         })
       }
       setResponseList(arr);
@@ -35,17 +35,17 @@ function ResponseTable(props) {
     return () => {
 
     }
-  }, [])
+  }, [props.responselist, props.titles,props.type])
 
   function fetchOption() {
     if (responselist instanceof Array) {
-      return responselist.map((obj, i) => {
-        return <ResponseRow row={obj} key={i} index={i}
+      return responselist.map((response, i) => {
+        return <ResponseRow row={response} key={i} index={i}
           handleChange={(anwser) => {
             var arr = [...responselist];
             var tmp = {
-              optionid: obj.optionid,
-              content: obj.content,
+              optionid: response.optionid,
+              content: response.content,
               answer: anwser
             }
             arr[i] = tmp
