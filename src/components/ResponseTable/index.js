@@ -25,9 +25,9 @@ function ResponseTable(props) {
           var obj = {
             optionid: title.id,
             content: title.content,
-            answser: "0"
+            answser: "4"
           }
-          return arr.push(obj)
+          arr.push(obj)
         })
       }
       setResponseList(arr);
@@ -35,7 +35,7 @@ function ResponseTable(props) {
     return () => {
 
     }
-  }, [props.responselist, props.titles,props.type])
+  }, [props.responselist])
 
   function fetchOption() {
     if (responselist instanceof Array) {
@@ -50,13 +50,15 @@ function ResponseTable(props) {
             }
             arr[i] = tmp
             setResponseList(arr);
-            return props.handleChangeResponse(arr)
+            var isChecked = true;
+            for(var j=0; j<arr.length; j++){
+              if(arr[j].answer === "4" || arr[j].answer === undefined) isChecked = false
+            }
+            return props.handleChangeResponse(arr, isChecked)
           }} />;
       });
     }
   }
-
-
   return (
     <div>
       <Table>
@@ -71,6 +73,4 @@ function ResponseTable(props) {
     </div>
   );
 }
-
-
 export default ResponseTable;
