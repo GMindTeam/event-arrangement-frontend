@@ -91,18 +91,26 @@ function EventTable(props) {
         <tr>
           <th>Yes</th>
           {fetchYes()}
+          <th></th>
+          <th></th>
         </tr>
         <tr>
           <th>No</th>
           {fetchNo()}
+          <th></th>
+          <th></th>
         </tr>
         <tr>
           <th>Thinking</th>
           {fetchThinking()}
+          <th></th>
+          <th></th>
         </tr>
         <tr>
           <th>Not Response Yet</th>
           {fetchNotResponseYet()}
+          <th></th>
+          <th></th>
         </tr>
 
       </Table>
