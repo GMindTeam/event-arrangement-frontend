@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ResponseTable from "../../components/ResponseTable";
-import { Container} from "./style";
+import { Container } from "./style";
 import Button from '../../components/Button';
 import Title from '../../components/Title';
 import { Form, Field, Formik } from "formik";
@@ -10,11 +10,9 @@ function CreateResponse(props) {
   const [options, setOptions] = useState([]);
   const [isCreating, setIsCreating] = useState(false);
   useEffect(() => {
-    console.log(props.response)
     return () => {
-
     }
-  }, [props.response])
+  }, [props.response, props.type])
   const validationSchema = Yup.object().shape({
     username: Yup.string()
       .required('Your name is required'),
@@ -38,8 +36,10 @@ function CreateResponse(props) {
           type: props.type,
           isChecked: ""
         }}
+        enableReinitialize={true}
         validationSchema={validationSchema}
         onSubmit={(values) => {
+          setIsCreating(true);
           console.log(options);
           if (values.username !== "" && values.comment !== "" && values.isChecked === "ok") {
             const requestBody = {
@@ -55,10 +55,10 @@ function CreateResponse(props) {
               })
             });
             if (props.type === "create") {
-              console.log(requestBody)
               createResponse(requestBody)
                 .then(response => {
-
+                  setIsCreating(false);
+                  props.submitHandler();
                 })
                 .catch(function (error) {
                   console.log(error);
@@ -66,7 +66,8 @@ function CreateResponse(props) {
             } else {
               editResponse(requestBody, props.response.response_id)
                 .then(response => {
-
+                  setIsCreating(false);
+                  props.submitHandler();
                 })
                 .catch(function (error) {
                   console.log(error);
@@ -128,19 +129,19 @@ function CreateResponse(props) {
               {props.touched.comment && <label id="warningComment">{props.errors.comment}</label>}
             </div>
             <div className="groupButton">
-          { isCreating ?<div><Button
-            className="subButton"
-            type="submit"
-            disabled
-          >
-            Submit
-            </Button> <label id="loading">Loading...</label></div> :<Button
-            className="subButton"
-            type="submit"
-          >
-            Submit
-            </Button> }
-        </div>
+              {isCreating ? <div><Button
+                className="subButton"
+                type="submit"
+                disabled
+              >
+                Submit
+            </Button> <label id="loading">Loading...</label></div> : <Button
+                  className="subButton"
+                  type="submit"
+                >
+                  Submit
+            </Button>}
+            </div>
           </Form>
         )}
       </Formik>
