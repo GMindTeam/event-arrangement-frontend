@@ -41,7 +41,6 @@ const Container = styled("div")`
   #warningName,
   #warningComment,
   #warningOption {
-    display: none;
     color: red;
   }
   #loading{
