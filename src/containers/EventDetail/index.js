@@ -78,8 +78,10 @@ function EventDetail(props) {
       titles.map((title, index) => {
         if (event.responselist instanceof Array) {
           event.responselist.map((response) => {
-            const answer = response.response_detail_list[index].response_answer;
-            return arr.push(answer);
+            if (response.response_detail_list instanceof Array) {
+              const answer = response.response_detail_list[index].response_answer;
+              return arr.push(answer);
+            }
           });
         }
       });
