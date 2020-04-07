@@ -15,15 +15,17 @@ function EventTable(props) {
   }, [props.event.responselist])
   useEffect(() => {
     var arr = [];
-    props.titles.map((title, index) => {
-
-      props.event.responselist.map((response) => {
-        const answer = response.response_detail_list[index].response_answer;
-        arr.push(answer)
+    if (props.titles instanceof Array) {
+      props.titles.map((title, index) => {
+        props.event.responselist.map((response) => {
+          const answer = response.response_detail_list[index].response_answer;
+          arr.push(answer)
+        });
       });
-    });
-    setCount(arr);
-  }, [])
+      setCount(arr);
+    }
+    
+  }, [props.titles])
 
 
 
