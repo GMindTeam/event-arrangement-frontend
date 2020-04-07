@@ -4,6 +4,7 @@ import { theme } from "../../config/mainTheme";
 export const Button = styled.button`
   background: white;
   color: ${theme.mainColor1};
+  font-family: ${theme.fontFamily};
   font-size: 1em;
   margin: 1em 3em;
   padding: 0.25em 1em;

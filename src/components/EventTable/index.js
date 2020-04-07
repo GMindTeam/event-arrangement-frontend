@@ -36,33 +36,40 @@ function EventTable(props) {
     }
   }
   function fetchYes() {
-    
-    return props.titles.map((title, index) => {
-      var counts = {};
-      count.slice(index*countResponse,(index+1)*countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-      return <th> {!isNaN(counts[1])? counts[1] : 0}</th>;
-    })
+    if (props.titles instanceof Array) {
+      return props.titles.map((title, index) => {
+        var counts = {};
+        count.slice(index * countResponse, (index + 1) * countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
+        return <th> {!isNaN(counts[1]) ? counts[1] : 0}</th>;
+      })
+    }
   }
   function fetchNo() {
-    return props.titles.map((title, index) => {
-      var counts = {};
-      count.slice(index*countResponse,(index+1)*countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-      return <th> {!isNaN(counts[2])? counts[2] : 0}</th>;
-    })
+    if (props.titles instanceof Array) {
+      return props.titles.map((title, index) => {
+        var counts = {};
+        count.slice(index * countResponse, (index + 1) * countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
+        return <th> {!isNaN(counts[2]) ? counts[2] : 0}</th>;
+      })
+    }
   }
   function fetchThinking() {
-    return props.titles.map((title, index) => {
-      var counts = {};
-      count.slice(index*countResponse,(index+1)*countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-      return <th> {!isNaN(counts[3])? counts[3] : 0}</th>;
-    })
+    if (props.titles instanceof Array) {
+      return props.titles.map((title, index) => {
+        var counts = {};
+        count.slice(index * countResponse, (index + 1) * countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
+        return <th> {!isNaN(counts[3]) ? counts[3] : 0}</th>;
+      })
+    }
   }
   function fetchNotResponseYet() {
-    return props.titles.map((title, index) => {
-      var counts = {};
-      count.slice(index*countResponse,(index+1)*countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-      return <th> {!isNaN(counts[4])? counts[4] : 0}</th>;
-    })
+    if (props.titles instanceof Array) {
+      return props.titles.map((title, index) => {
+        var counts = {};
+        count.slice(index * countResponse, (index + 1) * countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
+        return <th> {!isNaN(counts[4]) ? counts[4] : 0}</th>;
+      })
+    }
   }
   // function deleteRow(key) {
   //   var arr = [...responselist];
