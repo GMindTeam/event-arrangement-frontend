@@ -9,7 +9,21 @@ import { createResponse, editResponse } from "../../api";
 function CreateResponse(props) {
   const [options, setOptions] = useState([]);
   const [isCreating, setIsCreating] = useState(false);
+  const [isNotResponse, setIsNotResponse] = useState(false);
   useEffect(() => {
+    if (props.type === "edit") {
+      var arr = [...props.response.response_detail_list];
+      var list = []
+      for (var i=0; i<arr.length; i++) {
+        if (arr[i].response_answer === "4") setIsNotResponse(true)
+        var obj = {
+          "optionid": arr[i].response_optionid,
+          "answer": arr[i].response_answer
+        }
+        list.push(obj)
+      }
+      setOptions(list);
+    }
     return () => {
     }
   }, [props.response, props.type])
@@ -19,13 +33,13 @@ function CreateResponse(props) {
     comment: Yup.string()
       .required('Comment is required'),
     isChecked: Yup.string()
-      .required("At least one answer of each row is selected")
+      .required("Must check some options")
   });
 
   return (
     <Container>
       <Title>
-        {props.type === "create" ? <h3>Create Response</h3> : <h3>Edit Response</h3>}
+        {props.type === "create" ? <h3>Let's Response The Event</h3> : <h3>Edit Response</h3>}
       </Title>
       <Formik
         initialValues={{
@@ -34,13 +48,12 @@ function CreateResponse(props) {
           response_detail_list: (props.type === "create") ? [] : props.response.response_detail_list,
           titles: props.titles,
           type: props.type,
-          isChecked: ""
+          isChecked: ((props.type === "create") || isNotResponse === true) ? "" : "ok"
         }}
         enableReinitialize={true}
         validationSchema={validationSchema}
         onSubmit={(values) => {
           setIsCreating(true);
-          console.log(options);
           if (values.username !== "" && values.comment !== "" && values.isChecked === "ok") {
             const requestBody = {
               "nameuser": values.username,
@@ -110,11 +123,18 @@ function CreateResponse(props) {
                     }
                   }} />
               )} />
-              <Field name="isChecked" render={({ field, form }) => (
-                <div error={props.touched.isChecked && !!props.errors.isChecked}>
-                  {props.touched.isChecked && <label id="warningOption"{...field}>{props.errors.isChecked}</label>}
-                </div>
-              )} />
+              {props.values.type === "create" ?
+                <Field name="isChecked" render={({ field}) => (
+                  <div error={props.touched.isChecked && !!props.errors.isChecked}>
+                    {props.touched.isChecked && <label id="warningOption"{...field}>{props.errors.isChecked}</label>}
+                  </div>
+                )} /> :
+                <Field name="isChecked" render={({ field}) => (
+                  <div error={!!props.errors.isChecked}>
+                    <label id="warningOption"{...field}>{props.errors.isChecked}</label>
+                  </div>
+                )} />
+              }
             </div>
             <div className="text-input" error={props.touched.comment && !!props.errors.comment}>
               <label className="text">Comment</label>
