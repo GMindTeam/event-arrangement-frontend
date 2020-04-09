@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { theme } from "../../config/mainTheme";
-export const Title = styled("div")`
+export const Title = styled.div`
   background-color: white;
   align-items: center;
   border-bottom: 1px solid ${theme.dividerColor1};

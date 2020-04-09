@@ -1,17 +1,17 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Redirect } from "react-router-dom"
-import {  Container } from "./style";
+import { Container } from "./style";
 import { createEvent, editEvent } from './../../api/index';
 import { BounceLoader } from "react-spinners";
 import { EventContext } from "../../components/EventContext";
 import { OptionContext } from "../../components/OptionContext";
-import {  Form, Field, Formik } from "formik";
+import { Form, Field, Formik } from "formik";
 import DateTimeRangePicker from "@wojtekmaj/react-datetimerange-picker";
 import * as Yup from 'yup'
 import { routePath } from '../../config/routes'
 import Button from '../../components/Button'
 import Title from '../../components/Title'
-import {theme} from '../../config/mainTheme'
+import { theme } from '../../config/mainTheme'
 function CreateEvent(props) {
   const [event,] = useContext(EventContext);
   const [options,] = useContext(OptionContext);
@@ -22,11 +22,34 @@ function CreateEvent(props) {
 
   const [isEditSuccessful, setIsEditSuccessful] = useState(false);
   useEffect(() => {
-    if(props.type ==="create") setIsCreate(true);
+    if (props.type === "create") setIsCreate(true);
     else setIsCreate(false);
     return () => {
     }
   }, [props.type])
+  function setCookie(cname, cvalue, exdays) {
+    const data = JSON.stringify(cvalue);
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toGMTString();
+    document.cookie = cname + "=" + data + ";" + expires + ";path=/";
+  }
+
+  function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) === ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) === 0) {
+        return JSON.parse(c.substring(name.length, c.length));
+      }
+    }
+    return "";
+  }
   function convert(str) {
     var mnths = {
       Jan: "01",
@@ -90,6 +113,9 @@ function CreateEvent(props) {
           }}
           enableReinitialize={true}
           onSubmit={(values) => {
+
+
+
             var optionSplited = values.options.split("\n");
             setLoading(1);
             if (
@@ -102,9 +128,9 @@ function CreateEvent(props) {
                 "description": values.description,
                 "options": []
               };
-              optionSplited.map((option) => {
+              optionSplited.forEach((option) => {
                 if (option !== "")
-                  return requestBody.options.push({ "content": option })
+                   requestBody.options.push({ "content": option })
                 return false;
               });
               if (isCreate) {
@@ -112,6 +138,34 @@ function CreateEvent(props) {
                   .then(response => {
                     setEventID(response.data.id);
                     setLoading(2);
+                    const eventData = getCookie("eventData");   //get data from cookie
+                    if (eventData !== "") {  //kiem tra neu cookie da ton tai
+                        var newEventObject = {    //object moi de them vao cookie
+                          eventid: response.data.id,
+                          name: response.data.name,
+                          description: response.data.description
+                        };
+                        if(eventData.createdEvent instanceof Array)
+                        {
+                          eventData.createdEvent.push(newEventObject);    
+                          setCookie("eventData", eventData, 30);    //push them object va luu vao cookie
+                        }
+                    }
+                    else {    //neu cookie chua ton tai thi tao cookie moi
+                      var array = {
+                        createdEvent: [
+                          {
+                            eventid: response.data.id,
+                            name: response.data.name,
+                            description: response.data.description
+                          }
+                        ],
+                        responsedEvent: [
+                        ]
+                      }
+                      setCookie("eventData", array, 30);
+                    }
+
                   })
                   .catch(function (error) {
                     console.log(error);
@@ -121,6 +175,30 @@ function CreateEvent(props) {
                 editEvent(requestBody, event.id)
                   .then(() => {
                     setIsEditSuccessful(true);
+                    const eventData = getCookie("eventData");   //get data from cookie
+                    if (eventData !== "") {  //kiem tra neu cookie da ton tai
+                        if(eventData.createdEvent instanceof Array)
+                        {
+                          eventData.createdEvent.forEach((createdEvent,index) => {   //check coi event da co trong creaedEvent trong cookie chua
+                            if (createdEvent.eventid === event.id) {
+                              eventData.createdEvent[index].name = values.title; //doi lai event name trong cookie
+                              eventData.createdEvent[index].description = values.description; //doi lai event description trong cookie
+                            }
+                          })
+                          setCookie("eventData", eventData, 30);    //push them object va luu vao cookie
+                        }
+                        if(eventData.responsedEvent instanceof Array)
+                        {
+                          eventData.responsedEvent.forEach((responsedEvent,index) => {   //check coi event da co trong responsed event trong cookie chua
+                            if (responsedEvent.eventid === event.id) {
+                              eventData.responsedEvent[index].name = values.title;      //doi lai event name trong cookie
+                              eventData.responsedEvent[index].description = values.description;  //doi lai event description trong cookie
+                            }
+                          })
+                          setCookie("eventData", eventData, 30);    //push them object va luu vao cookie
+                        }
+                        
+                    }
                   })
                   .catch(function (error) {
                     console.log(error);
@@ -190,14 +268,14 @@ function CreateEvent(props) {
                             numbered = convert(endDate);
                           }
                           if (endDate === undefined) {
-                             text = new Date(numbersd);
+                            text = new Date(numbersd);
                             var newtext = formatDate(text);
                             oldText = oldText + "\n" + newtext + " 18:00~";
                           }
                           else {
                             while (numbersd <= numbered) {
-                               text = new Date(numbersd);
-                               newtext = formatDate(text);
+                              text = new Date(numbersd);
+                              newtext = formatDate(text);
                               oldText = oldText + "\n" + newtext + " 18:00~";
                               numbersd += 86400000;
                             }
@@ -210,7 +288,7 @@ function CreateEvent(props) {
                 </div>
               </div>
               <Button className="createButton" type="submit" >
-                {isCreate? 'Create Event' : 'Edit Event'}
+                {isCreate ? 'Create Event' : 'Edit Event'}
               </Button>
             </Form>)}
         </Formik>
@@ -224,9 +302,9 @@ function CreateEvent(props) {
       color={theme.mainColor1}
     />;
   }
-  else {    //when server return response.It mean create successful
-    return <Redirect to={routePath.eventDetail + eventID} />
-  }
+     //when server return response.It mean create successful
+  return <Redirect to={routePath.eventDetail + eventID} />
+  
 }
 
 export default CreateEvent;

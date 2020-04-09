@@ -4,28 +4,15 @@ import { Table } from "./style";
 
 function EventTable(props) {
   const [responselist, setResponseList] = useState([]);
-  const [countResponse, setCountResponse] = useState([]);
-  const [count, setCount] = useState([]);
+
   // const [count, setCountYes] = useState([]);
   useEffect(() => {
     if (props.event.responselist instanceof Array) {
       setResponseList(props.event.responselist);
-      setCountResponse(props.event.responselist.length);
+      
     }
   }, [props.event.responselist])
-  useEffect(() => {
-    var arr = [];
-    if (props.titles instanceof Array) {
-      props.titles.map((title, index) => {
-        props.event.responselist.map((response) => {
-          const answer = response.response_detail_list[index].response_answer;
-          arr.push(answer)
-        });
-      });
-      setCount(arr);
-    }
-    
-  }, [props.titles])
+
 
 
 
@@ -37,48 +24,6 @@ function EventTable(props) {
       });
     }
   }
-  function fetchYes() {
-    if (props.titles instanceof Array) {
-      return props.titles.map((title, index) => {
-        var counts = {};
-        count.slice(index * countResponse, (index + 1) * countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-        return <th> {!isNaN(counts[1]) ? counts[1] : 0}</th>;
-      })
-    }
-  }
-  function fetchNo() {
-    if (props.titles instanceof Array) {
-      return props.titles.map((title, index) => {
-        var counts = {};
-        count.slice(index * countResponse, (index + 1) * countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-        return <th> {!isNaN(counts[2]) ? counts[2] : 0}</th>;
-      })
-    }
-  }
-  function fetchThinking() {
-    if (props.titles instanceof Array) {
-      return props.titles.map((title, index) => {
-        var counts = {};
-        count.slice(index * countResponse, (index + 1) * countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-        return <th> {!isNaN(counts[3]) ? counts[3] : 0}</th>;
-      })
-    }
-  }
-  function fetchNotResponseYet() {
-    if (props.titles instanceof Array) {
-      return props.titles.map((title, index) => {
-        var counts = {};
-        count.slice(index * countResponse, (index + 1) * countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-        return <th> {!isNaN(counts[4]) ? counts[4] : 0}</th>;
-      })
-    }
-  }
-  // function deleteRow(key) {
-  //   var arr = [...responselist];
-  //   arr.splice(key, 1);
-  //   setResponseList(arr);
-  //   return props.handleChange(arr);
-  // }
   function fetchTitle() {
     if (props.titles instanceof Array) {
       return props.titles.map((title) => {
@@ -97,31 +42,7 @@ function EventTable(props) {
           <th className="ActionHeader">Actions</th>
         </tr>
         {fetchRows()}
-        <tr>
-          <th>Yes</th>
-          {fetchYes()}
-          <th></th>
-          <th></th>
-        </tr>
-        <tr>
-          <th>No</th>
-          {fetchNo()}
-          <th></th>
-          <th></th>
-        </tr>
-        <tr>
-          <th>Thinking</th>
-          {fetchThinking()}
-          <th></th>
-          <th></th>
-        </tr>
-        <tr>
-          <th>Not Response Yet</th>
-          {fetchNotResponseYet()}
-          <th></th>
-          <th></th>
-        </tr>
-
+        
       </Table>
     </div>
   );

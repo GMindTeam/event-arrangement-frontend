@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { theme } from "../../config/mainTheme"
 
-const Container = styled("div")`
+const Container = styled.div`
   justify-self: center;
   position: relative;
   width: 50%;

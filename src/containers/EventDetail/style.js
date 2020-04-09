@@ -67,7 +67,7 @@ width: 100%;
 `;
 
 
-const Container = styled("div")`
+const Container = styled.div`
   width: 50%;
   margin: auto;
   border-radius: 5px;
