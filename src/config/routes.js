@@ -4,4 +4,5 @@ export const routePath = {
     credit: "/credit",
     eventDetailNavBar: "/event/:eventID",
     eventDetail: "/event/",
+    home: "/",
 }

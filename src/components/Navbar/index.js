@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Link, Switch, BrowserRouter } from "react-router-dom";
 import CreateEvent from "../../containers/CreateEvent";
+import Home from "../../containers/Home";
 import Credit from "../../containers/Credit";
 import EventDetail from "../../containers/EventDetail";
 import { Nav} from "./style";
@@ -42,6 +43,9 @@ export default function NavBar() {
             </Route>
             <Route path={routePath.editEvent}>
               <CreateEvent type="edit"/>
+            </Route>
+            <Route exact path={routePath.home}>
+              <Home/>
             </Route>
             <Switch>
               <Route path={routePath.eventDetailNavBar} component={EventDetail} />

@@ -163,6 +163,11 @@ function EventDetail(props) {
     newEvent.responselist = newResponseList;
     setEvent(newEvent);
   }
+  function closeModal()
+  {
+    setIsOpenCreateResponse(false);
+    setIsOpentEditResponse(false);
+  }
   function submitHandler() {
     setIsOpenCreateResponse(false);
     setIsOpentEditResponse(false);
@@ -286,8 +291,8 @@ function EventDetail(props) {
         </div>
       </Container >
       <div>
-        {isOpenCreateResponse ? <CreateResponse type="create" submitHandler={submitHandler} titles={titles} eventID={event.id}></CreateResponse> : ""}
-        {isOpentEditResponse ? <CreateResponse type="edit" submitHandler={submitHandler} titles={titles} eventID={event.id} response={responseNeedToEdit}></CreateResponse> : ""}
+        {isOpenCreateResponse ? <CreateResponse type="create" submitHandler={submitHandler} titles={titles} closeModal={closeModal}  eventID={event.id} eventName={event.name} eventDescription={event.description}></CreateResponse> : ""}
+        {isOpentEditResponse ? <CreateResponse type="edit" submitHandler={submitHandler} titles={titles}  closeModal={closeModal}  eventID={event.id} eventName={event.name} eventDescription={event.description} response={responseNeedToEdit}></CreateResponse> : ""}
       </div>
     </div>
   );

@@ -1,15 +1,41 @@
 import styled from "styled-components";
 import { theme } from "../../config/mainTheme"
 const Container = styled("div")`
-  justify-self: center;
-  position: relative;
-  width: 50%;
-  margin: auto;
-  border-radius: 5px;
-  background-color: ${theme.backgroundColor3};
-  padding: 0px;
-  margin-top: 50px;
-  box-shadow: ${theme.boxShadow};
+  position: fixed;
+  z-index: 1; 
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%;
+  overflow: auto; 
+  background-color: ${theme.fallbackColor};
+  background-color: ${theme.blackOpacity};
+  .modal-content {
+    justify-self: center;
+    position: relative;
+    width: 50%;
+    margin: auto;
+    border-radius: 5px;
+    background-color: ${theme.backgroundColor3};
+    padding: 0px;
+    margin-top: 50px;
+    box-shadow: ${theme.boxShadow};
+  }
+  .close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  margin-right: 9px;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
   .text-input {
     margin-left: 50px;
     margin-right: 50px;
