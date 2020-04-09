@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { EventCard, Button, Title } from './style';
 import { routePath } from '../../config/routes';
-import { useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom";
 export default function Home(props) {
     let history = useHistory();
     const [createdEventList, setCreatedEventList] = useState([]);
@@ -20,10 +20,6 @@ export default function Home(props) {
             }
         }
     }, [])
-    useEffect(() => {
-        console.log(createdEventList)
-        console.log(responsedEventList)
-    }, [createdEventList,responsedEventList])
     function getCookie(cname) {
         var name = cname + "=";
         var decodedCookie = decodeURIComponent(document.cookie);

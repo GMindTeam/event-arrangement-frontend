@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ResponseTable from "../../components/ResponseTable";
 import { Container } from "./style";
 import Button from '../../components/Button';
@@ -9,10 +9,6 @@ import { createResponse, editResponse } from "../../api";
 function CreateResponse(props) {
   const [options, setOptions] = useState([]);
   const [isCreating, setIsCreating] = useState(false);
-  useEffect(() => {
-    return () => {
-    }
-  }, [props.response, props.type])
   const validationSchema = Yup.object().shape({
     username: Yup.string()
       .required('Your name is required'),
@@ -75,8 +71,8 @@ function CreateResponse(props) {
                 "comment": values.comment,
                 "responsedetail": []
               };
-              options.map((obj) => {
-                return requestBody.responsedetail.push({
+              options.forEach(obj => {
+                 requestBody.responsedetail.push({
                   "optionid": parseInt(obj.optionid),
                   "answer": parseInt(obj.answer)
                 })
@@ -84,6 +80,9 @@ function CreateResponse(props) {
               if (props.type === "create") {
                 createResponse(requestBody)
                   .then(response => {
+                    window.scrollTo(0,0);
+                    setIsCreating(false);
+                    props.submitHandler();
                     const eventData = getCookie("eventData");  //lay data tu cookie
                     if (eventData !== "") {   //kiem tra coi cookie da ton tai chua
                       if (eventData.createdEvent instanceof Array) {
@@ -129,8 +128,7 @@ function CreateResponse(props) {
                       setCookie("eventData", array, 30);
                     }
 
-                    setIsCreating(false);
-                    props.submitHandler();
+                    
                   })
                   .catch(function (error) {
                     console.log(error);
@@ -138,6 +136,7 @@ function CreateResponse(props) {
               } else {
                 editResponse(requestBody, props.response.response_id)
                   .then(response => {
+                    window.scrollTo(0,0);
                     setIsCreating(false);
                     props.submitHandler();
                   })

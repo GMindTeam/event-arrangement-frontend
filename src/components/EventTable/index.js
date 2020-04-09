@@ -24,13 +24,6 @@ function EventTable(props) {
       });
     }
   }
-
-  // function deleteRow(key) {
-  //   var arr = [...responselist];
-  //   arr.splice(key, 1);
-  //   setResponseList(arr);
-  //   return props.handleChange(arr);
-  // }
   function fetchTitle() {
     if (props.titles instanceof Array) {
       return props.titles.map((title) => {

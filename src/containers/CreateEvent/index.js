@@ -128,9 +128,9 @@ function CreateEvent(props) {
                 "description": values.description,
                 "options": []
               };
-              optionSplited.map((option) => {
+              optionSplited.forEach((option) => {
                 if (option !== "")
-                  return requestBody.options.push({ "content": option })
+                   requestBody.options.push({ "content": option })
                 return false;
               });
               if (isCreate) {
@@ -181,8 +181,8 @@ function CreateEvent(props) {
                         {
                           eventData.createdEvent.forEach((createdEvent,index) => {   //check coi event da co trong creaedEvent trong cookie chua
                             if (createdEvent.eventid === event.id) {
-                              eventData.createdEvent[index].name = values.title;
-                              eventData.createdEvent[index].description = values.description;
+                              eventData.createdEvent[index].name = values.title; //doi lai event name trong cookie
+                              eventData.createdEvent[index].description = values.description; //doi lai event description trong cookie
                             }
                           })
                           setCookie("eventData", eventData, 30);    //push them object va luu vao cookie
@@ -191,8 +191,8 @@ function CreateEvent(props) {
                         {
                           eventData.responsedEvent.forEach((responsedEvent,index) => {   //check coi event da co trong responsed event trong cookie chua
                             if (responsedEvent.eventid === event.id) {
-                              eventData.responsedEvent[index].name = values.title;
-                              eventData.responsedEvent[index].description = values.description;
+                              eventData.responsedEvent[index].name = values.title;      //doi lai event name trong cookie
+                              eventData.responsedEvent[index].description = values.description;  //doi lai event description trong cookie
                             }
                           })
                           setCookie("eventData", eventData, 30);    //push them object va luu vao cookie
@@ -302,9 +302,9 @@ function CreateEvent(props) {
       color={theme.mainColor1}
     />;
   }
-  else {    //when server return response.It mean create successful
-    return <Redirect to={routePath.eventDetail + eventID} />
-  }
+     //when server return response.It mean create successful
+  return <Redirect to={routePath.eventDetail + eventID} />
+  
 }
 
 export default CreateEvent;
