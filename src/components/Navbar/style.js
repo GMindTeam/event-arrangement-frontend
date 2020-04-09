@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {theme} from "../../config/mainTheme";
 
-export const Nav = styled("nav")`
+export const Nav = styled.nav`
   background-color: ${theme.mainColor1};
   color: white;
   font-family: ${theme.fontFamily};

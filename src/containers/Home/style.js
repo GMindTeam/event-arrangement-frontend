@@ -49,7 +49,7 @@ export const Button = styled.button`
   }
   
 `;
-export const Title = styled("div")`
+export const Title = styled.div`
   background-color: ${theme.backgroundColor3};
   border-bottom: 1px solid ${theme.dividerColor1};
   height: 3em;

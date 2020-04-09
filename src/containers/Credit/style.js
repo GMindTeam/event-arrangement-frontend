@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {theme} from "../../config/mainTheme";
 
-export const Container = styled("div")`
+export const Container = styled.div`
   background-color: ${theme.backgroundColor2};
   justify-self: center;
   position: relative;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { theme } from "../../config/mainTheme"
-const Container = styled("div")`
+const Container = styled.div`
   position: fixed;
   z-index: 1; 
   padding-top: 100px;
