@@ -15,7 +15,7 @@ export default function NavBar() {
         <div>
           <Nav>
             <ul className="nav-link">
-              <Link to={routePath.createEvent}>
+              <Link to={routePath.home}>
                 <img alt="Logo" src={require("../../images/logo.PNG")} />
               </Link>
 

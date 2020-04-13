@@ -32,19 +32,22 @@ function EventDetail(props) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    countDown >= 0 && setTimeout(() => setCountDown(countDown - 1), 1000); //moi giay thi giam count down di 1
-    countDown < 0 && setCountDown(10);  // reinit count down = 10
-    countDown === 0 && setEvent(eventCopy); //countdown = 0 thi update table voi gia tri event copy
-    countDown === 10 && (function () {    //countdown = 10 thi goi api de luu gia tri eventcopy
-      getEventDetail(props.match.params.eventID)
-        .then(response => {
-          setEventCopy(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    })();
-  }, [countDown]);
+    if(!isCreating)
+    {
+      countDown >= 0 && setTimeout(() => setCountDown(countDown - 1), 1000); //moi giay thi giam count down di 1
+      countDown < 0 && setCountDown(10);  // reinit count down = 10
+      countDown === 0 && setEvent(eventCopy); //countdown = 0 thi update table voi gia tri event copy
+      countDown === 10 && (function () {    //countdown = 10 thi goi api de luu gia tri eventcopy
+        getEventDetail(props.match.params.eventID)
+          .then(response => {
+            setEventCopy(response.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      })();
+    }
+  }, [countDown,isCreating]);
 
 
   useEffect(() => {
@@ -87,7 +90,7 @@ function EventDetail(props) {
       setCount(arr);
     }
 
-  }, [titles,event.responselist])
+  }, [titles, event.responselist])
   function handleEditResponse(response) {   //xu ly khi click button edit
     if (isOpenCreateResponse) setIsOpenCreateResponse(false);
     setIsOpentEditResponse(true);
@@ -98,22 +101,24 @@ function EventDetail(props) {
     deleteResponse('', response)
       .catch(function (error) {
         console.log(error);
-      });
-    setIsCreating(true);
-    getEventDetail(props.match.params.eventID)
-      .then(response => {
-        setCountResponse(response.data.responselist.length);
-        setEvent(response.data);
-        setEventCopy(response.data);
-        setIsCreating(false);
-        setIsDone(true);
-        setTimeout(() => {
-          setIsDone(false);
-        }, 2000);
       })
-      .catch(function (error) {
-        console.log(error);
+      .then(function() {
+        getEventDetail(props.match.params.eventID)
+        .then(response => {
+          setCountResponse(response.data.responselist.length);
+          setEvent(response.data);
+          setEventCopy(response.data);
+          setIsCreating(false);
+          setIsDone(true);
+          setTimeout(() => {
+            setIsDone(false);
+          }, 2000);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
       });
+    
   }
   function closeModal() {  //xu ly khi click button close cua modal
     setIsOpenCreateResponse(false);
@@ -150,7 +155,7 @@ function EventDetail(props) {
     if (isOpentEditResponse) setIsOpentEditResponse(false);
     setIsOpenCreateResponse(true);
   }
-  function fetchYes() {   
+  function fetchYes() {
     if (titles instanceof Array) {
       return titles.map((title, index) => {
         var counts = {};
@@ -204,7 +209,7 @@ function EventDetail(props) {
   return (
     <div>
       {isCreating ? <Notification type='loading' message="Đang cập nhật lại bảng..."></Notification> : ''}
-      {isDone ? <Notification type='done'message="Bảng đã được cập nhật..."></Notification> : ''}
+      {isDone ? <Notification type='done' message="Bảng đã được cập nhật..."></Notification> : ''}
       <Container>
         <Title>
           <h3>Event Detail</h3>
@@ -214,7 +219,7 @@ function EventDetail(props) {
           <div className="copy-link-container" >
             <div className="copy-link-inner">
               <input value={appPath.domain + props.match.params.eventID}
-                />
+              />
               <CopyToClipboard text={appPath.domain + props.match.params.eventID}
                 onCopy={() => setCopied(true)}>
                 <button >{copied ? "copied" : "copy"}</button>
