@@ -60,7 +60,8 @@ const Container = styled("div")`
   }
   #warningName,
   #warningDescription,
-  #warningOptions {
+  #warningOptions,
+  #warning {
     color: red;
   }
   .sub-container {
@@ -77,10 +78,6 @@ const Container = styled("div")`
     margin-right: -10%;
   }
   .DateTimeRangePicker {
-    width: 100%;
-  }
-  #options {
-    height: 150px;
     width: 100%;
   }
 `;
