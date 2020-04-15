@@ -14,7 +14,8 @@ const Container = styled("div")`
   .text-input {
     height: 100px;
     width: 80%;
-    margin-left: 50px;
+    position: relative;
+    left: 10%
   }
   .text {
     height: 100%;
@@ -58,10 +59,7 @@ const Container = styled("div")`
   .react-datetimerange-picker__button{
 
   }
-  #warningName,
-  #warningDescription,
-  #warningOptions,
-  #warning {
+  .warning {
     color: red;
   }
   .sub-container {
@@ -69,13 +67,24 @@ const Container = styled("div")`
     height: 200px;
     width: 100%;
   }
-  .sub{
-    width:40%;
+  .sub {
+    width:80%;
+    display: flex;
+    position: relative;
+    left: 2%;
+  }
+  .left {
+    width:100%;
+  }
+  .right {
+    width: 60%;
+    position: relative;
+    left: 20%;
   }
   .calendar {
     float:right;
     margin-top: -80px;
-    margin-right: -10%;
+    margin-right: -5%;
   }
   .DateTimeRangePicker {
     width: 100%;

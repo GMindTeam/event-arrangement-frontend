@@ -1,54 +1,73 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Line } from "./style"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faPencilAlt, faTimes } from '@fortawesome/free-solid-svg-icons'
 
 function OptionItem(props) {
-    const [option, setOption] = useState(props.item)
+    const [option, setOption] = useState("")
     const [isClicked, setIsClicked] = useState(false);
-    const [textState, setTextState] = useState(0);
+    const [oldOption, setOldOption] = useState("")
+    const searchInput = useRef(null)
+    useEffect(() => {
+        setOption(props.item)
+        setOldOption(props.item)
+        return () => {
+        }
+    }, [props.item])
+    const handleChangeText = (tmp) => {
+        var arr = (String)(props.options).split("\n")
+        setIsClicked(!isClicked)
+        if (tmp === "") {
+            return props.handleEdit(option, props.index, 1)
+        }
+        else if (arr.indexOf(tmp) === -1 || tmp === oldOption) {
+            setOldOption(tmp)
+            setOption(tmp)
+            return props.handleEdit(option, props.index, 0)
+        } else {
+            return props.handleEdit(option, props.index, 2)
+        }
+    }
     return (
         <Line>
             <input
-                id="option"
+                type="text"
+                id={props.index}
+                ref={searchInput}
                 value={option}
                 onChange={(e) => {
                     setOption(e.target.value)
                 }}
                 onBlur={(e) => {
-                    setOption(e.target.value)
-                    setIsClicked(!isClicked)
+                    var tmp = e.target.value.trim("\s")
+                    handleChangeText(tmp)
+
                 }}
                 onKeyDown={(e) => {
                     var tmp = e.target.value.trim("\s")
-                    var arr = (String)(props.options).split("\n")
                     if (e.keyCode === 13) {
-                        if (tmp === "") {
-                            setTextState(1)
-                            setIsClicked(!isClicked)
-                            return props.handleEdit(option, props.index, 1)
-                        }
-                        else if (arr.indexOf(tmp) === -1) {
-                            setTextState(0)
-                            setOption(tmp)
-                            setIsClicked(!isClicked)
-                            return props.handleEdit(option, props.index, 0)
-                        } else {
-                            setTextState(2)
-                            setIsClicked(!isClicked)
-                            return props.handleEdit(option, props.index, 2)
-                        }
+                        handleChangeText(tmp)
                     }
                 }}
-                disabled={isClicked ? "" : "disabled"
-                } />
+                disabled="disabled"
+            />
             <button
                 type="submit"
                 onClick={(e) => {
+                    console.log(isClicked)
+                    if (isClicked) {
+                        document.getElementById(props.index).disabled = "";
+                    }
+                    else {
+                        document.getElementById(props.index).disabled = "";
+                    }
                     e.preventDefault();
                     setIsClicked(!isClicked)
+                    searchInput.current.focus()
                 }}>
-                <FontAwesomeIcon id="edit" icon={faEdit} />
+                <FontAwesomeIcon
+                    id="edit"
+                    icon={faPencilAlt} />
             </button>
             <button
                 type="submit"
@@ -56,10 +75,11 @@ function OptionItem(props) {
                     e.preventDefault();
                     return props.handleDelete(props.index)
                 }}>
-                <FontAwesomeIcon id="trash" icon={faTrash} />
+                <FontAwesomeIcon
+                    id="trash"
+                    icon={faTimes} />
             </button>
         </Line>
-
     )
 }
 export default OptionItem;

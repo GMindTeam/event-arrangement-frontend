@@ -1,6 +1,6 @@
 import React from "react"
 import OptionItem from "../OptionItem"
-
+import { List } from "./style"
 
 function OptionList(props) {
     const fetchOptionList = () => {
@@ -16,7 +16,7 @@ function OptionList(props) {
                         key={i}
                         index={i}
                         handleEdit={(option, index, textState) => { return props.handleEditOption(option, index, textState) }}
-                        handleDelete={(index) => { return props.handleDeleteOption(index)}}
+                        handleDelete={(index) => { return props.handleDeleteOption(index) }}
                     />
                 )
             })
@@ -24,8 +24,13 @@ function OptionList(props) {
     }
     return (
         <div>
-            {fetchOptionList()}
+            {props.options !== "" &&
+                <List>
+                    {fetchOptionList()}
+                </List>
+            }
         </div>
+
     )
 }
 export default OptionList;
