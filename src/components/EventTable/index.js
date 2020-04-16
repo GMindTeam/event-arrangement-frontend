@@ -36,10 +36,10 @@ function EventTable(props) {
     <div>
       <Table>
         <tr>
-          <th>Name</th>
+          <th>Người phản hồi</th>
           {fetchTitle()}
-          <th>Comment</th>
-          <th className="ActionHeader">Actions</th>
+          <th>Bình luận</th>
+          <th className="ActionHeader">Thao tác</th>
         </tr>
         {fetchRows()}
         

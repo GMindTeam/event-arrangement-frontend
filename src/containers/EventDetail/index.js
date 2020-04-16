@@ -222,7 +222,7 @@ function EventDetail(props) {
       {isOpenDeleteModal ? <Alert handleConfirm={handleConfirmDeleteResponse} deleteing={isDeleteing} handleCancel={closeModalDelete}title="Bạn có muốn xoá phản hồi này không ? " description="Bạn sẽ không thể phục hồi lại response đã xoá. "></Alert> : ''}
       <Container>
         <Title>
-          <h3>Event Detail</h3>
+          <h3>Chi tiết sự kiện</h3>
         </Title>
 
         <CopyLinkStyle>
@@ -232,7 +232,7 @@ function EventDetail(props) {
               />
               <CopyToClipboard text={appPath.domain + props.match.params.eventID}
                 onCopy={() => setCopied(true)}>
-                <button >{copied ? "copied" : "copy"}</button>
+                <button >{copied ? "Đã sao chép" : "Sao chép"}</button>
               </CopyToClipboard>
             </div>
           </div>
@@ -245,56 +245,54 @@ function EventDetail(props) {
           <p className="eventDescription">{event.description}</p>
         </div>
         <div className="table">
-          <div className="text">Statistic</div>
+          <div className="text">Thống kê các phản hồi</div>
           <div>
-
             <Table>
-              <tr>
-                <th>Name</th>
-                {fetchTitle()}
-              </tr>
-              <tr>
-                <th>Yes</th>
-                {fetchYes()}
-                <th></th>
-                <th></th>
-              </tr>
-              <tr>
-                <th>No</th>
-                {fetchNo()}
-                <th></th>
-                <th></th>
-              </tr>
-              <tr>
-                <th>Thinking</th>
-                {fetchThinking()}
-                <th></th>
-                <th></th>
-              </tr>
-              <tr>
-                <th>Not Response Yet</th>
-                {fetchNotResponseYet()}
-                <th></th>
-                <th></th>
-              </tr>
+                <tr>
+                  <th>Câu trả lời</th>
+                  {fetchTitle()}
+                </tr>
+                <tr>
+                  <th>Đồng ý</th>
+                  {fetchYes()}
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th>Không đồng ý</th>
+                  {fetchNo()}
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th>Suy nghĩ</th>
+                  {fetchThinking()}
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th>Chưa phản hồi</th>
+                  {fetchNotResponseYet()}
+                  <th></th>
+                  <th></th>
+                </tr>
 
             </Table>
-
           </div>
         </div>
         <div className="table">
-          <div className="text">Options</div>
+          <div className="text">Danh sách các phản hồi</div>
           <EventTable handlerEdit={handleEditResponse} handlerDelete={handleDeleteResponse} event={event} titles={titles} />
 
         </div>
         <div className="countDown">
-          {isCreating ? " " : <h3>This table will refresh in {countDown} second!</h3>}
+          {isCreating ? " " : <h3>Bảng sẽ được làm mới trong {countDown} giây!</h3>}
 
         </div>
         <div className="groupButton">
-          <Button onClick={handleCreateResponse}>Create Response</Button>
+          <Button onClick={handleCreateResponse}>Tạo phản hồi</Button>
           <Link to={routePath.editEvent + event.id}>
-            <Button type="submit" onClick={handleEditEvent}>Edit Event</Button>
+            <Button type="submit" onClick={handleEditEvent}>Chỉnh sửa sự kiện</Button>
           </Link>
         </div>
       </Container >
