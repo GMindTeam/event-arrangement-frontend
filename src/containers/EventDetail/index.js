@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import EventTable from "../../components/EventTable";
+import Alert from "../../components/Alert";
 import { Link } from "react-router-dom";
 import { Table } from "../../components/EventTable/style";
 import { BounceLoader } from "react-spinners";
@@ -23,6 +24,9 @@ function EventDetail(props) {
   const [countDown, setCountDown] = useState(0);
   const [isCreating, setIsCreating] = useState(false); // thong bao la dang create/edit response
   const [isDone, setIsDone] = useState(false);  //thong bao la response da duoc create/edit
+  const [isDeleteing, setIsDeleteing] = useState(false);  //luc gui delete api len server
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);  //check neu enable modal delete response
+  const [responseIDIsDeleteing, setResponseIDIsDeleteing] = useState(0);  //thong bao la response da duoc create/edit
   const [isOpentEditResponse, setIsOpentEditResponse] = useState(false); //check neu enable modal edit response
   const [isOpenCreateResponse, setIsOpenCreateResponse] = useState(false);//check neu enable modal create response
   const [countResponse, setCountResponse] = useState([]); //dem so response
@@ -97,8 +101,14 @@ function EventDetail(props) {
     setResponseNeedToEdit(response);
   }
   function handleDeleteResponse(response) {  //xu ly khi click button delete
-    setIsCreating(true);
-    deleteResponse('', response)
+    setIsOpenDeleteModal(true);
+    setResponseIDIsDeleteing(response);
+    
+  }
+  function handleConfirmDeleteResponse() //xu ly khi nguoi dung confirm modal delete
+  {
+    setIsDeleteing(true);
+    deleteResponse('', responseIDIsDeleteing)
       .catch(function (error) {
         console.log(error);
       })
@@ -108,21 +118,20 @@ function EventDetail(props) {
           setCountResponse(response.data.responselist.length);
           setEvent(response.data);
           setEventCopy(response.data);
-          setIsCreating(false);
-          setIsDone(true);
-          setTimeout(() => {
-            setIsDone(false);
-          }, 2000);
+          setIsDeleteing(false);
+          setIsOpenDeleteModal(false);
         })
         .catch(function (error) {
           console.log(error);
         });
       });
-    
   }
-  function closeModal() {  //xu ly khi click button close cua modal
+  function closeModalResponse() {  //xu ly khi click button close cua modal edit/create response
     setIsOpenCreateResponse(false);
     setIsOpentEditResponse(false);
+  }
+  function closeModalDelete() {  //xu ly khi click button close cua modal confirm delete
+    setIsOpenDeleteModal(false);
   }
   function submitHandler() {  //xu ly khi click button submit trong create response
     setIsOpenCreateResponse(false);
@@ -210,6 +219,7 @@ function EventDetail(props) {
     <div>
       {isCreating ? <Notification type='loading' message="Đang cập nhật lại bảng..."></Notification> : ''}
       {isDone ? <Notification type='done' message="Bảng đã được cập nhật..."></Notification> : ''}
+      {isOpenDeleteModal ? <Alert handleConfirm={handleConfirmDeleteResponse} deleteing={isDeleteing} handleCancel={closeModalDelete}title="Bạn có muốn xoá phản hồi này không ? " description="Bạn sẽ không thể phục hồi lại response đã xoá. "></Alert> : ''}
       <Container>
         <Title>
           <h3>Event Detail</h3>
@@ -289,8 +299,8 @@ function EventDetail(props) {
         </div>
       </Container >
       <div>
-        {isOpenCreateResponse ? <CreateResponse type="create" submitHandler={submitHandler} titles={titles} closeModal={closeModal} eventID={event.id} eventName={event.name} eventDescription={event.description}></CreateResponse> : ""}
-        {isOpentEditResponse ? <CreateResponse type="edit" submitHandler={submitHandler} titles={titles} closeModal={closeModal} eventID={event.id} eventName={event.name} eventDescription={event.description} response={responseNeedToEdit}></CreateResponse> : ""}
+        {isOpenCreateResponse ? <CreateResponse type="create" submitHandler={submitHandler} titles={titles} closeModal={closeModalResponse} eventID={event.id} eventName={event.name} eventDescription={event.description}></CreateResponse> : ""}
+        {isOpentEditResponse ? <CreateResponse type="edit" submitHandler={submitHandler} titles={titles} closeModal={closeModalResponse} eventID={event.id} eventName={event.name} eventDescription={event.description} response={responseNeedToEdit}></CreateResponse> : ""}
       </div>
     </div>
   );

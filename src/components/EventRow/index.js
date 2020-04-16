@@ -10,11 +10,6 @@ function EventRow(props) {
   },[props.response.response_id]);
 
   function handleDeleteButton(e) {
-    e.preventDefault();
-    if (!window.confirm("Are your sure you want to delete this item?")) {
-      return false;
-    }
-    window.scrollTo(0,0);
     props.handlerDelete(props.response.response_id);
   }
   function handleEditButton(e) {
