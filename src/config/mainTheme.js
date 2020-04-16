@@ -1,5 +1,5 @@
 export  const theme = {
-    fontFamily: "'Cabin', sans-serif",
+    fontFamily: "Helvetica, Arial, sans-serif",
     mainColor1: '#b042b4',
     mainColor2: '#9c27b0',
     themeColor1: '#00c851',

@@ -29,17 +29,17 @@ function CreateResponse(props) {
   }, [props.response, props.type])
   const validationSchema = Yup.object().shape({
     username: Yup.string()
-      .required('Your name is required'),
+      .required('Tên người phản hồi không được bỏ trống. Vui lòng nhập tên người phản hồi!'),
     comment: Yup.string()
-      .required('Comment is required'),
+      .required('Bình luận không được bỏ trống. Vui lòng nhập bình luận!'),
     isChecked: Yup.string()
-      .required("Must check some options")
+      .required("Vui lòng chọn một trong ba câu trả lời Đồng ý/ Không đồng ý/ Suy nghĩ ở mỗi dòng!")
   });
 
   return (
     <Container>
       <Title>
-        {props.type === "create" ? <h3>Let's Response The Event</h3> : <h3>Edit Response</h3>}
+        {props.type === "create" ? <h3>Tạo phản hồi</h3> : <h3>Chỉnh sửa phản hồi</h3>}
       </Title>
       <Formik
         initialValues={{
@@ -94,19 +94,19 @@ function CreateResponse(props) {
         {(props) => (
           <Form onSubmit={props.handleSubmit}>
             <div className="text-input" error={props.touched.username && !!props.errors.username}>
-              <label className="text">Your Name</label>
+              <label className="text">Tên người phản hồi</label>
               <Field name="username" render={({ field, form }) => (
                 <input
                   className="content"
                   id="name"
-                  placeholder="Enter your name"
+                  placeholder="Nhập tên người phản hồi"
                   {...field}
                 />
               )} />
               {props.touched.username && <label id="warningName">{props.errors.username}</label>}
             </div>
             <div className="table">
-              <label className="text">Options</label>
+              <label className="text">Các lựa chọn</label>
               <Field render={({ field, form }) => (
                 <ResponseTable name="response_detail_list"
                   titles={props.values.titles}
@@ -137,12 +137,12 @@ function CreateResponse(props) {
               }
             </div>
             <div className="text-input" error={props.touched.comment && !!props.errors.comment}>
-              <label className="text">Comment</label>
+              <label className="text">Bình luận</label>
               <Field name="comment" render={({ field, form }) => (
                 <input
                   className="content"
                   id="comment"
-                  placeholder="Enter your comment"
+                  placeholder="Nhập bình luận"
                   {...field}
                 />
               )} />
@@ -154,12 +154,12 @@ function CreateResponse(props) {
                 type="submit"
                 disabled
               >
-                Submit
+                Gửi
             </Button> <label id="loading">Loading...</label></div> : <Button
                   className="subButton"
                   type="submit"
                 >
-                  Submit
+                  Gửi
             </Button>}
             </div>
           </Form>

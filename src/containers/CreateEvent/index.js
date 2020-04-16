@@ -38,11 +38,11 @@ function CreateEvent(props) {
   }, [props.type])
   const validationSchema = Yup.object().shape({
     title: Yup.string()
-      .required('Title is required'),
+      .required('Tiêu đề không được bỏ trống. Vui lòng nhập tiêu đề!'),
     description: Yup.string()
-      .required('Description is required'),
+      .required('Mô tả không được bỏ trống. Vui lòng nhập mô tả!'),
     options: Yup.string()
-      .required('Options is required'),
+      .required('Lựa chọn không được bỏ trống. Vui lòng nhập lựa chọn!'),
   });
 
   if (isEditSuccessful === true) {    //when edit successful will redirect to event detail
@@ -53,7 +53,7 @@ function CreateEvent(props) {
 
       <Container>
         <Title>
-          {isCreate ? <h3>Create Event</h3> : <h3>Edit Event</h3>}
+          {isCreate ? <h3>Tạo sự kiện</h3> : <h3>Chỉnh sửa sự kiện</h3>}
         </Title>
         <Formik
           initialValues={{
@@ -118,23 +118,23 @@ function CreateEvent(props) {
           {(props) => (
             <Form onSubmit={props.handleSubmit}>
               <div className="text-input" error={props.touched.title && !!props.errors.title}>
-                <label className="text">Event Title</label> <br />
+                <label className="text">Tiêu đề sự kiện</label> <br />
                 <Field name="title" render={({ field }) => (
                   <input
                     className="content"
                     id="name"
-                    placeholder="Enter event title"
+                    placeholder="Nhập tiêu đề sự kiện"
                     {...field}
                   />)} />
                 {props.touched.title && <label className="warning">{props.errors.title}</label>}
               </div>
               <div className="text-input" error={props.touched.description && !!props.errors.description}>
-                <label className="text">Event Description</label> <br />
+                <label className="text">Mô tả sự kiện</label> <br />
                 <Field name="description" render={({ field }) => (
                   <input
                     className="content"
                     id="description"
-                    placeholder="Enter event description"
+                    placeholder="Nhập mô tả sự kiện"
                     {...field}
                   />)} />
                 {props.touched.description && <label className="warning">{props.errors.description}</label>}
@@ -142,12 +142,12 @@ function CreateEvent(props) {
               <div className="sub">
                 <div className="left">
                   <div className="text-input" error={props.touched.options && !!props.errors.options}>
-                    <label className="text">Event Options</label> <br />
+                    <label className="text">Các lựa chọn</label> <br />
                     <label className="text"></label>
                     <Field name="content" render={({ field, form }) => (
                       <input
                         className="content"
-                        placeholder="Enter event options"
+                        placeholder="Nhập lựa chọn"
                         {...field}
                         onBlur={(e) => {
                           form.setFieldTouched("options", true);
@@ -296,11 +296,11 @@ function CreateEvent(props) {
                     }}
                   />
                 )} />
-                <label className="warning">{isDistinct ? "" : "This option already exists"}</label>
-                <label className="warning">{textState === 1 ? "Don't let input empty" : ""}</label>
+                <label className="warning">{isDistinct ? "" : "Lựa chọn này đã tồn tại. Vui lòng nhập lựa chọn khác!"}</label>
+                <label className="warning">{textState === 1 ? "Lựa chọn không được bỏ trống. Vui lòng nhập lựa chọn!" : ""}</label>
               </div>
               <Button className="createButton" type="submit" >
-                {isCreate ? 'Create Event' : 'Edit Event'}
+                {isCreate ? 'Tạo sự kiện' : 'Lưu'}
               </Button>
             </Form>)}
         </Formik>
