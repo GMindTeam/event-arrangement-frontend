@@ -6,7 +6,7 @@ export const Button = styled.button`
   color: ${theme.mainColor1};
   font-family: ${theme.fontFamily};
   font-size: 1em;
-  margin: 1em 3em;
+  margin: .5em 3em;
   padding: 0.25em 1em;
   margin-right: 5em;
   border: 2px solid  ${theme.mainColor1};

@@ -16,7 +16,7 @@ export default function NavBar() {
           <Nav>
             <ul className="nav-link">
               <Link to={routePath.home}>
-                <img alt="Logo" src={require("../../images/logo.PNG")} />
+                <img alt="Logo" className="logo" src={require("../../images/logo.PNG")} />
               </Link>
 
               <li className="link">

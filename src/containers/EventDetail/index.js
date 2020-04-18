@@ -286,7 +286,7 @@ function EventDetail(props) {
 
         </div>
         <div className="countDown">
-          {isCreating ? " " : <h3>Bảng sẽ được làm mới trong {countDown} giây!</h3>}
+          {isCreating ? " " : <h4>Bảng sẽ được làm mới trong {countDown} giây!</h4>}
 
         </div>
         <div className="groupButton">

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {theme} from "../../config/mainTheme";
-
+import { device } from "../../config/breakpoint"
 export const Nav = styled.nav`
   background-color: ${theme.mainColor1};
   color: white;
@@ -19,6 +19,20 @@ export const Nav = styled.nav`
   a {
     color: white;
     font-size: 2.5vh;
-    /* text-decoration: none; */
+    @media ${device.mobile} { 
+      font-size: 2vh;
+    }
+    @media ${device.laptop} { 
+      font-size: 2.5vh;
+    }
+  }
+  .logo{
+    @media ${device.mobile} { 
+    display: none;
+    }
+    @media ${device.laptop} { 
+      display: inherit;
+    }
+
   }
 `;
