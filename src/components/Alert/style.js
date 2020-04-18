@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { theme } from "../../config/mainTheme"
+import { device } from "../../config/breakpoint"
 const Container = styled.div`
   position: fixed;
   z-index: 1; 
@@ -14,13 +15,24 @@ const Container = styled.div`
   .modal-content {
     justify-self: center;
     position: relative;
-    width: 20%;
+
+    @media ${device.mobile} { 
+      width: 70%;
+      margin-top: 10px;
+    }
+    @media ${device.tablet} { 
+      width: 50%;
+      margin-top: 30px;
+    }
+    @media ${device.laptop} { 
+      width: 30%;
+      margin-top: 75px;
+    }
     text-align: center;
     margin: auto;
     border-radius: 5px;
     background-color: ${theme.backgroundColor3};
     padding: 2rem;
-    margin-top: 75px;
     box-shadow: ${theme.boxShadow};
     color: ${theme.textColorGray}
 
@@ -30,7 +42,15 @@ const Container = styled.div`
       
   }
   .btn{
-      
+    @media ${device.mobile} { 
+      padding: .5em .75em;
+    }
+    @media ${device.tablet} { 
+      padding: .5em 2.5em;
+    }
+    @media ${device.laptop} { 
+      padding: .5em 2.5em;
+    }
       border:none;  
       border-radius: 3em;
   }
@@ -43,15 +63,21 @@ const Container = styled.div`
   .btnYes{
     float:right;
     margin: 0em;
-    padding: .5em 2.5em;
-    margin-right: 2rem;
     background: ${theme.dividerColor1};
+    @media ${device.mobile} { 
+      margin-right: 0.5rem;
+    }
+    @media ${device.tablet} { 
+      margin-right: 2rem;
+    }
+    @media ${device.laptop} { 
+      margin-right: 4rem;
+    }
+
       
   }
   .btnNo{
     margin: 0em;
-    padding: .5em 2.5em;
-    
     background: ${theme.warningColor}
 
   }
