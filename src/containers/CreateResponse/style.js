@@ -1,9 +1,9 @@
 import styled from "styled-components";
+import { device } from "../../config/breakpoint"
 import { theme } from "../../config/mainTheme"
 const Container = styled.div`
   position: fixed;
   z-index: 1; 
-  padding-top: 100px;
   left: 0;
   top: 0;
   width: 100%; 
@@ -17,10 +17,20 @@ const Container = styled.div`
     width: 50%;
     margin: auto;
     border-radius: 5px;
+
     background-color: ${theme.backgroundColor3};
     padding: 0px;
     margin-top: 50px;
     box-shadow: ${theme.boxShadow};
+    @media ${device.mobile} { 
+      width: 95%;
+    }
+    @media ${device.tablet} { 
+      width: 75%;
+    }
+    @media ${device.laptop} { 
+      width: 50%;
+    }
   }
   .close {
   color: #aaaaaa;
@@ -37,8 +47,8 @@ const Container = styled.div`
     cursor: pointer;
   }
   .text-input {
-    margin-left: 50px;
-    margin-right: 50px;
+    margin-left: 5%;
+    margin-right: 5%;
     padding-top:30px;
   }
   .text {
@@ -59,8 +69,8 @@ const Container = styled.div`
     margin: 15px auto;
   }
   .table {
-    margin-left: 50px;
-    margin-right: 50px;
+    margin-left: 5%;
+    margin-right: 5%;
     margin-bottom: 10px;
     padding-top:30px;
   }
@@ -73,6 +83,9 @@ const Container = styled.div`
     position: absolute;
     margin-top: -40px;
     margin-left: 55%;
+    @media ${device.mobile} { 
+      margin-left: 60%;
+  }
   }
   .groupButton{
     padding: 1px;
