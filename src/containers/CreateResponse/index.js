@@ -199,12 +199,12 @@ function CreateResponse(props) {
                       }
                     }} />
                 )} />
-                <Field name="isChecked" render={({ field, form }) => (
+              </div>
+              <Field name="isChecked" render={({ field, form }) => (
                   <div error={props.touched.isChecked && !!props.errors.isChecked}>
                     {props.touched.isChecked && <label id="warningOption"{...field}>{props.errors.isChecked}</label>}
                   </div>
-                )} />
-              </div>
+              )} />
               <div className="text-input" error={props.touched.comment && !!props.errors.comment}>
                 <label className="text">Bình luận</label>
                 <Field name="comment" render={({ field, form }) => (

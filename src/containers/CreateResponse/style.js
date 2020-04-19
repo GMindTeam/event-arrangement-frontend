@@ -62,6 +62,8 @@ const Container = styled.div`
     border-radius: 4px;
     box-sizing: border-box;
     resize: vertical;
+    margin-top: 10px;
+    margin-bottom: 5px;
   }
   .subButton {
     padding: 0.25em 1em;
@@ -71,13 +73,18 @@ const Container = styled.div`
   .table {
     margin-left: 5%;
     margin-right: 5%;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     padding-top:30px;
   }
   #warningName,
   #warningComment,
   #warningOption {
     color: red;
+    font-size: 13px;
+  }
+  #warningOption {
+    margin-left: 5%;
+    margin-right: 5%;
   }
   #loading{
     position: absolute;
