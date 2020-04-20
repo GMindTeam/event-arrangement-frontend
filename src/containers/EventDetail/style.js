@@ -35,6 +35,7 @@ export const CopyLinkStyle = styled.div`
     @media ${device.tablet} { 
       width: 50%;
     }
+    cursor: pointer;
   }
   .copy-link-container {
     width: 50%;
