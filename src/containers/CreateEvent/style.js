@@ -12,11 +12,7 @@ const Container = styled.div`
   padding: 0px;
   margin-top: 50px;
   box-shadow: ${theme.boxShadow};
-  h3{
-    @media ${device.mobile} { 
-      line-height: 50px;
-  }
-  }
+
   @media ${device.mobile} { 
     max-width: 100%;
     border-radius: none;
@@ -31,12 +27,8 @@ const Container = styled.div`
   }
   @media ${device.laptop} { 
     max-width: 50%;
-    border-radius: 5px;
-    margin-top: 50px;
-    box-shadow: ${theme.boxShadow};
   }
   .text-input {
-    height: 100px;
     width: 90%;
     position: relative;
     left: 5%;
@@ -61,25 +53,30 @@ const Container = styled.div`
   }
   .createButton {
     padding: 0.25em 1em;
-    margin: 20px -50px;
-    margin-top:50px;
     bottom: 10px;
+    margin-top: 15px;
   }
   .react-datetimerange-picker__inputGroup,
   .react-datetimerange-picker__range-divider,
   .react-datetimerange-picker__clear-button{
     display: none;
   }
-  .react-datetimerange-picker__calendar-button__icon 
-  .react-datetimerange-picker__button__icon {
-  }
   .react-datetimerange-picker__calendar-button,
   .react-datetimerange-picker__button{
-    background: ${theme.mainColor2};
+    background: 'white';
+  }
+  .react-datetimerange-picker__wrapper {
+    display: flex;
+    border: 2px solid #9c27b0;
+    border-radius: 3em;
+    padding: 0.2em 1em;
   }
   .warning {
     color: red;
     font-size: 13px;
+  }
+  .btn{
+    text-align:center;
   }
   .sub-container {
     height: 200px;
@@ -90,15 +87,13 @@ const Container = styled.div`
     position: relative;
   }
   .right {
-    margin-top: 50px;
     @media ${device.mobile} { 
         position: relative;
         width: 80%;
         left: 10%;
     }
-    @media ${device.tablet}, ${device.laptop}{
+    @media ${device.tablet}{
         width: 60%;
-        position: relative;
         left: 20%;
     }
   }

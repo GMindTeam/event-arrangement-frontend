@@ -2,12 +2,12 @@ import React from "react";
 import Navbar from "./components/Navbar";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
-  faExclamationCircle,faCheck
+  faExclamationCircle,faCheck , faCalendar
 
 } from "@fortawesome/free-solid-svg-icons";
 import { EventProvider } from "./components/EventContext";
 import { OptionProvider } from "./components/OptionContext";
-library.add(faExclamationCircle,faCheck);
+library.add(faExclamationCircle,faCheck,faCalendar);
 
 
 function App() {

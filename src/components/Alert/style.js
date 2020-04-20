@@ -12,6 +12,42 @@ const Container = styled.div`
   overflow: auto; 
   background-color: ${theme.fallbackColor};
   background-color: ${theme.blackOpacity};
+  .deleting-modal-content{
+    @media ${device.mobile} { 
+      width: 100%;
+      height:100%;
+      position: fixed;
+      top:0px;
+      left:0px;
+      border-radius: 0px;
+      padding: 0em;
+      box-shadow: none;
+      display: flex;
+      -webkit-flex-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      justify-content: center;
+    }
+    @media ${device.tablet} { 
+      justify-self: center;
+      position: relative;
+      width: 50%;
+      height:30%;
+      margin-top: 30px;
+      text-align: center;
+      margin: auto;
+      border-radius: 5px;
+      padding: 2em;
+      box-shadow: ${theme.boxShadow};
+    }
+    @media ${device.laptop} { 
+      width: 30%;
+      height:20%;
+    }
+    background-color: ${theme.backgroundColor3};
+    color: ${theme.textColorGray}
+  }
   .modal-content {
     justify-self: center;
     position: relative;
@@ -32,14 +68,13 @@ const Container = styled.div`
     margin: auto;
     border-radius: 5px;
     background-color: ${theme.backgroundColor3};
-    padding: 2rem;
+    padding: 2em;
     box-shadow: ${theme.boxShadow};
     color: ${theme.textColorGray}
 
   }
   .btn:hover{
-      box-shadow: ${theme.buttonShadow};
-      
+      box-shadow: ${theme.buttonShadow}; 
   }
   .btn{
     @media ${device.mobile} { 
@@ -54,24 +89,18 @@ const Container = styled.div`
       border:none;  
       border-radius: 3em;
   }
-  .title{
-
-  }
-  .description{
-
-  }
   .btnYes{
     float:right;
     margin: 0em;
     background: ${theme.dividerColor1};
     @media ${device.mobile} { 
-      margin-right: 0.5rem;
+      margin-right: 0.5em;
     }
     @media ${device.tablet} { 
-      margin-right: 2rem;
+      margin-right: 2em;
     }
     @media ${device.laptop} { 
-      margin-right: 4rem;
+      margin-right: 4em;
     }
 
       
@@ -79,7 +108,6 @@ const Container = styled.div`
   .btnNo{
     margin: 0em;
     background: ${theme.warningColor}
-
   }
   
 `;

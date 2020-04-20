@@ -10,15 +10,9 @@ export const CopyLinkStyle = styled.div`
     background-color: transparent;
     color: white;
     font-size: .9em;
-    width: 40%;
+    width: 45%;
     height: 50px;
     font-size: 16px;
-    @media ${device.mobile} { 
-      display:none;
-    }
-    @media ${device.tablet} { 
-      display:initial;
-    }
   }
   button {
     background-color: white;
@@ -29,18 +23,21 @@ export const CopyLinkStyle = styled.div`
     padding: 1.1em .5em;
     font-size: .95em;
     text-transform: uppercase;
-    @media ${device.mobile} { 
-      width: 100%;
-    }
-    @media ${device.tablet} { 
-      width: 50%;
-    }
+    width: 50%;  
     cursor: pointer;
   }
   .copy-link-container {
-    width: 50%;
-    float:right;
+    margin-left: 5%;
     margin-right: 5%;
+    margin-bottom: 5%;
+    @media ${device.mobile} { 
+      float: left;
+      width: 90%;
+    }
+    @media ${device.tablet} { 
+      float:right;
+      width: 50%;
+    }
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,7 +46,7 @@ export const CopyLinkStyle = styled.div`
     background-color: ${theme.mainColor1};
     border: 0;
     border-radius: 5px;
-    padding: .5rem;
+    padding: .5em;
     float: right;
     width: 100%;
   }
@@ -82,9 +79,6 @@ const Container = styled.div`
   }
   @media ${device.laptop} { 
     max-width: 50%;
-    border-radius: 5px;
-    margin-top: 50px;
-    box-shadow: ${theme.boxShadow};
   }
   .text-input {
     height: 100px;
@@ -93,7 +87,13 @@ const Container = styled.div`
   }
   .text {
     height: 30%;
-    padding-top: 30px;
+    @media ${device.mobile} { 
+      padding-top:1em
+    }
+    @media ${device.tablet} { 
+      padding-top:2em
+    }
+    
   }
   .eventName,
   .eventDescription {
@@ -105,6 +105,13 @@ const Container = styled.div`
     margin-left: 5%;
     margin-bottom: 0px;
     margin-right: 5%;
+    padding-top:30px;
+    @media ${device.mobile} { 
+      font-size:13px;
+    }
+    @media ${device.tablet} { 
+      font-size:16px;
+    }
   }
   .groupButton {
     margin-top: 0px;

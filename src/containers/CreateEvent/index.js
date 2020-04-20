@@ -370,7 +370,7 @@ function CreateEvent(props) {
                 <label className="warning">{isDistinct ? "" : "Lựa chọn này đã tồn tại. Vui lòng nhập lựa chọn khác!"}</label>
                 <label className="warning">{textState === 1 ? "Lựa chọn không được bỏ trống. Vui lòng nhập lựa chọn!" : ""}</label>
               </div>
-                <div className="wrapper">
+                <div className="btn">
               <Button className="createButton" type="submit" >
                 {isCreate ? 'Tạo sự kiện' : 'Lưu'}
               </Button>

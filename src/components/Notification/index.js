@@ -19,7 +19,8 @@ export default function Notification(props) {
 
                     </div>
                     <div className="right">
-                        <h4>{props.message}</h4>
+                        <center><h4>{props.message}</h4></center>
+                        
                     </div>
                 </div>
 
@@ -29,12 +30,12 @@ export default function Notification(props) {
                 <div className="item">
                     {
                         props.type === 'loading' ? <ClipLoader
-                            size={40}
-                            color='white'
-                        /> : <FontAwesomeIcon icon="check" color='white' />
+                        size={100}
+                        color={theme.mainColor1}
+                        /> : <FontAwesomeIcon icon="check" color={theme.mainColor1} size='4x'/>
                     }
                     <br></br>
-                    <h4 className='message'>{props.message}</h4>
+                    <h3 className='message'>{props.message}</h3>
                 </div>
 
             </ContainerMobile>

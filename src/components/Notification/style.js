@@ -4,22 +4,20 @@ import { device } from "../../config/breakpoint"
 export const Container = styled.div`
   background-color: ${theme.mainColor1};
   position: absolute;
-  
   color:white;
-  
   @media ${device.mobile} { 
       display:none;
   }
   @media ${device.tablet} { 
       display:initial;
       width:10%;
-      right:1rem;
+      right:1em;
       border-radius: 100px;
   }
   @media ${device.laptop} { 
       display:initial;
-      width:15%;
-      right:5rem;
+      width:20%;
+      right:4em;
       border-radius: 5px;
   }
   box-shadow: ${theme.boxShadow};
@@ -29,8 +27,6 @@ export const Container = styled.div`
   clear: both;
   }
   .left {
-    @media ${device.mobile} { 
-    }
     @media ${device.tablet} { 
       border-radius: 100px;
       width: 100%;
@@ -54,11 +50,11 @@ export const Container = styled.div`
     align-items: center;
     justify-content: left;
     float:right;
+    h4{
+      margin-top: 25px;
+    }
     width:85%;
     height: 70px;
-    @media ${device.mobile} { 
-      display:none;
-    }
     @media ${device.tablet} { 
         display:none;
     }
@@ -66,9 +62,7 @@ export const Container = styled.div`
         display:initial;
     }
   }
-  h4{
-    padding-left: 1em;
-  }
+
 `;
 export const ContainerMobile = styled.div`
   position: fixed;
@@ -81,7 +75,7 @@ export const ContainerMobile = styled.div`
     -webkit-align-items: center;
     align-items: center;
     justify-content: center;
-  background-color : ${theme.mainColor1};
+  background-color : white;
     @media ${device.mobile} { 
       display: -webkit-flexbox;
       display: -ms-flexbox;
@@ -96,12 +90,12 @@ export const ContainerMobile = styled.div`
     }
     .item{
       position:absolute;
-      top:40%;
+      top:35%;
       margin:auto;
       text-align:center;
       align-self:center;
     }
     .message{
-      color:white;
+      color: ${theme.textColorGray};
     }
 `;

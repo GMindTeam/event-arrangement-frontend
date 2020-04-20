@@ -8,7 +8,6 @@ export const Nav = styled.nav`
   justify-content: space-evenly;
   flex-flow: row nowrap;
   align-items: center;
-  
   .nav-link {
     display: flex;
     flex-flow: row nowrap;
@@ -18,21 +17,37 @@ export const Nav = styled.nav`
   }
   a {
     color: white;
-    font-size: 2.5vh;
-    @media ${device.mobile} { 
-      font-size: 2vh;
-    }
-    @media ${device.laptop} { 
-      font-size: 2.5vh;
-    }
   }
-  .logo{
+  .credit{
     @media ${device.mobile} { 
     display: none;
+    }
+    @media ${device.tablet} { 
+      display: inherit;
     }
     @media ${device.laptop} { 
       display: inherit;
     }
+  }
+  .logo{
+    @media ${device.mobile} { 
+      margin-left:-30px;
+      height:40px;
+    }
+    @media ${device.tablet} { 
+      margin-left:0px;
+      height:auto;
+    }
 
+
+  }
+  .btn{
+    
+    @media ${device.mobile} { 
+      width: 120px;
+    }
+    @media ${device.tablet} { 
+      width: 160px;
+    }
   }
 `;

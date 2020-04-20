@@ -17,10 +17,10 @@ const Container = styled.div`
     width: 50%;
     margin: auto;
     border-radius: 5px;
-
     background-color: ${theme.backgroundColor3};
     padding: 0px;
     margin-top: 50px;
+    margin-bottom: 50px;
     box-shadow: ${theme.boxShadow};
     @media ${device.mobile} { 
       width: 95%;
@@ -67,8 +67,6 @@ const Container = styled.div`
   }
   .subButton {
     padding: 0.25em 1em;
-    display: block;
-    margin: 15px auto;
   }
   .table {
     margin-left: 5%;
@@ -86,16 +84,36 @@ const Container = styled.div`
     margin-left: 5%;
     margin-right: 5%;
   }
-  #loading{
-    position: absolute;
-    margin-top: -40px;
-    margin-left: 55%;
-    @media ${device.mobile} { 
-      margin-left: 60%;
-  }
-  }
   .groupButton{
-    padding: 1px;
+    text-align:center;
+    height: 2.7em;
+  }
+  .row{
+    display:flex;
+    width: 15%;
+    margin-left: 45%;
+    @media ${device.mobile} { 
+      margin-left: 40%;
+    }
+    @media ${device.tablet} { 
+      margin-left: 42%;
+    }
+    @media ${device.laptop} { 
+      margin-left: 45%;
+    }
+  }
+  .col{
+    flex:50%;
+  }
+  #loading{
+    
+    @media ${device.mobile} { 
+      line-height: 1.9em;
+    }
+    @media ${device.tablet} { 
+      line-height: 2em;
+    }
+    margin-left: 5px;
   }
 `;
 

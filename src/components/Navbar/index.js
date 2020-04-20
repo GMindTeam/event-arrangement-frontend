@@ -15,16 +15,19 @@ export default function NavBar() {
         <div>
           <Nav>
             <ul className="nav-link">
-              <Link to={routePath.home}>
-                <img alt="Logo" className="logo" src={require("../../images/logo.PNG")} />
+              <Link  to={routePath.home}>
+                <img alt="Logo" className="logo"  src={require("../../images/logo.PNG")} />
               </Link>
 
-              <li className="link">
+              <li className="link credit">
                 <Link to={routePath.credit}>Thông tin</Link>
               </li>
               <li className="link">
                 <Link to={routePath.createEvent}>
-                  <Button>Tạo sự kiện</Button>
+                  <div className="btn">
+                    <Button>Tạo sự kiện</Button>
+                  </div>
+                  
                 </Link>
               </li>
 
