@@ -61,9 +61,9 @@ function CreateResponse(props) {
   return (
 
     <Container>
-      <div class="modal-content">
+      <div className="modal-content">
 
-        <span class="close" onClick={() => {
+        <span className="close" onClick={() => {
           props.closeModal()
         }}>&times;</span>
         <Title>
@@ -148,8 +148,7 @@ function CreateResponse(props) {
 
 
                   })
-                  .catch(function (error) {
-                    console.log(error);
+                  .catch(function () {
                   })
               } else {
                 editResponse(requestBody, props.response.response_id)
@@ -158,8 +157,7 @@ function CreateResponse(props) {
                     setIsCreating(false);
                     props.submitHandler();
                   })
-                  .catch(function (error) {
-                    console.log(error);
+                  .catch(function () {
                   })
               }
             } else {

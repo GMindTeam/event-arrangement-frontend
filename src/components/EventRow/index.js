@@ -22,13 +22,13 @@ function EventRow(props) {
       return props.response.response_detail_list.map((responseDetail, i) => {
         var answer = responseDetail.response_answer;
         if (answer === "1") {
-          return <td>Đồng ý</td>;
+          return <td key={i}>Đồng ý</td>;
         } else if (answer === "2") {
-          return <td>Không đồng ý</td>;
+          return <td key={i}>Không đồng ý</td>;
         } else if (answer === "3"){
-          return <td>Suy nghĩ</td>;
+          return <td key={i}>Suy nghĩ</td>;
         }
-        else return <td>Chưa phản hồi</td>;
+        else return <td key={i}>Chưa phản hồi</td>;
       });
     }
   }

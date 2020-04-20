@@ -34,11 +34,13 @@ function EventDetail(props) {
   const [titles, setTitle] = useState("");
   const [responseNeedToEdit, setResponseNeedToEdit] = useState("");
   const [copied, setCopied] = useState(false);
-
+  function handleChangeCountDown()
+  {
+    setTimeout(() => setCountDown(countDown - 1), 1000);
+  }
   useEffect(() => {
-    if(!isCreating)
-    {
-      countDown >= 0 && setTimeout(() => setCountDown(countDown - 1), 1000); //moi giay thi giam count down di 1
+    if (!isCreating) {
+      countDown >= 0 && handleChangeCountDown(); //moi giay thi giam count down di 1
       countDown < 0 && setCountDown(10);  // reinit count down = 10
       countDown === 0 && setEvent(eventCopy); //countdown = 0 thi update table voi gia tri event copy
       countDown === 10 && (function () {    //countdown = 10 thi goi api de luu gia tri eventcopy
@@ -46,12 +48,11 @@ function EventDetail(props) {
           .then(response => {
             setEventCopy(response.data);
           })
-          .catch(function (error) {
-            console.log(error);
+          .catch(function () {
           });
       })();
     }
-  }, [countDown,isCreating]);
+  }, [countDown, isCreating]);
 
 
   useEffect(() => {
@@ -62,8 +63,7 @@ function EventDetail(props) {
         setLoading(false);
         setCountResponse(response.data.responselist.length);
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch(function () {
       });
     const requestBody = {
       "eventid": props.match.params.eventID,
@@ -72,8 +72,7 @@ function EventDetail(props) {
       .then(response => {
         setTitle(response.data);
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch(function () {
       });
 
   }, [props.match.params.eventID]);
@@ -103,27 +102,25 @@ function EventDetail(props) {
   function handleDeleteResponse(response) {  //xu ly khi click button delete
     setIsOpenDeleteModal(true);
     setResponseIDIsDeleteing(response);
-    
+
   }
   function handleConfirmDeleteResponse() //xu ly khi nguoi dung confirm modal delete
   {
     setIsDeleteing(true);
     deleteResponse('', responseIDIsDeleteing)
-      .catch(function (error) {
-        console.log(error);
+      .catch(function () {
       })
-      .then(function() {
+      .then(function () {
         getEventDetail(props.match.params.eventID)
-        .then(response => {
-          setCountResponse(response.data.responselist.length);
-          setEvent(response.data);
-          setEventCopy(response.data);
-          setIsDeleteing(false);
-          setIsOpenDeleteModal(false);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+          .then(response => {
+            setCountResponse(response.data.responselist.length);
+            setEvent(response.data);
+            setEventCopy(response.data);
+            setIsDeleteing(false);
+            setIsOpenDeleteModal(false);
+          })
+          .catch(function () {
+          });
       });
   }
   function closeModalResponse() {  //xu ly khi click button close cua modal edit/create response
@@ -148,8 +145,8 @@ function EventDetail(props) {
           setIsDone(false);
         }, 2000);
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch(function () {
+
       });
   }
   function handleEditEvent() {  //xu ly khi click button Edit Event
@@ -169,7 +166,7 @@ function EventDetail(props) {
       return titles.map((title, index) => {
         var counts = {};
         count.slice(index * countResponse, (index + 1) * countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-        return <th> {!isNaN(counts[1]) ? counts[1] : 0}</th>;
+        return <th key={index}> {!isNaN(counts[1]) ? counts[1] : 0}</th>;
       })
     }
   }
@@ -178,7 +175,7 @@ function EventDetail(props) {
       return titles.map((title, index) => {
         var counts = {};
         count.slice(index * countResponse, (index + 1) * countResponse).forEach((x) => { counts[x] = (counts[x] || 0) + 1; });
-        return <th> {!isNaN(counts[2]) ? counts[2] : 0}</th>;
+        return <th key={index}> {!isNaN(counts[2]) ? counts[2] : 0}</th>;
       })
     }
   }
@@ -187,7 +184,7 @@ function EventDetail(props) {
       return titles.map((title, index) => {
         var counts = {};
         count.slice(index * countResponse, (index + 1) * countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-        return <th> {!isNaN(counts[3]) ? counts[3] : 0}</th>;
+        return <th key={index}> {!isNaN(counts[3]) ? counts[3] : 0}</th>;
       })
     }
   }
@@ -196,14 +193,14 @@ function EventDetail(props) {
       return titles.map((title, index) => {
         var counts = {};
         count.slice(index * countResponse, (index + 1) * countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-        return <th> {!isNaN(counts[4]) ? counts[4] : 0}</th>;
+        return <th key={index}> {!isNaN(counts[4]) ? counts[4] : 0}</th>;
       })
     }
   }
   function fetchTitle() {
     if (titles instanceof Array) {
-      return titles.map((title) => {
-        return <th> {title.content}</th>;
+      return titles.map((title, index) => {
+        return <th key={index}> {title.content}</th>;
       });
     }
   }
@@ -219,7 +216,7 @@ function EventDetail(props) {
     <div>
       {isCreating ? <Notification type='loading' message="Đang cập nhật lại bảng..."></Notification> : ''}
       {isDone ? <Notification type='done' message="Bảng đã được cập nhật..."></Notification> : ''}
-      {isOpenDeleteModal ? <Alert handleConfirm={handleConfirmDeleteResponse} deleteing={isDeleteing} handleCancel={closeModalDelete}title="Bạn có muốn xoá phản hồi này không ? " description="Bạn sẽ không thể phục hồi lại response đã xoá. "></Alert> : ''}
+      {isOpenDeleteModal ? <Alert handleConfirm={handleConfirmDeleteResponse} deleteing={isDeleteing} handleCancel={closeModalDelete} title="Bạn có muốn xoá phản hồi này không ? " description="Bạn sẽ không thể phục hồi lại response đã xoá. "></Alert> : ''}
       <Container>
         <Title>
           <h3>Chi tiết sự kiện</h3>
@@ -228,8 +225,7 @@ function EventDetail(props) {
         <CopyLinkStyle>
           <div className="copy-link-container" >
             <div className="copy-link-inner">
-              <input value={appPath.domain + props.match.params.eventID}
-              />
+              <input value={appPath.domain + props.match.params.eventID} onChange={()=>{ this.value = appPath.domain + props.match.params.eventID;}}></input>
               <CopyToClipboard text={appPath.domain + props.match.params.eventID}
                 onCopy={() => setCopied(true)}>
                 <button >{copied ? "Đã sao chép" : "Sao chép"}</button>
@@ -248,35 +244,41 @@ function EventDetail(props) {
           <div className="text">Thống kê các phản hồi</div>
           <div>
             <Table>
-                <tr>
-                  <th>Câu trả lời</th>
-                  {fetchTitle()}
-                </tr>
-                <tr>
-                  <th>Đồng ý</th>
-                  {fetchYes()}
-                  <th></th>
-                  <th></th>
-                </tr>
-                <tr>
-                  <th>Không đồng ý</th>
-                  {fetchNo()}
-                  <th></th>
-                  <th></th>
-                </tr>
-                <tr>
-                  <th>Suy nghĩ</th>
-                  {fetchThinking()}
-                  <th></th>
-                  <th></th>
-                </tr>
-                <tr>
-                  <th>Chưa phản hồi</th>
-                  {fetchNotResponseYet()}
-                  <th></th>
-                  <th></th>
-                </tr>
+              <table>
 
+                <thead>
+                  <tr>
+                    <th>Câu trả lời</th>
+                    {fetchTitle()}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>Đồng ý</th>
+                    {fetchYes()}
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <th>Không đồng ý</th>
+                    {fetchNo()}
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <th>Suy nghĩ</th>
+                    {fetchThinking()}
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <th>Chưa phản hồi</th>
+                    {fetchNotResponseYet()}
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </tbody>
+              </table>
             </Table>
           </div>
         </div>
