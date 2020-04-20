@@ -20,4 +20,5 @@ export const Button = styled.button`
   color: #666666;
   box-shadow: none;  
   }
+  cursor: pointer;
 `;
