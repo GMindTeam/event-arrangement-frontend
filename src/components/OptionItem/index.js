@@ -18,6 +18,7 @@ function OptionItem(props) {
         var arr = (String)(props.options).split("\n")
         setIsClicked(!isClicked)
         if (tmp === "") {
+            setOption(oldOption)
             return props.handleEdit(option, props.index, 1)
         }
         else if (arr.indexOf(tmp) === -1 || tmp === oldOption) {
@@ -25,6 +26,7 @@ function OptionItem(props) {
             setOption(tmp)
             return props.handleEdit(option, props.index, 0)
         } else {
+            setOption(oldOption)
             return props.handleEdit(option, props.index, 2)
         }
     }

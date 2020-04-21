@@ -76,7 +76,7 @@ function CreateEvent(props) {
 
       <Container>
         <Title>
-          {isCreate ? <h3>Tạo sự kiện</h3> : <h3>Chỉnh sửa sự kiện</h3>}
+          {isCreate ? <h1>Tạo sự kiện</h1> : <h1>Chỉnh sửa sự kiện</h1>}
         </Title>
         <Formik
           initialValues={{
@@ -89,15 +89,12 @@ function CreateEvent(props) {
           }}
           enableReinitialize={true}
           onSubmit={(values) => {
-
-
-
             var optionSplited = values.options.split("\n");
             setLoading(1);
             if (
               (values.title !== "") &&
               (values.description !== "") &&
-              (values.options !== "")
+              (values.options !== "" && isOk)
             ) {
               const requestBody = {
                 "name": values.title,
@@ -367,7 +364,7 @@ function CreateEvent(props) {
                     }}
                   />
                 )} />
-                <label className="warning">{isDistinct ? "" : "Lựa chọn này đã tồn tại. Vui lòng nhập lựa chọn khác!"}</label>
+                <label className="warning">{!isDistinct ? "Lựa chọn này đã tồn tại. Vui lòng nhập lựa chọn khác!" : ""}</label>
                 <label className="warning">{textState === 1 ? "Lựa chọn không được bỏ trống. Vui lòng nhập lựa chọn!" : ""}</label>
               </div>
                 <div className="btn">

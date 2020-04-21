@@ -16,6 +16,9 @@ import { routePath } from '../../config/routes';
 import Button from '../../components/Button';
 import Title from '../../components/Title';
 import { theme } from '../../config/mainTheme'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faCheck, faTimes, faQuestion} from '@fortawesome/free-solid-svg-icons';
+
 function EventDetail(props) {
   const [event, setEvent] = useContext(EventContext);
   const [loading, setLoading] = useState(true);
@@ -169,7 +172,7 @@ function EventDetail(props) {
       return titles.map((title, index) => {
         var counts = {};
         count.slice(index * countResponse, (index + 1) * countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-        return <th> {!isNaN(counts[1]) ? counts[1] : 0}</th>;
+        return <td> {!isNaN(counts[1]) ? counts[1] : 0}</td>;
       })
     }
   }
@@ -178,7 +181,7 @@ function EventDetail(props) {
       return titles.map((title, index) => {
         var counts = {};
         count.slice(index * countResponse, (index + 1) * countResponse).forEach((x) => { counts[x] = (counts[x] || 0) + 1; });
-        return <th> {!isNaN(counts[2]) ? counts[2] : 0}</th>;
+        return <td> {!isNaN(counts[2]) ? counts[2] : 0}</td>;
       })
     }
   }
@@ -187,7 +190,7 @@ function EventDetail(props) {
       return titles.map((title, index) => {
         var counts = {};
         count.slice(index * countResponse, (index + 1) * countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-        return <th> {!isNaN(counts[3]) ? counts[3] : 0}</th>;
+        return <td> {!isNaN(counts[3]) ? counts[3] : 0}</td>;
       })
     }
   }
@@ -196,7 +199,7 @@ function EventDetail(props) {
       return titles.map((title, index) => {
         var counts = {};
         count.slice(index * countResponse, (index + 1) * countResponse).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-        return <th> {!isNaN(counts[4]) ? counts[4] : 0}</th>;
+        return <td> {!isNaN(counts[4]) ? counts[4] : 0}</td>;
       })
     }
   }
@@ -222,7 +225,7 @@ function EventDetail(props) {
       {isOpenDeleteModal ? <Alert handleConfirm={handleConfirmDeleteResponse} deleteing={isDeleteing} handleCancel={closeModalDelete}title="Bạn có muốn xoá phản hồi này không ? " description="Bạn sẽ không thể phục hồi lại response đã xoá. "></Alert> : ''}
       <Container>
         <Title>
-          <h3>Chi tiết sự kiện</h3>
+          <h1>Chi tiết sự kiện</h1>
         </Title>
 
         <CopyLinkStyle>
@@ -242,10 +245,11 @@ function EventDetail(props) {
           <h2 className="eventName">{event.name}</h2>
         </div>
         <div>
+          <div className="eventDescription"><h3>Mô tả</h3></div>
           <p className="eventDescription">{event.description}</p>
         </div>
         <div className="table">
-          <div className="text">Thống kê các phản hồi</div>
+          <div className="text"><h3>Thống kê các phản hồi</h3></div>
           <div>
             <Table>
                 <tr>
@@ -253,35 +257,35 @@ function EventDetail(props) {
                   {fetchTitle()}
                 </tr>
                 <tr>
-                  <th>Đồng ý</th>
+                  <td>Đồng ý <FontAwesomeIcon icon={faCheck} /></td>
                   {fetchYes()}
-                  <th></th>
-                  <th></th>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
-                  <th>Không đồng ý</th>
+                  <td>Không đồng ý <FontAwesomeIcon icon={faTimes} /></td>
                   {fetchNo()}
-                  <th></th>
-                  <th></th>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
-                  <th>Suy nghĩ</th>
+                  <td>Suy nghĩ <FontAwesomeIcon icon={faQuestion} /></td>
                   {fetchThinking()}
-                  <th></th>
-                  <th></th>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
-                  <th>Chưa phản hồi</th>
+                  <td>Chưa phản hồi</td>
                   {fetchNotResponseYet()}
-                  <th></th>
-                  <th></th>
+                  <td></td>
+                  <td></td>
                 </tr>
 
             </Table>
           </div>
         </div>
         <div className="table">
-          <div className="text">Danh sách các phản hồi</div>
+          <div className="text"><h3>Danh sách các phản hồi</h3></div>
           <EventTable handlerEdit={handleEditResponse} handlerDelete={handleDeleteResponse} event={event} titles={titles} />
 
         </div>

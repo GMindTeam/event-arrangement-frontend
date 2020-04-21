@@ -9,7 +9,7 @@ const Table = styled.div`
   background-color: ${theme.backgroundColor2};
   th,
   td {
-    text-align: left;
+    text-align: center;
     width: 10%;
     border-top: 1px solid ${theme.dividerColor2};
     padding: 0.75em 1.4em;

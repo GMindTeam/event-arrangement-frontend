@@ -8,7 +8,7 @@ export const Title = styled.div`
   margin-bottom: 30px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  h3 {
+  h1 {
     text-align: center;
     line-height: 60px;
     color: ${theme.mainColor1};

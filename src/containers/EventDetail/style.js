@@ -56,7 +56,7 @@ export const CopyLinkStyle = styled.div`
 
 const Container = styled.div`
   margin: auto;
-  h3{
+  h1{
     @media ${device.mobile} { 
       line-height: 50px;
   }
@@ -129,6 +129,20 @@ const Container = styled.div`
     @media ${device.laptop} { 
       font-size: 13px;
     }
+  }
+  .svg-inline--fa.fa-w-16 {
+    margin-left: 5px;
+    color: #00CC00;
+    font-size: 20px;
+  }
+  .svg-inline--fa.fa-w-11 {
+    color: #FF3300;
+    font-size: 20px;
+    margin-left: 5px;
+  }
+  .svg-inline--fa.fa-w-12 {
+    margin-left: 5px;
+    font-size: 20px;
   }
 `;
 

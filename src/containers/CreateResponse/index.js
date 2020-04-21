@@ -67,7 +67,7 @@ function CreateResponse(props) {
           props.closeModal()
         }}>&times;</span>
         <Title>
-          {props.type === "create" ? <h3>Tạo phản hồi</h3> : <h3>Chỉnh sửa phản hồi</h3>}
+          {props.type === "create" ? <h1>Tạo phản hồi</h1> : <h1>Chỉnh sửa phản hồi</h1>}
         </Title>
         <Formik
           initialValues={{
