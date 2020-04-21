@@ -19,11 +19,11 @@ export default function NavBar() {
               </Link>
 
               <li className="link">
-                <Link to={routePath.credit}>Credit</Link>
+                <Link to={routePath.credit}>Thông tin</Link>
               </li>
               <li className="link">
                 <Link to={routePath.createEvent}>
-                  <Button>CreateEvent</Button>
+                  <Button>Tạo sự kiện</Button>
                 </Link>
               </li>
 
