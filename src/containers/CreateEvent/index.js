@@ -212,7 +212,6 @@ function CreateEvent(props) {
                 {props.touched.description && <label className="warning">{props.errors.description}</label>}
               </div>
               <div className="sub">
-                <div className="left">
                   <div className="text-input" error={props.touched.options && !!props.errors.options}>
                     <label className="text">Các lựa chọn</label> <br />
                     <label className="text"></label>
@@ -252,8 +251,7 @@ function CreateEvent(props) {
                         }}
                       />)} />
                     {(props.touched.options) && <label className="warning">{props.errors.options}</label>}
-
-                  </div>
+                 <div className="wrapper">
                   <div className="calendar">
                     <Field name="datetime" render={({ field, form }) => (
                       <DateTimeRangePicker
@@ -327,6 +325,7 @@ function CreateEvent(props) {
                       />)}
                     />
                   </div>
+                  </div>
                 </div>
               </div>
               <div className="right">
@@ -371,9 +370,11 @@ function CreateEvent(props) {
                 <label className="warning">{isDistinct ? "" : "Lựa chọn này đã tồn tại. Vui lòng nhập lựa chọn khác!"}</label>
                 <label className="warning">{textState === 1 ? "Lựa chọn không được bỏ trống. Vui lòng nhập lựa chọn!" : ""}</label>
               </div>
+                <div className="btn">
               <Button className="createButton" type="submit" >
                 {isCreate ? 'Tạo sự kiện' : 'Lưu'}
               </Button>
+                </div>
             </Form>)}
         </Formik>
       </Container>

@@ -14,7 +14,7 @@ function CreateResponse(props) {
     if (props.type === "edit") {
       var arr = [...props.response.response_detail_list];
       var list = []
-      for (var i=0; i<arr.length; i++) {
+      for (var i = 0; i < arr.length; i++) {
         if (arr[i].response_answer === "4") setIsNotResponse(true)
         var obj = {
           "optionid": arr[i].response_optionid,
@@ -33,7 +33,7 @@ function CreateResponse(props) {
     comment: Yup.string()
       .required('Bình luận không được bỏ trống. Vui lòng nhập bình luận!'),
     isChecked: Yup.string()
-      .required("Vui lòng chọn một trong ba câu trả lời Đồng ý/ Không đồng ý/ Suy nghĩ ở mỗi dòng!")
+      .required("Các lựa chọn phải được vote đầy đủ!")
   });
   function setCookie(cname, cvalue, exdays) {
     const data = JSON.stringify(cvalue);
@@ -90,7 +90,7 @@ function CreateResponse(props) {
                 "responsedetail": []
               };
               options.forEach(obj => {
-                 requestBody.responsedetail.push({
+                requestBody.responsedetail.push({
                   "optionid": parseInt(obj.optionid),
                   "answer": parseInt(obj.answer)
                 })
@@ -98,7 +98,7 @@ function CreateResponse(props) {
               if (props.type === "create") {
                 createResponse(requestBody)
                   .then(response => {
-                    window.scrollTo(0,0);
+                    window.scrollTo(0, 0);
                     setIsCreating(false);
                     props.submitHandler();
                     const eventData = getCookie("eventData");  //lay data tu cookie
@@ -146,7 +146,7 @@ function CreateResponse(props) {
                       setCookie("eventData", array, 30);
                     }
 
-                    
+
                   })
                   .catch(function (error) {
                     console.log(error);
@@ -154,7 +154,7 @@ function CreateResponse(props) {
               } else {
                 editResponse(requestBody, props.response.response_id)
                   .then(response => {
-                    window.scrollTo(0,0);
+                    window.scrollTo(0, 0);
                     setIsCreating(false);
                     props.submitHandler();
                   })
@@ -199,12 +199,12 @@ function CreateResponse(props) {
                       }
                     }} />
                 )} />
-                <Field name="isChecked" render={({ field, form }) => (
-                  <div error={props.touched.isChecked && !!props.errors.isChecked}>
-                    {props.touched.isChecked && <label id="warningOption"{...field}>{props.errors.isChecked}</label>}
-                  </div>
-                )} />
               </div>
+              <Field name="isChecked" render={({ field, form }) => (
+                <div error={props.touched.isChecked && !!props.errors.isChecked}>
+                  {props.touched.isChecked && <label id="warningOption"{...field}>{props.errors.isChecked}</label>}
+                </div>
+              )} />
               <div className="text-input" error={props.touched.comment && !!props.errors.comment}>
                 <label className="text">Bình luận</label>
                 <Field name="comment" render={({ field, form }) => (
@@ -218,18 +218,25 @@ function CreateResponse(props) {
                 {props.touched.comment && <label id="warningComment">{props.errors.comment}</label>}
               </div>
               <div className="groupButton">
-                {isCreating ? <div><Button
-                  className="subButton"
-                  type="submit"
-                  disabled
-                >
-                  Gửi
-            </Button> <label id="loading">Loading...</label></div> : <Button
+                {isCreating ? <div className="row">
+                  <div className="col Left"><Button
                     className="subButton"
                     type="submit"
-                  >
+                    disabled>
                     Gửi
-            </Button>}
+                    </Button></div>
+                  <div className="col Right"><label id="loading">Loading...</label></div>
+                </div>
+                  :
+                  <div className="row">
+                  <Button
+                    className="subButton"
+                    type="submit">
+                    Gửi
+                      </Button>
+                      </div>
+                }
+
               </div>
             </Form>
           )}

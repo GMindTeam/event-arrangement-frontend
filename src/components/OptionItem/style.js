@@ -22,6 +22,7 @@ export const Line = styled.div`
         display: none;
         background-color: #ffffff;
         cursor: pointer;
+        width: 50px;
     }
     :hover {
         box-shadow: ${theme.boxShadow};

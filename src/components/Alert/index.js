@@ -17,29 +17,37 @@ function Alert(props) {
     return (
 
         <Container>
-            <div class="modal-content">
-                {isDeleting ?
+
+            {isDeleting ?
+                <div class="deleting-modal-content ">
                     <div>
-                        <ClipLoader
-                            size={100}
-                            color={theme.mainColor1}
-                        />
-                        <h3 className='title'>Đang xoá response...</h3>
+                        <div className="item">
+                            <center><ClipLoader
+                                size={100}
+                                color={theme.mainColor1}
+                            /></center>
+                            
+                            <h3 className='title'>Đang xoá response...</h3>
+                        </div>
+                        
                     </div>
-                    :
-                    <div>
+                </div>
+                :
+                <div>
+                    <div class="modal-content">
                         <FontAwesomeIcon icon="exclamation-circle" size='8x' color={theme.warningColor} />
                         <h3 className='title'>{props.title}</h3>
                         <p className='description'>{props.description}</p>
                         <input type='button' value='Không' className=' btn btnNo' onClick={() => { props.handleCancel() }} />
                         <input type='button' value='Có, hãy xoá nó đi!' className=' btn btnYes' onClick={() => { props.handleConfirm() }} />
                     </div>
-                }
+                </div>
+            }
 
 
 
 
-            </div>
+
         </Container >
 
     );
