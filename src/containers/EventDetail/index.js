@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import EventTable from "../../components/EventTable";
+import Alert from "../../components/Alert";
 import { Link } from "react-router-dom";
 import { Table } from "../../components/EventTable/style";
 import { BounceLoader } from "react-spinners";
@@ -23,6 +24,9 @@ function EventDetail(props) {
   const [countDown, setCountDown] = useState(0);
   const [isCreating, setIsCreating] = useState(false); // thong bao la dang create/edit response
   const [isDone, setIsDone] = useState(false);  //thong bao la response da duoc create/edit
+  const [isDeleteing, setIsDeleteing] = useState(false);  //luc gui delete api len server
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);  //check neu enable modal delete response
+  const [responseIDIsDeleteing, setResponseIDIsDeleteing] = useState(0);  //thong bao la response da duoc create/edit
   const [isOpentEditResponse, setIsOpentEditResponse] = useState(false); //check neu enable modal edit response
   const [isOpenCreateResponse, setIsOpenCreateResponse] = useState(false);//check neu enable modal create response
   const [countResponse, setCountResponse] = useState([]); //dem so response
@@ -32,19 +36,22 @@ function EventDetail(props) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    countDown >= 0 && setTimeout(() => setCountDown(countDown - 1), 1000); //moi giay thi giam count down di 1
-    countDown < 0 && setCountDown(10);  // reinit count down = 10
-    countDown === 0 && setEvent(eventCopy); //countdown = 0 thi update table voi gia tri event copy
-    countDown === 10 && (function () {    //countdown = 10 thi goi api de luu gia tri eventcopy
-      getEventDetail(props.match.params.eventID)
-        .then(response => {
-          setEventCopy(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    })();
-  }, [countDown]);
+    if(!isCreating)
+    {
+      countDown >= 0 && setTimeout(() => setCountDown(countDown - 1), 1000); //moi giay thi giam count down di 1
+      countDown < 0 && setCountDown(10);  // reinit count down = 10
+      countDown === 0 && setEvent(eventCopy); //countdown = 0 thi update table voi gia tri event copy
+      countDown === 10 && (function () {    //countdown = 10 thi goi api de luu gia tri eventcopy
+        getEventDetail(props.match.params.eventID)
+          .then(response => {
+            setEventCopy(response.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      })();
+    }
+  }, [countDown,isCreating]);
 
 
   useEffect(() => {
@@ -87,37 +94,44 @@ function EventDetail(props) {
       setCount(arr);
     }
 
-  }, [titles,event.responselist])
+  }, [titles, event.responselist])
   function handleEditResponse(response) {   //xu ly khi click button edit
     if (isOpenCreateResponse) setIsOpenCreateResponse(false);
     setIsOpentEditResponse(true);
     setResponseNeedToEdit(response);
   }
   function handleDeleteResponse(response) {  //xu ly khi click button delete
-    setIsCreating(true);
-    deleteResponse('', response)
+    setIsOpenDeleteModal(true);
+    setResponseIDIsDeleteing(response);
+    
+  }
+  function handleConfirmDeleteResponse() //xu ly khi nguoi dung confirm modal delete
+  {
+    setIsDeleteing(true);
+    deleteResponse('', responseIDIsDeleteing)
       .catch(function (error) {
         console.log(error);
-      });
-    setIsCreating(true);
-    getEventDetail(props.match.params.eventID)
-      .then(response => {
-        setCountResponse(response.data.responselist.length);
-        setEvent(response.data);
-        setEventCopy(response.data);
-        setIsCreating(false);
-        setIsDone(true);
-        setTimeout(() => {
-          setIsDone(false);
-        }, 2000);
       })
-      .catch(function (error) {
-        console.log(error);
+      .then(function() {
+        getEventDetail(props.match.params.eventID)
+        .then(response => {
+          setCountResponse(response.data.responselist.length);
+          setEvent(response.data);
+          setEventCopy(response.data);
+          setIsDeleteing(false);
+          setIsOpenDeleteModal(false);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
       });
   }
-  function closeModal() {  //xu ly khi click button close cua modal
+  function closeModalResponse() {  //xu ly khi click button close cua modal edit/create response
     setIsOpenCreateResponse(false);
     setIsOpentEditResponse(false);
+  }
+  function closeModalDelete() {  //xu ly khi click button close cua modal confirm delete
+    setIsOpenDeleteModal(false);
   }
   function submitHandler() {  //xu ly khi click button submit trong create response
     setIsOpenCreateResponse(false);
@@ -150,7 +164,7 @@ function EventDetail(props) {
     if (isOpentEditResponse) setIsOpentEditResponse(false);
     setIsOpenCreateResponse(true);
   }
-  function fetchYes() {   
+  function fetchYes() {
     if (titles instanceof Array) {
       return titles.map((title, index) => {
         var counts = {};
@@ -204,20 +218,21 @@ function EventDetail(props) {
   return (
     <div>
       {isCreating ? <Notification type='loading' message="Đang cập nhật lại bảng..."></Notification> : ''}
-      {isDone ? <Notification type='done'message="Bảng đã được cập nhật..."></Notification> : ''}
+      {isDone ? <Notification type='done' message="Bảng đã được cập nhật..."></Notification> : ''}
+      {isOpenDeleteModal ? <Alert handleConfirm={handleConfirmDeleteResponse} deleteing={isDeleteing} handleCancel={closeModalDelete}title="Bạn có muốn xoá phản hồi này không ? " description="Bạn sẽ không thể phục hồi lại response đã xoá. "></Alert> : ''}
       <Container>
         <Title>
-          <h3>Event Detail</h3>
+          <h3>Chi tiết sự kiện</h3>
         </Title>
 
         <CopyLinkStyle>
           <div className="copy-link-container" >
             <div className="copy-link-inner">
               <input value={appPath.domain + props.match.params.eventID}
-                />
+              />
               <CopyToClipboard text={appPath.domain + props.match.params.eventID}
                 onCopy={() => setCopied(true)}>
-                <button >{copied ? "copied" : "copy"}</button>
+                <button >{copied ? "Đã sao chép" : "Sao chép"}</button>
               </CopyToClipboard>
             </div>
           </div>
@@ -230,62 +245,60 @@ function EventDetail(props) {
           <p className="eventDescription">{event.description}</p>
         </div>
         <div className="table">
-          <div className="text">Statistic</div>
+          <div className="text">Thống kê các phản hồi</div>
           <div>
-
             <Table>
-              <tr>
-                <th>Name</th>
-                {fetchTitle()}
-              </tr>
-              <tr>
-                <th>Yes</th>
-                {fetchYes()}
-                <th></th>
-                <th></th>
-              </tr>
-              <tr>
-                <th>No</th>
-                {fetchNo()}
-                <th></th>
-                <th></th>
-              </tr>
-              <tr>
-                <th>Thinking</th>
-                {fetchThinking()}
-                <th></th>
-                <th></th>
-              </tr>
-              <tr>
-                <th>Not Response Yet</th>
-                {fetchNotResponseYet()}
-                <th></th>
-                <th></th>
-              </tr>
+                <tr>
+                  <th>Câu trả lời</th>
+                  {fetchTitle()}
+                </tr>
+                <tr>
+                  <th>Đồng ý</th>
+                  {fetchYes()}
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th>Không đồng ý</th>
+                  {fetchNo()}
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th>Suy nghĩ</th>
+                  {fetchThinking()}
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th>Chưa phản hồi</th>
+                  {fetchNotResponseYet()}
+                  <th></th>
+                  <th></th>
+                </tr>
 
             </Table>
-
           </div>
         </div>
         <div className="table">
-          <div className="text">Options</div>
+          <div className="text">Danh sách các phản hồi</div>
           <EventTable handlerEdit={handleEditResponse} handlerDelete={handleDeleteResponse} event={event} titles={titles} />
 
         </div>
         <div className="countDown">
-          {isCreating ? " " : <h3>This table will refresh in {countDown} second!</h3>}
+          {isCreating ? " " : <h3>Bảng sẽ được làm mới trong {countDown} giây!</h3>}
 
         </div>
         <div className="groupButton">
-          <Button onClick={handleCreateResponse}>Create Response</Button>
+          <Button onClick={handleCreateResponse}>Tạo phản hồi</Button>
           <Link to={routePath.editEvent + event.id}>
-            <Button type="submit" onClick={handleEditEvent}>Edit Event</Button>
+            <Button type="submit" onClick={handleEditEvent}>Chỉnh sửa sự kiện</Button>
           </Link>
         </div>
       </Container >
       <div>
-        {isOpenCreateResponse ? <CreateResponse type="create" submitHandler={submitHandler} titles={titles} closeModal={closeModal} eventID={event.id} eventName={event.name} eventDescription={event.description}></CreateResponse> : ""}
-        {isOpentEditResponse ? <CreateResponse type="edit" submitHandler={submitHandler} titles={titles} closeModal={closeModal} eventID={event.id} eventName={event.name} eventDescription={event.description} response={responseNeedToEdit}></CreateResponse> : ""}
+        {isOpenCreateResponse ? <CreateResponse type="create" submitHandler={submitHandler} titles={titles} closeModal={closeModalResponse} eventID={event.id} eventName={event.name} eventDescription={event.description}></CreateResponse> : ""}
+        {isOpentEditResponse ? <CreateResponse type="edit" submitHandler={submitHandler} titles={titles} closeModal={closeModalResponse} eventID={event.id} eventName={event.name} eventDescription={event.description} response={responseNeedToEdit}></CreateResponse> : ""}
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ input {
     color: white;
     font-size: .9em;
     padding: 0.6em;
-    width: 80%;
+    width: 70%;
     height: 50px;
     font-size: 16px;
 }
@@ -28,7 +28,7 @@ button {
     padding: 1.1em .5em;
     font-size: .95em;
     text-transform: uppercase;
-    width: 7em;
+    width: 10em;
 }
 
 .copy-link-container {

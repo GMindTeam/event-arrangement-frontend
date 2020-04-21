@@ -63,10 +63,10 @@ function ResponseTable(props) {
     <div>
       <Table>
         <tr>
-          <th>Options</th>
-          <th>Yes</th>
-          <th>No</th>
-          <th>Thinking</th>
+          <th>Các lựa chọn</th>
+          <th>Đồng ý</th>
+          <th>Không đồng ý</th>
+          <th>Suy nghĩ</th>
         </tr>
         {fetchOption()}
       </Table>

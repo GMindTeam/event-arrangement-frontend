@@ -10,11 +10,6 @@ function EventRow(props) {
   },[props.response.response_id]);
 
   function handleDeleteButton(e) {
-    e.preventDefault();
-    if (!window.confirm("Are your sure you want to delete this item?")) {
-      return false;
-    }
-    window.scrollTo(0,0);
     props.handlerDelete(props.response.response_id);
   }
   function handleEditButton(e) {
@@ -27,13 +22,13 @@ function EventRow(props) {
       return props.response.response_detail_list.map((responseDetail, i) => {
         var answer = responseDetail.response_answer;
         if (answer === "1") {
-          return <td>Yes</td>;
+          return <td>Đồng ý</td>;
         } else if (answer === "2") {
-          return <td>No</td>;
+          return <td>Không đồng ý</td>;
         } else if (answer === "3"){
-          return <td>Thinking</td>;
+          return <td>Suy nghĩ</td>;
         }
-        else return <td>Not response yet</td>;
+        else return <td>Chưa phản hồi</td>;
       });
     }
   }
@@ -49,14 +44,14 @@ function EventRow(props) {
             id="editResponseButton"
             onClick={handleEditButton}
           >
-            Edit
+            Sửa
           </Button>
           <Button
             className="groupResponseButton"
             id="deleteResponseButton"
             onClick={handleDeleteButton}
           >
-            Delete
+            Xóa
           </Button>
          
         </td>

@@ -19,6 +19,10 @@ function ResponseRow(props) {
             setAnswer("1")
             return props.handleChange("1");
           }}
+          onBlur={() => {
+            setAnswer("1")
+            return props.handleChange("1");
+          }}
         />
       </td>
       <td>
@@ -29,6 +33,10 @@ function ResponseRow(props) {
             setAnswer("2")
             return props.handleChange("2");
           }}
+          onBlur={() => {
+            setAnswer("2")
+            return props.handleChange("2");
+          }}
         />
       </td>
       <td>
@@ -36,6 +44,10 @@ function ResponseRow(props) {
           name={props.row.content}
           checked={(answer === "3")}
           onChange={() => {
+            setAnswer("3")
+            return props.handleChange("3");
+          }}
+          onBlur={() => {
             setAnswer("3")
             return props.handleChange("3");
           }}

@@ -7,10 +7,10 @@ function Credit() {
   return (
     <Container>
       <div className="one">
-        <h1>Credit</h1>
-        <h3>Create by</h3>
-        <h4>Nguyen Quoc Duy</h4>
-        <h4>Nguyen Thi Minh Phuong</h4>
+        <h1>Thông tin</h1>
+        <h3>Website tạo bởi</h3>
+        <h4>Nguyễn Quốc Duy</h4>
+        <h4>Nguyễn Thị Minh Phương</h4>
       </div>
       <div className="two">
         <img className="cowell" alt="Co-Well" src={require("../../images/cowell.jpg")} />
