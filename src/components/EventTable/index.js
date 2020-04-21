@@ -20,14 +20,14 @@ function EventTable(props) {
   function fetchRows() {
     if (responselist instanceof Array) {
       return responselist.map((response, i) => {
-        return <EventRow handlerEdit={props.handlerEdit} handlerDelete={props.handlerDelete} response={response} index={i} eventid={props.event.id} />;
+        return <EventRow key={i} handlerEdit={props.handlerEdit} handlerDelete={props.handlerDelete} response={response} index={i} eventid={props.event.id} />;
       });
     }
   }
   function fetchTitle() {
     if (props.titles instanceof Array) {
-      return props.titles.map((title) => {
-        return <th> {title.content}</th>;
+      return props.titles.map((title, key) => {
+        return <th key={key}> {title.content}</th>;
       });
     }
   }
@@ -35,14 +35,19 @@ function EventTable(props) {
   return (
     <div>
       <Table>
+        <table>
+          <thead>
         <tr>
           <th>Người phản hồi</th>
           {fetchTitle()}
           <th>Bình luận</th>
           <th className="ActionHeader">Thao tác</th>
         </tr>
+        </thead>
+        <tbody>
         {fetchRows()}
-        
+        </tbody>
+        </table>
       </Table>
     </div>
   );

@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { theme } from "../../config/mainTheme"
-import ResponseTable from "../../components/ResponseTable";
 import { Container } from "./style";
-import Button from '../../components/Button';
-import Title from '../../components/Title';
 import { ClipLoader } from "react-spinners";
-import { Form, Field, Formik } from "formik";
-import * as Yup from 'yup'
-import { createResponse, editResponse } from "../../api";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 function Alert(props) {
     const [isDeleting, setIsDeleting] = useState(false);
@@ -19,7 +13,7 @@ function Alert(props) {
         <Container>
 
             {isDeleting ?
-                <div class="deleting-modal-content ">
+                <div className="deleting-modal-content ">
                     <div>
                         <div className="item">
                             <center><ClipLoader
@@ -34,7 +28,7 @@ function Alert(props) {
                 </div>
                 :
                 <div>
-                    <div class="modal-content">
+                    <div className="modal-content">
                         <FontAwesomeIcon icon="exclamation-circle" size='8x' color={theme.warningColor} />
                         <h3 className='title'>{props.title}</h3>
                         <p className='description'>{props.description}</p>

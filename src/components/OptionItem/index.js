@@ -41,12 +41,12 @@ function OptionItem(props) {
                     setOption(e.target.value)
                 }}
                 onBlur={(e) => {
-                    var tmp = e.target.value.trim("\s")
+                    var tmp = e.target.value.trim();
                     handleChangeText(tmp)
 
                 }}
                 onKeyDown={(e) => {
-                    var tmp = e.target.value.trim("\s")
+                    var tmp = e.target.value.trim();
                     if (e.keyCode === 13) {
                         handleChangeText(tmp)
                     }
@@ -56,7 +56,6 @@ function OptionItem(props) {
             <button
                 type="submit"
                 onClick={(e) => {
-                    console.log(isClicked)
                     if (isClicked) {
                         document.getElementById(props.index).disabled = "";
                     }
