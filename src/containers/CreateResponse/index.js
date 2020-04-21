@@ -5,10 +5,8 @@ import Button from '../../components/Button';
 import Title from '../../components/Title';
 import { Form, Field, Formik } from "formik";
 import * as Yup from 'yup'
-import { createResponse, editResponse } from "../../api";
 function CreateResponse(props) {
   const [options, setOptions] = useState([]);
-  const [isCreating, setIsCreating] = useState(false);
   const [isNotResponse, setIsNotResponse] = useState(false);
   useEffect(() => {
     if (props.type === "edit") {
@@ -35,29 +33,7 @@ function CreateResponse(props) {
     isChecked: Yup.string()
       .required("Các lựa chọn phải được vote đầy đủ!")
   });
-  function setCookie(cname, cvalue, exdays) {
-    const data = JSON.stringify(cvalue);
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires=" + d.toGMTString();
-    document.cookie = cname + "=" + data + ";" + expires + ";path=/";
-  }
 
-  function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) === ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) === 0) {
-        return JSON.parse(c.substring(name.length, c.length));
-      }
-    }
-    return "";
-  }
   return (
 
     <Container>
@@ -81,7 +57,6 @@ function CreateResponse(props) {
           enableReinitialize={true}
           validationSchema={validationSchema}
           onSubmit={(values) => {
-            setIsCreating(true);
             if (values.username !== "" && values.comment !== "" && values.isChecked === "ok") {
               const requestBody = {
                 "nameuser": values.username,
@@ -95,75 +70,14 @@ function CreateResponse(props) {
                   "answer": parseInt(obj.answer)
                 })
               });
-              if (props.type === "create") {
-                createResponse(requestBody)
-                  .then(response => {
-                    window.scrollTo(0, 0);
-                    setIsCreating(false);
-                    props.submitHandler();
-                    const eventData = getCookie("eventData");  //lay data tu cookie
-                    if (eventData !== "") {   //kiem tra coi cookie da ton tai chua
-                      if (eventData.createdEvent instanceof Array) {
-                        var isDuplicate = false;
-                        eventData.createdEvent.forEach(event => {   //check coi event da co trong creaedEvent trong cookie chua
-                          if (event.eventid === props.eventID) {
-                            isDuplicate = true;
-                          }
-                        })
-                        if (isDuplicate === false) {  //neu khong co trong createdEvent thi bat dau check trong responsedEvent
-                          if (eventData.responsedEvent instanceof Array) {
-                            eventData.responsedEvent.forEach(event => {
-                              if (event.eventid === newEventObject.eventid) {
-                                isDuplicate = true;
-                              }
-                            })
-                            if (isDuplicate === false) {
-                              var newEventObject = {      //object moi san sang de them vao cookie
-                                eventid: props.eventID,
-                                name: props.eventName,
-                                description: props.eventDescription
-                              };
-                              eventData.responsedEvent.push(newEventObject);    //neu khong co trong cookie thi them vao
-                              setCookie("eventData", eventData, 30);
-                            }
-                          }
-                        }
-                      }
-                    }
-                    else {     //neu chua ton tai thi tao cookie moi 
-                      var array = {
-                        createdEvent: [
-
-                        ],
-                        responsedEvent: [
-                          {
-                            eventid: props.eventID,
-                            name: props.eventName,
-                            description: props.eventDescription
-                          }
-                        ]
-                      }
-                      setCookie("eventData", array, 30);
-                    }
-
-
-                  })
-                  .catch(function () {
-                  })
-              } else {
-                editResponse(requestBody, props.response.response_id)
-                  .then(response => {
-                    window.scrollTo(0, 0);
-                    setIsCreating(false);
-                    props.submitHandler();
-                  })
-                  .catch(function () {
-                  })
-              }
-            } else {
-              alert("Don't let input empty");
-            }
-          }}
+              setTimeout(() =>{if(props.type ==='create')
+              props.submitHandler(props.type, requestBody, '');
+            else props.submitHandler(props.type, requestBody, props.response.response_id);}, 500);
+              
+              
+          }else {
+            alert("Don't let input empty");
+          }}}
         >
           {(props) => (
             <Form onSubmit={props.handleSubmit}>
@@ -216,25 +130,12 @@ function CreateResponse(props) {
                 {props.touched.comment && <label id="warningComment">{props.errors.comment}</label>}
               </div>
               <div className="groupButton">
-                {isCreating ? <div className="row">
-                  <div className="col Left"><Button
+                <Button
                     className="subButton"
                     type="submit"
-                    disabled>
+                    >
                     Gửi
-                    </Button></div>
-                  <div className="col Right"><label id="loading">Loading...</label></div>
-                </div>
-                  :
-                  <div className="row">
-                  <Button
-                    className="subButton"
-                    type="submit">
-                    Gửi
-                      </Button>
-                      </div>
-                }
-
+                    </Button>
               </div>
             </Form>
           )}

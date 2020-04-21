@@ -8,12 +8,13 @@ import { Container, CopyLinkStyle } from "./style";
 import Notification from "../../components/Notification"
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import CreateResponse from "../CreateResponse";
-import { getEventDetail, getOptions, deleteResponse } from "../../api";
+import { getEventDetail, getOptions, deleteResponse,createResponse,editResponse } from "../../api";
 import { EventContext } from "../../components/EventContext";
 import { OptionContext } from "../../components/OptionContext";
 import { appPath } from '../../config/constants';
 import { routePath } from '../../config/routes';
 import Button from '../../components/Button';
+import { getCookie, setCookie } from '../../utils/cookie'
 import Title from '../../components/Title';
 import { theme } from '../../config/mainTheme'
 function EventDetail(props) {
@@ -34,25 +35,23 @@ function EventDetail(props) {
   const [titles, setTitle] = useState("");
   const [responseNeedToEdit, setResponseNeedToEdit] = useState("");
   const [copied, setCopied] = useState(false);
-  function handleChangeCountDown()
-  {
-    setTimeout(() => setCountDown(countDown - 1), 1000);
-  }
+
   useEffect(() => {
     if (!isCreating) {
-      countDown >= 0 && handleChangeCountDown(); //moi giay thi giam count down di 1
+      countDown >= 0 && setTimeout(() => setCountDown(countDown - 1), 1000); //moi giay thi giam count down di 1
       countDown < 0 && setCountDown(10);  // reinit count down = 10
-      countDown === 0 && setEvent(eventCopy); //countdown = 0 thi update table voi gia tri event copy
-      countDown === 10 && (function () {    //countdown = 10 thi goi api de luu gia tri eventcopy
+      countDown === 10 && (() => {    //countdown = 10 thi goi api de luu gia tri eventcopy
         getEventDetail(props.match.params.eventID)
           .then(response => {
             setEventCopy(response.data);
-          })
-          .catch(function () {
           });
       })();
     }
-  }, [countDown, isCreating]);
+  }, [countDown, isCreating, props.match.params.eventID]);
+
+  useEffect(() => {
+    countDown === 0 && setEvent(eventCopy);  //countDown = 0 thi update table
+  }, [countDown, setEvent, eventCopy])
 
 
   useEffect(() => {
@@ -75,7 +74,7 @@ function EventDetail(props) {
       .catch(function () {
       });
 
-  }, [props.match.params.eventID]);
+  }, [props.match.params.eventID, setEvent]);
 
   useEffect(() => {
     var arr = [];
@@ -130,7 +129,63 @@ function EventDetail(props) {
   function closeModalDelete() {  //xu ly khi click button close cua modal confirm delete
     setIsOpenDeleteModal(false);
   }
-  function submitHandler() {  //xu ly khi click button submit trong create response
+  function submitHandler(type, requestBody, response_id) {  //xu ly khi click button submit trong create response
+    window.scrollTo(0, 0);
+    if (type === "create") {
+      createResponse(requestBody)
+        .then(() => {
+          
+          const eventData = getCookie("eventData");  //lay data tu cookie
+          if (eventData !== "") {   //kiem tra coi cookie da ton tai chua
+            if (eventData.createdEvent instanceof Array) {
+              var isDuplicate = false;
+              eventData.createdEvent.forEach(CurrentEvent => {   //check coi event da co trong creaedEvent trong cookie chua
+                if (CurrentEvent.eventid === event.id) {
+                  isDuplicate = true;
+                }
+              })
+              if (isDuplicate === false) {  //neu khong co trong createdEvent thi bat dau check trong responsedEvent
+                if (eventData.responsedEvent instanceof Array) {
+                  eventData.responsedEvent.forEach(CurrentEvent => {
+                    if (CurrentEvent.eventid === event.id) {
+                      isDuplicate = true;
+                    }
+                  })
+                  if (isDuplicate === false) {
+                    var newEventObject = {      //object moi san sang de them vao cookie
+                      eventid: event.id,
+                      name: event.name,
+                      description: event.description
+                    };
+                    eventData.responsedEvent.push(newEventObject);    //neu khong co trong cookie thi them vao
+                    setCookie("eventData", eventData, 30);
+                  }
+                }
+              }
+            }
+          }
+          else {     //neu chua ton tai thi tao cookie moi 
+            var array = {
+              createdEvent: [
+
+              ],
+              responsedEvent: [
+                {
+                  eventid: event.id,
+                  name: event.name,
+                  description: event.description
+                }
+              ]
+            }
+            setCookie("eventData", array, 30);
+          }
+
+
+        })
+    } else {
+      editResponse(requestBody, response_id)
+    }
+
     setIsOpenCreateResponse(false);
     setIsOpentEditResponse(false);
     setIsCreating(true);
@@ -144,9 +199,6 @@ function EventDetail(props) {
         setTimeout(() => {
           setIsDone(false);
         }, 2000);
-      })
-      .catch(function () {
-
       });
   }
   function handleEditEvent() {  //xu ly khi click button Edit Event
@@ -225,7 +277,7 @@ function EventDetail(props) {
         <CopyLinkStyle>
           <div className="copy-link-container" >
             <div className="copy-link-inner">
-              <input value={appPath.domain + props.match.params.eventID} onChange={()=>{ this.value = appPath.domain + props.match.params.eventID;}}></input>
+              <input value={appPath.domain + props.match.params.eventID} onChange={() => { this.value = appPath.domain + props.match.params.eventID; }}></input>
               <CopyToClipboard text={appPath.domain + props.match.params.eventID}
                 onCopy={() => setCopied(true)}>
                 <button >{copied ? "Đã sao chép" : "Sao chép"}</button>

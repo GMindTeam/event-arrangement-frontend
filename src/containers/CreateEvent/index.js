@@ -14,6 +14,7 @@ import Title from '../../components/Title'
 import { theme } from '../../config/mainTheme'
 import { convertToTimestamp, formatDate } from "../../utils/commonHelper";
 import OptionList from "../../components/OptionList"
+import {getCookie,setCookie} from '../../utils/cookie'
 function CreateEvent(props) {
   const [event,] = useContext(EventContext);
   const [options,] = useContext(OptionContext);
@@ -24,29 +25,9 @@ function CreateEvent(props) {
   const [isDistinct, setIsDistinct] = useState(true);
   const [isEditSuccessful, setIsEditSuccessful] = useState(false);
   const [textState, setTextState] = useState(0)
-  function setCookie(cname, cvalue, exdays) {
-    const data = JSON.stringify(cvalue);
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires=" + d.toGMTString();
-    document.cookie = cname + "=" + data + ";" + expires + ";path=/";
-  }
 
-  function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) === ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) === 0) {
-        return JSON.parse(c.substring(name.length, c.length));
-      }
-    }
-    return "";
-  }
+
+  
   useEffect(() => {
     if (props.type === "create") {
       setIsCreate(true);
