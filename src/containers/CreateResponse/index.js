@@ -9,23 +9,37 @@ import { createResponse, editResponse } from "../../api";
 function CreateResponse(props) {
   const [options, setOptions] = useState([]);
   const [isCreating, setIsCreating] = useState(false);
+  const [isNotResponse, setIsNotResponse] = useState(false);
   useEffect(() => {
+    if (props.type === "edit") {
+      var arr = [...props.response.response_detail_list];
+      var list = []
+      for (var i=0; i<arr.length; i++) {
+        if (arr[i].response_answer === "4") setIsNotResponse(true)
+        var obj = {
+          "optionid": arr[i].response_optionid,
+          "answer": arr[i].response_answer
+        }
+        list.push(obj)
+      }
+      setOptions(list);
+    }
     return () => {
     }
   }, [props.response, props.type])
   const validationSchema = Yup.object().shape({
     username: Yup.string()
-      .required('Your name is required'),
+      .required('Tên người phản hồi không được bỏ trống. Vui lòng nhập tên người phản hồi!'),
     comment: Yup.string()
-      .required('Comment is required'),
+      .required('Bình luận không được bỏ trống. Vui lòng nhập bình luận!'),
     isChecked: Yup.string()
-      .required("At least one answer of each row is selected")
+      .required("Vui lòng chọn một trong ba câu trả lời Đồng ý/ Không đồng ý/ Suy nghĩ ở mỗi dòng!")
   });
 
   return (
     <Container>
       <Title>
-        {props.type === "create" ? <h3>Create Response</h3> : <h3>Edit Response</h3>}
+        {props.type === "create" ? <h3>Tạo phản hồi</h3> : <h3>Chỉnh sửa phản hồi</h3>}
       </Title>
       <Formik
         initialValues={{
@@ -34,13 +48,12 @@ function CreateResponse(props) {
           response_detail_list: (props.type === "create") ? [] : props.response.response_detail_list,
           titles: props.titles,
           type: props.type,
-          isChecked: ""
+          isChecked: ((props.type === "create") || isNotResponse === true) ? "" : "ok"
         }}
         enableReinitialize={true}
         validationSchema={validationSchema}
         onSubmit={(values) => {
           setIsCreating(true);
-          console.log(options);
           if (values.username !== "" && values.comment !== "" && values.isChecked === "ok") {
             const requestBody = {
               "nameuser": values.username,
@@ -81,19 +94,19 @@ function CreateResponse(props) {
         {(props) => (
           <Form onSubmit={props.handleSubmit}>
             <div className="text-input" error={props.touched.username && !!props.errors.username}>
-              <label className="text">Your Name</label>
+              <label className="text">Tên người phản hồi</label>
               <Field name="username" render={({ field, form }) => (
                 <input
                   className="content"
                   id="name"
-                  placeholder="Enter your name"
+                  placeholder="Nhập tên người phản hồi"
                   {...field}
                 />
               )} />
               {props.touched.username && <label id="warningName">{props.errors.username}</label>}
             </div>
             <div className="table">
-              <label className="text">Options</label>
+              <label className="text">Các lựa chọn</label>
               <Field render={({ field, form }) => (
                 <ResponseTable name="response_detail_list"
                   titles={props.values.titles}
@@ -110,19 +123,26 @@ function CreateResponse(props) {
                     }
                   }} />
               )} />
-              <Field name="isChecked" render={({ field, form }) => (
-                <div error={props.touched.isChecked && !!props.errors.isChecked}>
-                  {props.touched.isChecked && <label id="warningOption"{...field}>{props.errors.isChecked}</label>}
-                </div>
-              )} />
+              {props.values.type === "create" ?
+                <Field name="isChecked" render={({ field}) => (
+                  <div error={props.touched.isChecked && !!props.errors.isChecked}>
+                    {props.touched.isChecked && <label id="warningOption"{...field}>{props.errors.isChecked}</label>}
+                  </div>
+                )} /> :
+                <Field name="isChecked" render={({ field}) => (
+                  <div error={!!props.errors.isChecked}>
+                    <label id="warningOption"{...field}>{props.errors.isChecked}</label>
+                  </div>
+                )} />
+              }
             </div>
             <div className="text-input" error={props.touched.comment && !!props.errors.comment}>
-              <label className="text">Comment</label>
+              <label className="text">Bình luận</label>
               <Field name="comment" render={({ field, form }) => (
                 <input
                   className="content"
                   id="comment"
-                  placeholder="Enter your comment"
+                  placeholder="Nhập bình luận"
                   {...field}
                 />
               )} />
@@ -134,12 +154,12 @@ function CreateResponse(props) {
                 type="submit"
                 disabled
               >
-                Submit
+                Gửi
             </Button> <label id="loading">Loading...</label></div> : <Button
                   className="subButton"
                   type="submit"
                 >
-                  Submit
+                  Gửi
             </Button>}
             </div>
           </Form>
