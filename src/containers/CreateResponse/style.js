@@ -32,6 +32,9 @@ const Container = styled.div`
       width: 50%;
     }
   }
+  h3{
+    margin-left: 20px;
+  }
   .close {
   color: #aaaaaa;
   float: right;

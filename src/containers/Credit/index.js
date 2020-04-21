@@ -7,7 +7,7 @@ function Credit() {
   return (
     <Container>
       <div className="one">
-        <h1>Thông tin</h1>
+        <h3>Thông tin</h3>
         <h3>Website tạo bởi</h3>
         <h4>Nguyễn Quốc Duy</h4>
         <h4>Nguyễn Thị Minh Phương</h4>

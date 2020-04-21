@@ -16,7 +16,7 @@ export const Container = styled.div`
   grid-gap: 10px;
   grid-auto-rows: minmax(100px, auto);
 
-  h1 {
+  h3 {
     color: ${theme.mainColor1};
     font-family: ${theme.fontFamily};
     text-align: center;

@@ -55,7 +55,7 @@ function CreateEvent(props) {
 
       <Container>
         <Title>
-          {isCreate ? <h1>Tạo sự kiện</h1> : <h1>Chỉnh sửa sự kiện</h1>}
+          {isCreate ? <h3>Tạo sự kiện</h3> : <h3>Chỉnh sửa sự kiện</h3>}
         </Title>
         <Formik
           initialValues={{
