@@ -127,9 +127,19 @@ const Container = styled.div`
     background-color: ${theme.mainColor3};
     border: 2px solid  ${theme.mainColor1};
     border-radius: 100px;
+    font-size: 15px;
+    height: 33px;
+    width: 33px;
+    position: absolute;
+    top: 32px;
+    right: 4px;
     :hover{
       box-shadow: ${theme.buttonShadow};
     }
+  }
+  .option-input{
+    border-top-right-radius: 21px;
+    border-bottom-right-radius: 21px;
   }
 
 `;

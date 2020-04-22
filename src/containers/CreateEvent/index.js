@@ -205,9 +205,9 @@ function CreateEvent(props) {
                   <label className="text">Các lựa chọn</label> <br />
                   <label className="text"></label>
                   <Field name="content">{({ field, form }) => (
-                    <div className="wrapper-content">
+                    <div className="wrapper">
                       <input
-                        className="content"
+                        className="content option-input"
                         placeholder="Nhập lựa chọn"
                         {...field}
                         onBlur={(e) => {
@@ -234,7 +234,7 @@ function CreateEvent(props) {
                             setIsDistinct(false)
                           }
                         }}>
-                        <FontAwesomeIcon  icon={faPlus} color='black' size='2x'/>
+                        <FontAwesomeIcon  icon={faPlus} color='black' size='1x'/>
                       </button>
                     </div>
                   )}
