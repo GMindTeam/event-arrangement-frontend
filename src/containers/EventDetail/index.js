@@ -321,8 +321,6 @@ function EventDetail(props) {
                 <tr>
                   <th>Câu trả lời</th>
                   {fetchTitle()}
-                  <th></th>
-                  <th></th>
                 </tr>
               </thead>
               <tbody>
