@@ -90,26 +90,21 @@ const Container = styled.div`
       border-radius: 3em;
   }
   .btnYes{
-    float:right;
-    margin: 0em;
     background: ${theme.dividerColor1};
-    @media ${device.mobile} { 
-      margin-right: 0.5em;
-    }
-    @media ${device.tablet} { 
-      margin-right: 2em;
-    }
-    @media ${device.laptop} { 
-      margin-right: 4em;
-    }
-
-      
+ 
   }
   .btnNo{
-    margin: 0em;
     background: ${theme.warningColor}
   }
-  
+  .row{
+    width : 70%;
+    justify-content: space-between;
+    margin-left:-5%;
+  }
+  .col{
+    float:left;
+    width: 50%;
+  }
 `;
 
 export { Container };
