@@ -274,7 +274,7 @@ function EventDetail(props) {
       {isOpenDeleteModal ? <Alert handleConfirm={handleConfirmDeleteResponse} deleteing={isDeleteing} handleCancel={closeModalDelete} title="Bạn có muốn xoá phản hồi này không ? " description="Bạn sẽ không thể phục hồi lại response đã xoá. "></Alert> : ''}
       <Container>
         <Title>
-          <h3>Chi tiết sự kiện</h3>
+          <h1>Chi tiết sự kiện</h1>
         </Title>
 
         <CopyLinkStyle>

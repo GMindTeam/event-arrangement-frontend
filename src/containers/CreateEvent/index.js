@@ -14,7 +14,6 @@ import Title from '../../components/Title'
 import { theme } from '../../config/mainTheme'
 import { convertToTimestamp, formatDate } from "../../utils/commonHelper";
 import OptionList from "../../components/OptionList"
-import {getCookie,setCookie} from '../../utils/cookie'
 function CreateEvent(props) {
   const [event,] = useContext(EventContext);
   const [options,] = useContext(OptionContext);
@@ -24,15 +23,37 @@ function CreateEvent(props) {
   const [isCreate, setIsCreate] = useState(false);
   const [isDistinct, setIsDistinct] = useState(true);
   const [isEditSuccessful, setIsEditSuccessful] = useState(false);
+  const [isOk, setIsOk] = useState(false)
   const [textState, setTextState] = useState(0)
+  function setCookie(cname, cvalue, exdays) {
+    const data = JSON.stringify(cvalue);
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toGMTString();
+    document.cookie = cname + "=" + data + ";" + expires + ";path=/";
+  }
 
-
-  
+  function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) === ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) === 0) {
+        return JSON.parse(c.substring(name.length, c.length));
+      }
+    }
+    return "";
+  }
   useEffect(() => {
     if (props.type === "create") {
       setIsCreate(true);
     }
     else {
+      setIsOk(true);
       setIsCreate(false);
     }
     return () => {
@@ -55,7 +76,7 @@ function CreateEvent(props) {
 
       <Container>
         <Title>
-          {isCreate ? <h3>Tạo sự kiện</h3> : <h3>Chỉnh sửa sự kiện</h3>}
+          {isCreate ? <h1>Tạo sự kiện</h1> : <h1>Chỉnh sửa sự kiện</h1>}
         </Title>
         <Formik
           initialValues={{
@@ -73,7 +94,7 @@ function CreateEvent(props) {
             if (
               (values.title !== "") &&
               (values.description !== "") &&
-              (values.options !== "")
+              (values.options !== "" && isOk)
             ) {
               const requestBody = {
                 "name": values.title,
@@ -119,7 +140,8 @@ function CreateEvent(props) {
                     }
 
                   })
-                  .catch(function () {
+                  .catch(function (error) {
+                    console.log(error);
                   });
               }
               else {
@@ -151,7 +173,8 @@ function CreateEvent(props) {
                         
                     }
                   })
-                  .catch(function () {
+                  .catch(function (error) {
+                    console.log(error);
                   });
               }
             } else {  //when all the field is not filled it will show the error
@@ -170,7 +193,6 @@ function CreateEvent(props) {
                     className="content"
                     id="name"
                     placeholder="Nhập tiêu đề sự kiện"
-                    value={props.values.title}
                     {...field}
                   />)} />
                 {props.touched.title && <label className="warning">{props.errors.title}</label>}
@@ -182,7 +204,6 @@ function CreateEvent(props) {
                     className="content"
                     id="description"
                     placeholder="Nhập mô tả sự kiện"
-                    value={props.values.description}
                     {...field}
                   />)} />
                 {props.touched.description && <label className="warning">{props.errors.description}</label>}
@@ -198,8 +219,9 @@ function CreateEvent(props) {
                         {...field}
                         onBlur={(e) => {
                           form.setFieldTouched("options", true);
-                          var tmp = e.target.value.trim().toLowerCase()
+                          var tmp = e.target.value.trim("\s+").toLowerCase()
                           if (tmp === "") {
+                            setIsOk(true);
                           }
                           setIsDistinct(true)
                         }}
@@ -208,15 +230,18 @@ function CreateEvent(props) {
                           if (e.keyCode === 13) {
                             e.preventDefault()
                             var oldText = (String)(props.values.options).trim("\n")
-                            var tmp = e.target.value.trim().toLowerCase()
+                            var tmp = e.target.value.trim("\s+").toLowerCase()
                             var arr = oldText.toLowerCase().split("\n")
                             if (arr.indexOf(tmp) === -1) {
+                              setIsOk(true)
                               form.setFieldValue("options", oldText + "\n" + e.target.value)
                               form.setFieldValue("content", "")
                               setIsDistinct(true)
                             } else if (tmp === "") {
+                              setIsOk(true)
                             }
                             else {
+                              setIsOk(false)
                               setIsDistinct(false)
                             }
                           }
@@ -258,8 +283,11 @@ function CreateEvent(props) {
                               if (arr.indexOf(newtext + " 18:00~") === -1) {
                                 oldText = oldText + "\n" + newtext + " 18:00~";
                                 setIsDistinct(true)
+                                setIsOk(true)
                               } else {
+                                console.log("not distinct")
                                 setIsDistinct(false)
+                                setIsOk(false)
                               }
                             }
                             else {
@@ -277,14 +305,17 @@ function CreateEvent(props) {
                                 numbersd += 86400000;
                               }
                               if (count === check) {
+                                console.log("distinct")
                                 setIsDistinct(false)
+                                setIsOk(true)
                               } else {
                                 setIsDistinct(true)
+                                setIsOk(false)
                               }
                             }
                             form.setFieldValue("options", oldText.trim("\n") + "\n");
                           } else {
-
+                            setIsOk(true)
                           }
                           setDate();
                         }}
@@ -309,22 +340,25 @@ function CreateEvent(props) {
                         for (var i = 0; i < arr.length; i++) {
                           str += arr[i] + "\n"
                         }
-                        form.setFieldValue("options", str.trim("\n"));
+                        form.setFieldValue("options", str.trim("\n"))
+                        setIsOk(true)
                         setIsDistinct(true)
                       } else {
+                        setIsOk(false)
                         if (textState === 2) {
                           setIsDistinct(false)
                         }
                       }
                     }}
                     handleDeleteOption={(index) => {
-                      var arr = (String)(props.values.options).trim("\n").split("\n");
-                      arr.splice(index, 1)
+                      var arr = (String)(props.values.options).trim("\n").split("\n")
+                      var arr1 = arr.splice(index, 1)
                       var str = ""
                       for (var i = 0; i < arr.length; i++) {
                         str += arr[i] + "\n"
                       }
-                      form.setFieldValue("options", str.trim("\n"));
+                      form.setFieldValue("options", str.trim("\n"))
+                      setIsOk(true)
                       setIsDistinct(true)
                       setTextState(0)
                     }}

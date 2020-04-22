@@ -56,7 +56,7 @@ export const CopyLinkStyle = styled.div`
 
 const Container = styled.div`
   margin: auto;
-  h3{
+  h1{
     @media ${device.mobile} { 
       line-height: 50px;
   }
