@@ -32,7 +32,7 @@ const Container = styled.div`
       width: 50%;
     }
   }
-  h3{
+  h2{
     margin-left: 20px;
   }
   .close {

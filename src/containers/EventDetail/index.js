@@ -54,7 +54,7 @@ function EventDetail(props) {
 
   useEffect(() => {
     countDown === 0 && setEvent(eventCopy);  //countDown = 0 thi update table
-  }, [countDown, setEvent, eventCopy])
+  }, [countDown,eventCopy,setEvent])
 
 
   useEffect(() => {
@@ -77,7 +77,7 @@ function EventDetail(props) {
       .catch(function () {
       });
 
-  }, [props.match.params.eventID, setEvent]);
+  }, [props.match.params.eventID,setEvent]);
 
   useEffect(() => {
     var arr = [];
@@ -134,10 +134,12 @@ function EventDetail(props) {
   }
   function submitHandler(type, requestBody, response_id) {  //xu ly khi click button submit trong create response
     window.scrollTo(0, 0);
+    setIsOpenCreateResponse(false);
+    setIsOpentEditResponse(false);
+    setIsCreating(true);
     if (type === "create") {
       createResponse(requestBody)
         .then(() => {
-
           const eventData = getCookie("eventData");  //lay data tu cookie
           if (eventData !== "") {   //kiem tra coi cookie da ton tai chua
             if (eventData.createdEvent instanceof Array) {
@@ -184,25 +186,38 @@ function EventDetail(props) {
           }
 
 
+          getEventDetail(props.match.params.eventID)
+            .then(response => {
+              setCountResponse(response.data.responselist.length);
+              setEvent(response.data);
+              setEventCopy(response.data);
+              setIsCreating(false);
+              setIsDone(true);
+              setTimeout(() => {
+                setIsDone(false);
+              }, 2000);
+            });
+
         })
     } else {
       editResponse(requestBody, response_id)
+        .then(() => {
+
+          getEventDetail(props.match.params.eventID)
+            .then(response => {
+              setCountResponse(response.data.responselist.length);
+              setEvent(response.data);
+              setEventCopy(response.data);
+              setIsCreating(false);
+              setIsDone(true);
+              setTimeout(() => {
+                setIsDone(false);
+              }, 2000);
+            });
+        })
     }
 
-    setIsOpenCreateResponse(false);
-    setIsOpentEditResponse(false);
-    setIsCreating(true);
-    getEventDetail(props.match.params.eventID)
-      .then(response => {
-        setCountResponse(response.data.responselist.length);
-        setEvent(response.data);
-        setEventCopy(response.data);
-        setIsCreating(false);
-        setIsDone(true);
-        setTimeout(() => {
-          setIsDone(false);
-        }, 2000);
-      });
+
   }
   function handleEditEvent() {  //xu ly khi click button Edit Event
     let titlesTemp = [...titles];
@@ -274,7 +289,7 @@ function EventDetail(props) {
       {isOpenDeleteModal ? <Alert handleConfirm={handleConfirmDeleteResponse} deleteing={isDeleteing} handleCancel={closeModalDelete} title="Bạn có muốn xoá phản hồi này không ? " description="Bạn sẽ không thể phục hồi lại response đã xoá. "></Alert> : ''}
       <Container>
         <Title>
-          <h3>Chi tiết sự kiện</h3>
+          <h2>Chi tiết sự kiện</h2>
         </Title>
 
         <CopyLinkStyle>
