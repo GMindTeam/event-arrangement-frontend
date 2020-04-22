@@ -62,10 +62,10 @@ function CreateEvent(props) {
         </Title>
         <Formik
           initialValues={{
-            title: (isCreate) ? "" : event.name,
-            description: (isCreate) ? "" : event.description,
-            options: (isCreate) ? "" : options,
-            type: (isCreate) ? "create" : "edit",
+            title: (props.type === "create") ? "" : event.name,
+            description: (props.type === "create") ? "" : event.description,
+            options: (props.type === "create") ? "" : options,
+            type: (props.type === "create") ? "create" : "edit",
             content: "",
             distinct: ""
           }}
@@ -167,10 +167,10 @@ function CreateEvent(props) {
                 <label className="text">Tiêu đề sự kiện</label> <br />
                 <Field name="title">{({ field }) => (
                   <input
+                    type="text"
                     className="content"
                     id="name"
                     placeholder="Nhập tiêu đề sự kiện"
-                    value={props.values.title}
                     {...field}
                   />)}
                 </Field>
@@ -180,10 +180,10 @@ function CreateEvent(props) {
                 <label className="text">Mô tả sự kiện</label> <br />
                 <Field name="description">{({ field }) => (
                   <input
+                    type="text"
                     className="content"
                     id="description"
                     placeholder="Nhập mô tả sự kiện"
-                    value={props.values.description}
                     {...field}
                   />)}
                 </Field>
@@ -196,6 +196,7 @@ function CreateEvent(props) {
                   <Field name="content">{({ field, form }) => (
                     <div className="wrapper-content">
                       <input
+                        type="text"
                         className="content"
                         placeholder="Nhập lựa chọn"
                         {...field}
