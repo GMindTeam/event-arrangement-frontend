@@ -32,7 +32,7 @@ function Alert(props) {
                         <FontAwesomeIcon icon="exclamation-circle" size='8x' color={theme.warningColor} />
                         <h3 className='title'>{props.title}</h3>
                         <p className='description'>{props.description}</p>
-                        <center>
+                        <center className="wrapper-button">
                         <div className="row">
                             <div className="col">
                             <input type='button' value='Không' className=' btn btnNo' onClick={() => { props.handleCancel() }} />

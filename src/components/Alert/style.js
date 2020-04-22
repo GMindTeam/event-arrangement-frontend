@@ -105,6 +105,9 @@ const Container = styled.div`
     float:left;
     width: 50%;
   }
+  .wrapper-button{
+    height:20px;
+  }
 `;
 
 export { Container };
