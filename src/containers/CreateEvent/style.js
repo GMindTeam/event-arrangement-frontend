@@ -113,6 +113,21 @@ const Container = styled.div`
   }
   .DateTimeRangePicker {
   }
+  .wrapper-content {
+    display: flex;
+  }
+  .wrapper-button {
+    border: none;
+    outline: none;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+  }
+  .add-button {
+    color: ${theme.mainColor1};
+    font-size: 42px;
+  }
+
 `;
 
 export { Container };
