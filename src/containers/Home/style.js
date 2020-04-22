@@ -3,7 +3,7 @@ import { theme } from "../../config/mainTheme";
 import { device } from "../../config/breakpoint"
 export const EventCard = styled.div`
 @media ${device.mobile} { 
-      width: 100%;
+      width: 90%;
     }
     @media ${device.tablet} { 
       width: 75%;

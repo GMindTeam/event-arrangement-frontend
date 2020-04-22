@@ -54,7 +54,7 @@ function EventDetail(props) {
 
   useEffect(() => {
     countDown === 0 && setEvent(eventCopy);  //countDown = 0 thi update table
-  }, [countDown,eventCopy,setEvent])
+  }, [countDown, eventCopy, setEvent])
 
 
   useEffect(() => {
@@ -77,7 +77,7 @@ function EventDetail(props) {
       .catch(function () {
       });
 
-  }, [props.match.params.eventID,setEvent]);
+  }, [props.match.params.eventID, setEvent]);
 
   useEffect(() => {
     var arr = [];
@@ -304,12 +304,14 @@ function EventDetail(props) {
           </div>
         </CopyLinkStyle>
 
-        <div>
-          <h2 className="eventName">{event.name}</h2>
-        </div>
-        <div>
-          <div className="eventDescription"><h3>Mô tả</h3></div>
-          <p className="eventDescription">{event.description}</p>
+        <div className="wrapper-mobile-center">
+          <div>
+            <h2 className="eventName">{event.name}</h2>
+          </div>
+          <div>
+
+            <p className="eventDescription">{'Mô tả: '+event.description}</p>
+          </div>
         </div>
         <div className="table">
           <div className="text"><h3>Thống kê các phản hồi</h3></div>
