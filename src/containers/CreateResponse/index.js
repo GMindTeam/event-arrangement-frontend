@@ -70,14 +70,15 @@ function CreateResponse(props) {
                   "answer": parseInt(obj.answer)
                 })
               });
-              setTimeout(() =>{if(props.type ==='create')
-              props.submitHandler(props.type, requestBody, '');
-            else props.submitHandler(props.type, requestBody, props.response.response_id);}, 500);
-              
-              
-          }else {
-            alert("Don't let input empty");
-          }}}
+              if (props.type === 'create')
+                props.submitHandler(props.type, requestBody, '');
+              else props.submitHandler(props.type, requestBody, props.response.response_id);
+
+
+            } else {
+              alert("Don't let input empty");
+            }
+          }}
         >
           {(props) => (
             <Form onSubmit={props.handleSubmit}>
@@ -131,10 +132,10 @@ function CreateResponse(props) {
               </div>
               <div className="groupButton">
                 <Button
-                    className="subButton"
-                    type="submit"
-                    >
-                    Gửi
+                  className="subButton"
+                  type="submit"
+                >
+                  Gửi
                     </Button>
               </div>
             </Form>

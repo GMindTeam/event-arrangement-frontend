@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import EventTable from "../../components/EventTable";
 import Alert from "../../components/Alert";
 import { Link } from "react-router-dom";
@@ -38,17 +38,37 @@ function EventDetail(props) {
   const [titles, setTitle] = useState("");
   const [responseNeedToEdit, setResponseNeedToEdit] = useState("");
   const [copied, setCopied] = useState(false);
+  const componentIsMounted = useRef(true);  // check if eventdetail is mounted
 
   useEffect(() => {
+    return () => {
+      componentIsMounted.current = false;
+    }
+  }, [])
+  
+
+  useEffect(() => {
+    var myCountDown;
+    function startCountDown() {
+      myCountDown = setTimeout(() => setCountDown(countDown - 1), 1000);
+    }
+    function stopCountDown() {
+      clearTimeout(myCountDown);
+    }
     if (!isCreating) {
-      countDown >= 0 && setTimeout(() => setCountDown(countDown - 1), 1000); //moi giay thi giam count down di 1
+      countDown >= 0 && startCountDown(); //moi giay thi giam count down di 1
       countDown < 0 && setCountDown(10);  // reinit count down = 10
       countDown === 10 && (() => {    //countdown = 10 thi goi api de luu gia tri eventcopy
         getEventDetail(props.match.params.eventID)
           .then(response => {
+            if (componentIsMounted.current) {
             setEventCopy(response.data);
+            }
           });
       })();
+    }
+    return () => {
+      stopCountDown();
     }
   }, [countDown, isCreating, props.match.params.eventID]);
 
@@ -60,10 +80,12 @@ function EventDetail(props) {
   useEffect(() => {
     getEventDetail(props.match.params.eventID)
       .then(response => {
+        if (componentIsMounted.current) {
         setEvent(response.data);
         setEventCopy(response.data);
         setLoading(false);
         setCountResponse(response.data.responselist.length);
+        }
       })
       .catch(function () {
       });
@@ -72,7 +94,9 @@ function EventDetail(props) {
     };
     getOptions(requestBody)
       .then(response => {
+        if (componentIsMounted.current) {
         setTitle(response.data);
+        }
       })
       .catch(function () {
       });
@@ -115,11 +139,13 @@ function EventDetail(props) {
       .then(function () {
         getEventDetail(props.match.params.eventID)
           .then(response => {
+            if (componentIsMounted.current) {
             setCountResponse(response.data.responselist.length);
             setEvent(response.data);
             setEventCopy(response.data);
             setIsDeleteing(false);
             setIsOpenDeleteModal(false);
+            }
           })
           .catch(function () {
           });
@@ -188,14 +214,17 @@ function EventDetail(props) {
 
           getEventDetail(props.match.params.eventID)
             .then(response => {
-              setCountResponse(response.data.responselist.length);
-              setEvent(response.data);
-              setEventCopy(response.data);
-              setIsCreating(false);
-              setIsDone(true);
-              setTimeout(() => {
-                setIsDone(false);
-              }, 2000);
+              if (componentIsMounted.current) {
+                setCountResponse(response.data.responselist.length);
+                setEvent(response.data);
+                setEventCopy(response.data);
+                setIsCreating(false);
+                setIsDone(true);
+                setTimeout(() => {
+                  setIsDone(false);
+                }, 2000);
+              }
+
             });
 
         })
@@ -205,14 +234,16 @@ function EventDetail(props) {
 
           getEventDetail(props.match.params.eventID)
             .then(response => {
-              setCountResponse(response.data.responselist.length);
-              setEvent(response.data);
-              setEventCopy(response.data);
-              setIsCreating(false);
-              setIsDone(true);
-              setTimeout(() => {
-                setIsDone(false);
-              }, 2000);
+              if (componentIsMounted.current) {
+                setCountResponse(response.data.responselist.length);
+                setEvent(response.data);
+                setEventCopy(response.data);
+                setIsCreating(false);
+                setIsDone(true);
+                setTimeout(() => {
+                  setIsDone(false);
+                }, 2000);
+              }
             });
         })
     }
@@ -310,7 +341,7 @@ function EventDetail(props) {
           </div>
           <div>
 
-            <p className="eventDescription">{'Mô tả: '+event.description}</p>
+            <p className="eventDescription">{'Mô tả: ' + event.description}</p>
           </div>
         </div>
         <div className="table">
