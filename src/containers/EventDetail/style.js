@@ -136,20 +136,34 @@ const Container = styled.div`
     }
   }
   .groupButton {
-    margin-top: 0px;
+    margin-top: 20px;
+  }
+  .btn{
+    @media ${device.mobile} { 
+      padding: .75em 2em;
+      width: 90%;
+    }
+    @media ${device.tablet} { 
+      padding: .75em 2em;
+      width: 200px;
+    }
   }
   .countDown{
-    margin-right:5%;
-    float:right;
+    
+    position:absolute;
     font-weight:100;
+    margin-top:-8px;
     @media ${device.mobile} { 
     font-size: 9px;
+    left:50%;
     }
     @media ${device.tablet} { 
       font-size: 11px;
+      left:60%;
     }
     @media ${device.laptop} { 
       font-size: 13px;
+      left:60%;
     }
   }
   .svg-inline--fa.fa-w-16 {

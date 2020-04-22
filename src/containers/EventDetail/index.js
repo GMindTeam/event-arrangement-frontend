@@ -45,7 +45,7 @@ function EventDetail(props) {
       componentIsMounted.current = false;
     }
   }, [])
-  
+
 
   useEffect(() => {
     var myCountDown;
@@ -62,7 +62,7 @@ function EventDetail(props) {
         getEventDetail(props.match.params.eventID)
           .then(response => {
             if (componentIsMounted.current) {
-            setEventCopy(response.data);
+              setEventCopy(response.data);
             }
           });
       })();
@@ -81,24 +81,21 @@ function EventDetail(props) {
     getEventDetail(props.match.params.eventID)
       .then(response => {
         if (componentIsMounted.current) {
-        setEvent(response.data);
-        setEventCopy(response.data);
-        setLoading(false);
-        setCountResponse(response.data.responselist.length);
+          setEvent(response.data);
+          setEventCopy(response.data);
+          setLoading(false);
+          setCountResponse(response.data.responselist.length);
         }
-      })
-      .catch(function () {
       });
+
     const requestBody = {
       "eventid": props.match.params.eventID,
     };
     getOptions(requestBody)
       .then(response => {
         if (componentIsMounted.current) {
-        setTitle(response.data);
+          setTitle(response.data);
         }
-      })
-      .catch(function () {
       });
 
   }, [props.match.params.eventID, setEvent]);
@@ -140,11 +137,11 @@ function EventDetail(props) {
         getEventDetail(props.match.params.eventID)
           .then(response => {
             if (componentIsMounted.current) {
-            setCountResponse(response.data.responselist.length);
-            setEvent(response.data);
-            setEventCopy(response.data);
-            setIsDeleteing(false);
-            setIsOpenDeleteModal(false);
+              setCountResponse(response.data.responselist.length);
+              setEvent(response.data);
+              setEventCopy(response.data);
+              setIsDeleteing(false);
+              setIsOpenDeleteModal(false);
             }
           })
           .catch(function () {
@@ -394,10 +391,13 @@ function EventDetail(props) {
 
         </div>
         <div className="groupButton">
-          <Button onClick={handleCreateResponse}>Tạo phản hồi</Button>
-          <Link to={routePath.editEvent + event.id}>
-            <Button type="submit" onClick={handleEditEvent}>Chỉnh sửa sự kiện</Button>
-          </Link>
+          <center>
+              <Button className="btn" onClick={handleCreateResponse}>Tạo phản hồi</Button>
+              <Link to={routePath.editEvent + event.id}>
+                <Button className="btn" onClick={handleEditEvent}>Chỉnh sửa sự kiện</Button>
+              </Link>
+          </center>
+
         </div>
       </Container >
       <div>
