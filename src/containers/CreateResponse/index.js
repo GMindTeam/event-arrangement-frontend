@@ -70,36 +70,32 @@ function CreateResponse(props) {
                   "answer": parseInt(obj.answer)
                 })
               });
-              setTimeout(() => {
-                if (props.type === 'create')
-                  props.submitHandler(props.type, requestBody, '');
-                else props.submitHandler(props.type, requestBody, props.response.response_id);
-              }, 500);
-
-
-            } else {
-              alert("Don't let input empty");
-            }
-          }}
+              setTimeout(() =>{if(props.type ==='create')
+              props.submitHandler(props.type, requestBody, '');
+            else props.submitHandler(props.type, requestBody, props.response.response_id);}, 500);
+              
+              
+          }else {
+            alert("Don't let input empty");
+          }}}
         >
           {(props) => (
             <Form onSubmit={props.handleSubmit}>
-              <div className="text-input" error={props.touched.username ? props.errors.username : undefined}>
+              <div className="text-input" error={props.touched.username && !!props.errors.username}>
                 <label className="text">Tên người phản hồi</label>
-                <Field name="username">{({ field }) => (
+                <Field name="username" render={({ field, form }) => (
                   <input
                     className="content"
                     id="name"
                     placeholder="Nhập tên người phản hồi"
                     {...field}
                   />
-                )}
-                </Field>
+                )} />
                 {props.touched.username && <label id="warningName">{props.errors.username}</label>}
               </div>
               <div className="table">
                 <label className="text">Các lựa chọn</label>
-                <Field>{({ form }) => (
+                <Field render={({ field, form }) => (
                   <ResponseTable name="response_detail_list"
                     titles={props.values.titles}
                     type={props.values.type}
@@ -114,34 +110,31 @@ function CreateResponse(props) {
                         form.setFieldValue("isChecked", "ok")
                       }
                     }} />
-                )}
-                </Field>
+                )} />
               </div>
-              <Field name="isChecked">{({ field }) => (
-                <div error={props.touched.isChecked ? props.errors.isChecked : undefined}>
+              <Field name="isChecked" render={({ field, form }) => (
+                <div error={props.touched.isChecked && !!props.errors.isChecked}>
                   {props.touched.isChecked && <label id="warningOption"{...field}>{props.errors.isChecked}</label>}
                 </div>
-              )}
-              </Field>
-              <div className="text-input" error={props.touched.comment ? props.errors.comment : undefined}>
+              )} />
+              <div className="text-input" error={props.touched.comment && !!props.errors.comment}>
                 <label className="text">Bình luận</label>
-                <Field name="comment">{({ field }) => (
+                <Field name="comment" render={({ field, form }) => (
                   <input
                     className="content"
                     id="comment"
                     placeholder="Nhập bình luận"
                     {...field}
                   />
-                )}
-                </Field>
+                )} />
                 {props.touched.comment && <label id="warningComment">{props.errors.comment}</label>}
               </div>
               <div className="groupButton">
                 <Button
-                  className="subButton"
-                  type="submit"
-                >
-                  Gửi
+                    className="subButton"
+                    type="submit"
+                    >
+                    Gửi
                     </Button>
               </div>
             </Form>
