@@ -2,6 +2,7 @@ export  const theme = {
     fontFamily: "Helvetica, Arial, sans-serif",
     mainColor1: '#b042b4',
     mainColor2: '#9c27b0',
+    mainColor3: '#ab47bc',
     textColorGray: 'rgba(0,0,0,.65)',
     themeColor1: '#00c851',
     themeColor2: '#ff3547',

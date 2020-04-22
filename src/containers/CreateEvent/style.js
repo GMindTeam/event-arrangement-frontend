@@ -123,9 +123,13 @@ const Container = styled.div`
     margin-bottom: 5px;
     margin-left: 10px;
   }
-  .add-button {
-    color: ${theme.mainColor1};
-    font-size: 42px;
+  .btn-add{
+    background-color: ${theme.mainColor3};
+    border: 2px solid  ${theme.mainColor1};
+    border-radius: 100px;
+    :hover{
+      box-shadow: ${theme.buttonShadow};
+    }
   }
 
 `;

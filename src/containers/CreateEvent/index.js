@@ -17,7 +17,7 @@ import { convertToTimestamp, formatDate } from "../../utils/commonHelper";
 import OptionList from "../../components/OptionList"
 import { getCookie, setCookie } from '../../utils/cookie'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 function CreateEvent(props) {
   const [event,] = useContext(EventContext);
@@ -216,7 +216,7 @@ function CreateEvent(props) {
                         }}
                       />
                       <button
-                        className="wrapper-button"
+                        className="wrapper-button btn-add"
                         type="submit"
                         onClick={(e) => {
                           e.preventDefault()
@@ -234,7 +234,7 @@ function CreateEvent(props) {
                             setIsDistinct(false)
                           }
                         }}>
-                        <FontAwesomeIcon className="add-button" icon={faPlusSquare} />
+                        <FontAwesomeIcon  icon={faPlus} color='black' size='2x'/>
                       </button>
                     </div>
                   )}
