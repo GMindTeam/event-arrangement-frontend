@@ -89,7 +89,7 @@ export default function Home(props) {
 
     return (
         <div>
-            { createdEventList.length === 0 && responsedEventList.length === 0 ? <div className="mesage"  ><center><h3>Cùng tạo event nào!!</h3></center></div>: ''}
+            { createdEventList.length === 0 && responsedEventList.length === 0 ? <div className="mesage"  ><center><h2>Cùng tạo event nào!!</h2></center></div>: ''}
             {fetchCreatedEventFromCookie()}
             {fetchResponsedEventFromCookie()}
         </div>

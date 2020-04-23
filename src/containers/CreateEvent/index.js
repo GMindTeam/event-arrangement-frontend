@@ -1,4 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
+
+import React, { useState, useContext, useEffect ,useRef} from "react";
 import { Redirect } from "react-router-dom"
 import { Container } from "./style";
 import { createEvent, editEvent } from './../../api/index';
@@ -16,7 +17,7 @@ import { convertToTimestamp, formatDate } from "../../utils/commonHelper";
 import OptionList from "../../components/OptionList"
 import { getCookie, setCookie } from '../../utils/cookie'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 function CreateEvent(props) {
   const [event,] = useContext(EventContext);
@@ -27,10 +28,15 @@ function CreateEvent(props) {
   const [isCreate, setIsCreate] = useState(false);
   const [isEditSuccessful, setIsEditSuccessful] = useState(false);
   const [textState, setTextState] = useState(0)
-
-
+  const componentIsMounted = useRef(true);  // check if eventdetail is mounted
+  useEffect(() => {
+    return () => {
+      componentIsMounted.current = false;
+    }
+  }, [])
 
   useEffect(() => {
+    setLoading(0);
     if (props.type === "create") {
       setIsCreate(true);
     }
@@ -40,6 +46,7 @@ function CreateEvent(props) {
     return () => {
     }
   }, [props.type])
+
   const validationSchema = Yup.object().shape({
     title: Yup.string()
       .required('Tiêu đề không được bỏ trống. Vui lòng nhập tiêu đề!'),
@@ -57,7 +64,7 @@ function CreateEvent(props) {
 
       <Container>
         <Title>
-          {isCreate ? <h3>Tạo sự kiện</h3> : <h3>Chỉnh sửa sự kiện</h3>}
+          {isCreate ? <h2>Tạo sự kiện</h2> : <h2>Chỉnh sửa sự kiện</h2>}
         </Title>
         <Formik
           initialValues={{
@@ -89,8 +96,10 @@ function CreateEvent(props) {
               if (isCreate) {
                 createEvent(requestBody)
                   .then(response => {
+                    if (componentIsMounted.current) {
                     setEventID(response.data.id);
                     setLoading(2);
+                    }
                     const eventData = getCookie("eventData");   //get data from cookie
                     if (eventData !== "") {  //kiem tra neu cookie da ton tai
                       var newEventObject = {    //object moi de them vao cookie
@@ -125,7 +134,9 @@ function CreateEvent(props) {
               else {
                 editEvent(requestBody, event.id)
                   .then(() => {
+                    if (componentIsMounted.current) {
                     setIsEditSuccessful(true);
+                    }
                     const eventData = getCookie("eventData");   //get data from cookie
                     if (eventData !== "") {  //kiem tra neu cookie da ton tai
                       if (eventData.createdEvent instanceof Array) {
@@ -192,10 +203,10 @@ function CreateEvent(props) {
                   <label className="text">Các lựa chọn</label> <br />
                   <label className="text"></label>
                   <Field name="content">{({ field, form }) => (
-                    <div className="wrapper-content">
+                    <div className="wrapper">
                       <input
                         type="text"
-                        className="content"
+                        className="content option-input"
                         placeholder="Nhập lựa chọn"
                         {...field}
                         onBlur={() => {
@@ -204,7 +215,7 @@ function CreateEvent(props) {
                         }}
                       />
                       <button
-                        className="wrapper-button"
+                        className="wrapper-button btn-add"
                         type="submit"
                         onClick={(e) => {
                           e.preventDefault()
@@ -223,7 +234,7 @@ function CreateEvent(props) {
                             setTextState(2);
                           }
                         }}>
-                        <FontAwesomeIcon className="add-button" icon={faPlusSquare} />
+                        <FontAwesomeIcon  icon={faPlus} color='black' size='1x'/>
                       </button>
                     </div>
                   )}

@@ -18,12 +18,14 @@ const Container = styled.div`
     border-radius: none;
     margin-top: 0px;
     box-shadow: none;
+    min-height:90vh;
   }
   @media ${device.tablet} { 
     max-width: 75%;
     border-radius: 5px;
     margin-top: 50px;
     box-shadow: ${theme.boxShadow};
+    min-height:auto;
   }
   @media ${device.laptop} { 
     max-width: 50%;
@@ -56,6 +58,11 @@ const Container = styled.div`
     bottom: 10px;
     margin-top: 15px;
   }
+  .react-datetimerange-picker__calendar-button__icon 
+  .react-datetimerange-picker__button__icon
+  {
+    color: ${theme.mainColor1}
+  }
   .react-datetimerange-picker__inputGroup,
   .react-datetimerange-picker__range-divider,
   .react-datetimerange-picker__clear-button{
@@ -70,6 +77,7 @@ const Container = styled.div`
     border: 2px solid #9c27b0;
     border-radius: 3em;
     padding: 0.2em 1em;
+    background-color: #ab47bc;
   }
   .warning {
     color: red;
@@ -115,9 +123,23 @@ const Container = styled.div`
     margin-bottom: 5px;
     margin-left: 10px;
   }
-  .add-button {
-    color: ${theme.mainColor1};
-    font-size: 42px;
+  .btn-add{
+    background-color: ${theme.mainColor3};
+    border: 2px solid  ${theme.mainColor1};
+    border-radius: 100px;
+    font-size: 15px;
+    height: 33px;
+    width: 33px;
+    position: absolute;
+    top: 32px;
+    right: 4px;
+    :hover{
+      box-shadow: ${theme.buttonShadow};
+    }
+  }
+  .option-input{
+    border-top-right-radius: 21px;
+    border-bottom-right-radius: 21px;
   }
 
 `;

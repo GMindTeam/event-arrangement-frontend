@@ -56,7 +56,7 @@ export const CopyLinkStyle = styled.div`
 
 const Container = styled.div`
   margin: auto;
-  h3{
+  h2{
     @media ${device.mobile} { 
       line-height: 50px;
   }
@@ -67,17 +67,20 @@ const Container = styled.div`
   background-color: ${theme.backgroundColor3};
   border-radius: 5px;
   margin-top: 50px;
+  
   box-shadow: ${theme.boxShadow};
   @media ${device.mobile} { 
     max-width: 100%;
     border-radius: none;
     margin-top: 0px;
     box-shadow: none;
+    margin-bottom: 0px;
   }
   @media ${device.tablet} { 
     max-width: 75%;
     border-radius: 5px;
     margin-top: 50px;
+    margin-bottom: 50px;
     box-shadow: ${theme.boxShadow};
   }
   @media ${device.laptop} { 
@@ -91,10 +94,10 @@ const Container = styled.div`
   .text {
     height: 30%;
     @media ${device.mobile} { 
-      padding-top:1em
+      padding-top:.5em
     }
     @media ${device.tablet} { 
-      padding-top:2em
+      padding-top:1em
     }
     
   }
@@ -103,12 +106,28 @@ const Container = styled.div`
     margin-left: 5%;
     margin-right: 5%;
     word-wrap: break-word;
+
+    
   }
+  .eventDescription{
+    font-weight: 600;
+  }
+  h3{
+    font-weight:200;
+  }
+  .wrapper-mobile-center
+    {
+      @media ${device.mobile} { 
+      text-align:center;
+      }
+      @media ${device.tablet} { 
+        text-align:initial;
+      }
+    }
   .table {
     margin-left: 5%;
     margin-bottom: 0px;
     margin-right: 5%;
-    padding-top:30px;
     @media ${device.mobile} { 
       font-size:13px;
     }
@@ -117,20 +136,34 @@ const Container = styled.div`
     }
   }
   .groupButton {
-    margin-top: 0px;
+    margin-top: 20px;
+  }
+  .btn{
+    @media ${device.mobile} { 
+      padding: .75em 2em;
+      width: 90%;
+    }
+    @media ${device.tablet} { 
+      padding: .75em 2em;
+      width: 200px;
+    }
   }
   .countDown{
-    margin-right:5%;
-    float:right;
+    
+    position:absolute;
     font-weight:100;
+    margin-top:-8px;
     @media ${device.mobile} { 
     font-size: 9px;
+    left:50%;
     }
     @media ${device.tablet} { 
       font-size: 11px;
+      left:60%;
     }
     @media ${device.laptop} { 
       font-size: 13px;
+      left:60%;
     }
   }
   .svg-inline--fa.fa-w-16 {

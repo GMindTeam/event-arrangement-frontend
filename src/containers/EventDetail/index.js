@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import EventTable from "../../components/EventTable";
 import Alert from "../../components/Alert";
 import { Link } from "react-router-dom";
@@ -38,43 +38,64 @@ function EventDetail(props) {
   const [titles, setTitle] = useState("");
   const [responseNeedToEdit, setResponseNeedToEdit] = useState("");
   const [copied, setCopied] = useState(false);
+  const componentIsMounted = useRef(true);  // check if eventdetail is mounted
 
   useEffect(() => {
+    return () => {
+      componentIsMounted.current = false;
+    }
+  }, [])
+
+
+  useEffect(() => {
+    var myCountDown;
+    function startCountDown() {
+      myCountDown = setTimeout(() => setCountDown(countDown - 1), 1000);
+    }
+    function stopCountDown() {
+      clearTimeout(myCountDown);
+    }
     if (!isCreating) {
-      countDown >= 0 && setTimeout(() => setCountDown(countDown - 1), 1000); //moi giay thi giam count down di 1
+      countDown >= 0 && startCountDown(); //moi giay thi giam count down di 1
       countDown < 0 && setCountDown(10);  // reinit count down = 10
       countDown === 10 && (() => {    //countdown = 10 thi goi api de luu gia tri eventcopy
         getEventDetail(props.match.params.eventID)
           .then(response => {
-            setEventCopy(response.data);
+            if (componentIsMounted.current) {
+              setEventCopy(response.data);
+            }
           });
       })();
+    }
+    return () => {
+      stopCountDown();
     }
   }, [countDown, isCreating, props.match.params.eventID]);
 
   useEffect(() => {
     countDown === 0 && setEvent(eventCopy);  //countDown = 0 thi update table
-  }, [countDown, setEvent, eventCopy])
+  }, [countDown, eventCopy, setEvent])
 
 
   useEffect(() => {
     getEventDetail(props.match.params.eventID)
       .then(response => {
-        setEvent(response.data);
-        setEventCopy(response.data);
-        setLoading(false);
-        setCountResponse(response.data.responselist.length);
-      })
-      .catch(function () {
+        if (componentIsMounted.current) {
+          setEvent(response.data);
+          setEventCopy(response.data);
+          setLoading(false);
+          setCountResponse(response.data.responselist.length);
+        }
       });
+
     const requestBody = {
       "eventid": props.match.params.eventID,
     };
     getOptions(requestBody)
       .then(response => {
-        setTitle(response.data);
-      })
-      .catch(function () {
+        if (componentIsMounted.current) {
+          setTitle(response.data);
+        }
       });
 
   }, [props.match.params.eventID, setEvent]);
@@ -115,11 +136,13 @@ function EventDetail(props) {
       .then(function () {
         getEventDetail(props.match.params.eventID)
           .then(response => {
-            setCountResponse(response.data.responselist.length);
-            setEvent(response.data);
-            setEventCopy(response.data);
-            setIsDeleteing(false);
-            setIsOpenDeleteModal(false);
+            if (componentIsMounted.current) {
+              setCountResponse(response.data.responselist.length);
+              setEvent(response.data);
+              setEventCopy(response.data);
+              setIsDeleteing(false);
+              setIsOpenDeleteModal(false);
+            }
           })
           .catch(function () {
           });
@@ -134,10 +157,12 @@ function EventDetail(props) {
   }
   function submitHandler(type, requestBody, response_id) {  //xu ly khi click button submit trong create response
     window.scrollTo(0, 0);
+    setIsOpenCreateResponse(false);
+    setIsOpentEditResponse(false);
+    setIsCreating(true);
     if (type === "create") {
       createResponse(requestBody)
         .then(() => {
-
           const eventData = getCookie("eventData");  //lay data tu cookie
           if (eventData !== "") {   //kiem tra coi cookie da ton tai chua
             if (eventData.createdEvent instanceof Array) {
@@ -184,25 +209,43 @@ function EventDetail(props) {
           }
 
 
+          getEventDetail(props.match.params.eventID)
+            .then(response => {
+              if (componentIsMounted.current) {
+                setCountResponse(response.data.responselist.length);
+                setEvent(response.data);
+                setEventCopy(response.data);
+                setIsCreating(false);
+                setIsDone(true);
+                setTimeout(() => {
+                  setIsDone(false);
+                }, 2000);
+              }
+
+            });
+
         })
     } else {
       editResponse(requestBody, response_id)
+        .then(() => {
+
+          getEventDetail(props.match.params.eventID)
+            .then(response => {
+              if (componentIsMounted.current) {
+                setCountResponse(response.data.responselist.length);
+                setEvent(response.data);
+                setEventCopy(response.data);
+                setIsCreating(false);
+                setIsDone(true);
+                setTimeout(() => {
+                  setIsDone(false);
+                }, 2000);
+              }
+            });
+        })
     }
 
-    setIsOpenCreateResponse(false);
-    setIsOpentEditResponse(false);
-    setIsCreating(true);
-    getEventDetail(props.match.params.eventID)
-      .then(response => {
-        setCountResponse(response.data.responselist.length);
-        setEvent(response.data);
-        setEventCopy(response.data);
-        setIsCreating(false);
-        setIsDone(true);
-        setTimeout(() => {
-          setIsDone(false);
-        }, 2000);
-      });
+
   }
   function handleEditEvent() {  //xu ly khi click button Edit Event
     let titlesTemp = [...titles];
@@ -274,7 +317,7 @@ function EventDetail(props) {
       {isOpenDeleteModal ? <Alert handleConfirm={handleConfirmDeleteResponse} deleteing={isDeleteing} handleCancel={closeModalDelete} title="Bạn có muốn xoá phản hồi này không ? " description="Bạn sẽ không thể phục hồi lại response đã xoá. "></Alert> : ''}
       <Container>
         <Title>
-          <h3>Chi tiết sự kiện</h3>
+          <h2>Chi tiết sự kiện</h2>
         </Title>
 
         <CopyLinkStyle>
@@ -289,12 +332,14 @@ function EventDetail(props) {
           </div>
         </CopyLinkStyle>
 
-        <div>
-          <h2 className="eventName">{event.name}</h2>
-        </div>
-        <div>
-          <div className="eventDescription"><h3>Mô tả</h3></div>
-          <p className="eventDescription">{event.description}</p>
+        <div className="wrapper-mobile-center">
+          <div>
+            <h2 className="eventName">{event.name}</h2>
+          </div>
+          <div>
+
+            <p className="eventDescription">{'Mô tả: ' + event.description}</p>
+          </div>
         </div>
         <div className="table">
           <div className="text"><h3>Thống kê các phản hồi</h3></div>
@@ -304,8 +349,6 @@ function EventDetail(props) {
                 <tr>
                   <th>Câu trả lời</th>
                   {fetchTitle()}
-                  <th></th>
-                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -348,10 +391,13 @@ function EventDetail(props) {
 
         </div>
         <div className="groupButton">
-          <Button onClick={handleCreateResponse}>Tạo phản hồi</Button>
-          <Link to={routePath.editEvent + event.id}>
-            <Button type="submit" onClick={handleEditEvent}>Chỉnh sửa sự kiện</Button>
-          </Link>
+          <center>
+              <Button className="btn" onClick={handleCreateResponse}>Tạo phản hồi</Button>
+              <Link to={routePath.editEvent + event.id}>
+                <Button className="btn" onClick={handleEditEvent}>Chỉnh sửa sự kiện</Button>
+              </Link>
+          </center>
+
         </div>
       </Container >
       <div>
