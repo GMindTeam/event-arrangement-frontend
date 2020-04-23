@@ -21,7 +21,7 @@ function Alert(props) {
                                 color={theme.mainColor1}
                             /></center>
                             
-                            <h3 className='title'>Đang xoá response...</h3>
+                            <h3 className='title'>Đang xoá phản hồi...</h3>
                         </div>
                         
                     </div>
@@ -32,8 +32,18 @@ function Alert(props) {
                         <FontAwesomeIcon icon="exclamation-circle" size='8x' color={theme.warningColor} />
                         <h3 className='title'>{props.title}</h3>
                         <p className='description'>{props.description}</p>
-                        <input type='button' value='Không' className=' btn btnNo' onClick={() => { props.handleCancel() }} />
-                        <input type='button' value='Có, hãy xoá nó đi!' className=' btn btnYes' onClick={() => { props.handleConfirm() }} />
+                        <center>
+                        <div className="row">
+                            <div className="col">
+                            <input type='button' value='Không' className=' btn btnNo' onClick={() => { props.handleCancel() }} />
+                            </div>
+                            <div className="col">
+                            <input type='button' value='Có, hãy xoá nó đi!' className=' btn btnYes' onClick={() => { props.handleConfirm() }} />
+                            </div>
+                        </div>
+                        </center>
+                        
+                        
                     </div>
                 </div>
             }

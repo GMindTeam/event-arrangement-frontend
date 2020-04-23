@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { theme } from "../../config/mainTheme";
+import { device } from "../../config/breakpoint"
 export const Title = styled.div`
   background-color: white;
   align-items: center;
@@ -8,9 +9,14 @@ export const Title = styled.div`
   margin-bottom: 30px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  h3 {
+   h2{
     text-align: center;
-    line-height: 60px;
+    @media ${device.mobile} { 
+      line-height: 40px;
+    }
+    @media ${device.tablet} { 
+      line-height: 60px;
+    }
     color: ${theme.mainColor1};
   }
 `;
