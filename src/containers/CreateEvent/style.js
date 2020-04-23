@@ -62,15 +62,19 @@ const Container = styled.div`
     bottom: 10px;
     margin-top: 15px;
   }
-  .guide{
+  .guide-option{
     border: none;
     position: absolute;
     top: 0px;
     right: 15px;
-    
-
   }
-  .guide-modal{
+  .guide-calendar{
+    border: none;
+    position: absolute;
+    top: 92px;
+    right: 15px;
+  }
+  .guide-modal-option{
         display: none;
         background-color: white;
         font-size: 11px;
@@ -86,6 +90,24 @@ const Container = styled.div`
         border: 2px solid ${theme.mainColor1};
         box-shadow: ${theme.boxShadow};
       }
+  .guide-modal-calendar{
+        display: none;
+        background-color: white;
+        font-size: 11px;
+        width: 50%;
+        position: absolute;
+        right: 23px;
+        top: 110px;
+        padding: 1em 2em;
+        padding-left: 0px;
+        z-index:1;
+        border-top-left-radius: 15px;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        border: 2px solid ${theme.mainColor1};
+        box-shadow: ${theme.boxShadow};
+        text-align: left;
+      }
   .icon-question{
     box-shadow : ${theme.buttonShadow};
     border-radius: 14px;
@@ -93,7 +115,10 @@ const Container = styled.div`
 
     
   }
-  .guide:hover+.guide-modal {
+  .guide-option:hover+.guide-modal-option {
+    display: block;
+  }
+  .guide-calendar:hover+.guide-modal-calendar {
     display: block;
   }
   .react-datetimerange-picker__calendar-button__icon 
