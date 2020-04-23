@@ -176,6 +176,7 @@ function CreateEvent(props) {
             <Form onSubmit={props.handleSubmit}>
               <div className="text-input" error={props.touched.title ? props.errors.title : undefined}>
                 <label className="text">Tiêu đề sự kiện</label> <br />
+                <p className="subtitle">* Tạo sự kiện để mọi người cùng tham gia: "Cách ly vui vẻ", "Đi học nào",...</p>
                 <Field name="title">{({ field }) => (
                   <input
                     className="content"
@@ -189,8 +190,9 @@ function CreateEvent(props) {
               </div>
               <div className="text-input" error={props.touched.description ? props.errors.description : undefined}>
                 <label className="text">Mô tả sự kiện</label> <br />
+                <p className="subtitle">* Thêm mô tả để mọi người hiểu hơn về sự kiện này</p>
                 <Field name="description">{({ field }) => (
-                  <input
+                  <textarea
                     className="content"
                     id="description"
                     placeholder="Nhập mô tả sự kiện"

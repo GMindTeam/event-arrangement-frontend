@@ -141,7 +141,18 @@ const Container = styled.div`
     border-top-right-radius: 21px;
     border-bottom-right-radius: 21px;
   }
-
+  #description {
+    height: 100px;
+    ::-webkit-input-placeholder {
+      font-size: 13px;
+      font-family: ${theme.fontFamily};
+      position: relative;
+    }
+  }
+  .subtitle {
+    width: 100%;
+    font-size: 13px;
+  }
 `;
 
 export { Container };
