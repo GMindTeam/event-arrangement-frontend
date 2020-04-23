@@ -12,6 +12,10 @@ const Container = styled.div`
   padding: 0px;
   margin-top: 50px;
   box-shadow: ${theme.boxShadow};
+  .required{
+    display: contents;
+    color:red;
+  }
 
   @media ${device.mobile} { 
     max-width: 100%;
@@ -57,6 +61,40 @@ const Container = styled.div`
     padding: 0.25em 1em;
     bottom: 10px;
     margin-top: 15px;
+  }
+  .guide{
+    border: none;
+    position: absolute;
+    top: 0px;
+    right: 15px;
+    
+
+  }
+  .guide-modal{
+        display: none;
+        background-color: white;
+        font-size: 11px;
+        width: 42%;
+        position: absolute;
+        right: 23px;
+        padding: 1em 2em;
+        padding-left: 0px;
+        z-index:1;
+        border-top-left-radius: 15px;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        border: 2px solid ${theme.mainColor1};
+        box-shadow: ${theme.boxShadow};
+      }
+  .icon-question{
+    box-shadow : ${theme.buttonShadow};
+    border-radius: 14px;
+  
+
+    
+  }
+  .guide:hover+.guide-modal {
+    display: block;
   }
   .react-datetimerange-picker__calendar-button__icon 
   .react-datetimerange-picker__button__icon

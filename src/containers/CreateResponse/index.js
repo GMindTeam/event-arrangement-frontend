@@ -85,7 +85,7 @@ function CreateResponse(props) {
           {(props) => (
             <Form onSubmit={props.handleSubmit}>
               <div className="text-input" error={props.touched.username ? props.errors.username : undefined}>
-                <label className="text">Tên người phản hồi</label>
+                <label className="text">Tên người phản hồi</label> <p className="required">*</p>
                 <Field name="username">{({ field }) => (
                   <input
                     className="content"
@@ -98,7 +98,7 @@ function CreateResponse(props) {
                 {props.touched.username && <label id="warningName">{props.errors.username}</label>}
               </div>
               <div className="table">
-                <label className="text">Các lựa chọn</label>
+                <label className="text">Các lựa chọn</label> <p className="required">*</p>
                 <Field>{({ form }) => (
                   <ResponseTable name="response_detail_list"
                     titles={props.values.titles}
@@ -124,7 +124,7 @@ function CreateResponse(props) {
               )}
               </Field>
               <div className="text-input" error={props.touched.comment ? props.errors.comment : undefined}>
-                <label className="text">Bình luận</label>
+                <label className="text">Bình luận</label> <p className="required">*</p>
                 <Field name="comment">{({ field }) => (
                   <input
                     className="content"
