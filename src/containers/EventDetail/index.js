@@ -235,11 +235,11 @@ function EventDetail(props) {
                 setCountResponse(response.data.responselist.length);
                 setEvent(response.data);
                 setEventCopy(response.data);
-                setIsCreating(false);
-                setIsDone(true);
-                setTimeout(() => {
-                  setIsDone(false);
-                }, 2000);
+                // setIsCreating(false);
+                // setIsDone(true);
+                // setTimeout(() => {
+                //   setIsDone(false);
+                // }, 2000);
               }
             });
         })
