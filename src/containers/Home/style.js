@@ -26,7 +26,7 @@ export const EventCard = styled.div`
     }
     .eventName,
     .eventDescription {
-      margin-left: 1em;
+      margin-left: 1rem;
       word-wrap: break-word;
     }
     .eventName{
