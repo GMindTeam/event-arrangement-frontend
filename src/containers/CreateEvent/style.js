@@ -13,7 +13,7 @@ const Container = styled.div`
   margin-top: 50px;
   box-shadow: ${theme.boxShadow};
   textarea{
-    font-display: ${theme.fontFamily};
+    font-family: ${theme.fontFamily};
   }
   .required{
     display: contents;
