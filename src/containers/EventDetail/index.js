@@ -45,8 +45,6 @@ function EventDetail(props) {
       componentIsMounted.current = false;
     }
   }, [])
-
-
   useEffect(() => {
     var myCountDown;
     function startCountDown() {
@@ -62,7 +60,7 @@ function EventDetail(props) {
         getEventDetail(props.match.params.eventID)
           .then(response => {
             if (componentIsMounted.current) {
-              setEventCopy(response.data);
+              setEventCopy(response.data);             
             }
           });
       })();
@@ -73,7 +71,14 @@ function EventDetail(props) {
   }, [countDown, isCreating, props.match.params.eventID]);
 
   useEffect(() => {
-    countDown === 0 && setEvent(eventCopy);  //countDown = 0 thi update table
+    if(countDown === 0) { //countDown = 0 thi update table
+      setEvent(eventCopy);
+      if(eventCopy.responselist instanceof Array)
+      {
+        setCountResponse(eventCopy.responselist.length);
+      }
+      
+    } 
   }, [countDown, eventCopy, setEvent])
 
 
