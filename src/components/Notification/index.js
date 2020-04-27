@@ -1,7 +1,6 @@
-import { Container, ContainerMobile } from "./style";
+import { Container } from "./style";
 import { ClipLoader } from "react-spinners";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { theme } from "../../config/mainTheme";
 import React from "react";
 
 export default function Notification(props) {
