@@ -6,7 +6,7 @@ import { createEvent, editEvent } from './../../api/index';
 import { BounceLoader } from "react-spinners";
 import { EventContext } from "../../components/EventContext";
 import { OptionContext } from "../../components/OptionContext";
-import { Form, Field, Formik } from "formik";
+import { Form, Field, Formik} from "formik";
 import DateTimeRangePicker from "@wojtekmaj/react-datetimerange-picker";
 import * as Yup from 'yup'
 import { routePath } from '../../config/routes'
@@ -26,7 +26,6 @@ function CreateEvent(props) {
   const [eventID, setEventID] = useState("");
   const [loading, setLoading] = useState(0);
   const [isCreate, setIsCreate] = useState(false);
-  const [isDistinct, setIsDistinct] = useState(true);
   const [isEditSuccessful, setIsEditSuccessful] = useState(false);
   const [textState, setTextState] = useState(0)
   const componentIsMounted = useRef(true);  // check if eventdetail is mounted
@@ -69,12 +68,11 @@ function CreateEvent(props) {
         </Title>
         <Formik
           initialValues={{
-            title: (isCreate) ? "" : event.name,
-            description: (isCreate) ? "" : event.description,
-            options: (isCreate) ? "" : options,
-            type: (isCreate) ? "create" : "edit",
+            title: (props.type === "create") ? "" : event.name,
+            description: (props.type === "create") ? "" : event.description,
+            options: (props.type === "create") ? "" : options,
+            type: (props.type === "create") ? "create" : "edit",
             content: "",
-            distinct: ""
           }}
           enableReinitialize={true}
           onSubmit={(values) => {
@@ -178,10 +176,10 @@ function CreateEvent(props) {
                 <label className="text">Tiêu đề sự kiện</label> <br />
                 <Field name="title">{({ field }) => (
                   <input
+                    type="text"
                     className="content"
                     id="name"
                     placeholder="Nhập tiêu đề sự kiện"
-                    value={props.values.title}
                     {...field}
                   />)}
                 </Field>
@@ -191,10 +189,10 @@ function CreateEvent(props) {
                 <label className="text">Mô tả sự kiện</label> <br />
                 <Field name="description">{({ field }) => (
                   <input
+                    type="text"
                     className="content"
                     id="description"
                     placeholder="Nhập mô tả sự kiện"
-                    value={props.values.description}
                     {...field}
                   />)}
                 </Field>
@@ -207,12 +205,13 @@ function CreateEvent(props) {
                   <Field name="content">{({ field, form }) => (
                     <div className="wrapper">
                       <input
+                        type="text"
                         className="content option-input"
                         placeholder="Nhập lựa chọn"
                         {...field}
-                        onBlur={(e) => {
+                        onBlur={() => {
                           form.setFieldTouched("options", true);
-                          setIsDistinct(true)
+                          setTextState(0);
                         }}
                       />
                       <button
@@ -220,18 +219,19 @@ function CreateEvent(props) {
                         type="submit"
                         onClick={(e) => {
                           e.preventDefault()
-                          setIsDistinct(true)
-                          var oldText = (String)(props.values.options).trim("\n")
-                          var tmp = (String)(props.values.content).trim().toLowerCase()
+                          setTextState(0);
+                          var oldText = props.values.options.trim("\n")
+                          var tmp = props.values.content.trim().toLowerCase()
                           var arr = oldText.toLowerCase().split("\n")
                           if (arr.indexOf(tmp) === -1) {
                             form.setFieldValue("options", oldText + "\n" + tmp)
                             form.setFieldValue("content", "")
-                            setIsDistinct(true)
+                            form.setFieldTouched("options", false)
+                            setTextState(0);
                           } else if (tmp === "") {
                           }
                           else {
-                            setIsDistinct(false)
+                            setTextState(2);
                           }
                         }}>
                         <FontAwesomeIcon  icon={faPlus} color='black' size='1x'/>
@@ -247,16 +247,11 @@ function CreateEvent(props) {
                           onChange={(date) => {
                             setDate(date)
                           }}
-                          onBlur={() => {
-                            if (!isDistinct) {
-                              form.setFieldError("distinct", "This option already exists")
-                            }
-                          }}
                           value={date}
                           onCalendarClose={() => {
                             form.setFieldTouched("options", true);
                             var text = date + "";
-                            var oldText = (String)(props.values.options).trim("\n");
+                            var oldText = props.values.options.trim("\n");
                             var listDate = text.split(",");
                             var startDate = listDate[0];
                             startDate = startDate.replace(",", " ");
@@ -274,9 +269,9 @@ function CreateEvent(props) {
                                 var newtext = formatDate(text);
                                 if (arr.indexOf(newtext + " 18:00~") === -1) {
                                   oldText = oldText + "\n" + newtext + " 18:00~";
-                                  setIsDistinct(true)
+                                  setTextState(0)
                                 } else {
-                                  setIsDistinct(false)
+                                  setTextState(2)
                                 }
                               }
                               else {
@@ -294,14 +289,12 @@ function CreateEvent(props) {
                                   numbersd += 86400000;
                                 }
                                 if (count === check) {
-                                  setIsDistinct(false)
+                                  setTextState(2)
                                 } else {
-                                  setIsDistinct(true)
+                                  setTextState(0)
                                 }
                               }
                               form.setFieldValue("options", oldText.trim("\n") + "\n");
-                            } else {
-
                             }
                             setDate();
                           }}
@@ -318,7 +311,7 @@ function CreateEvent(props) {
                     type={props.values.type}
                     options={props.values.options}
                     handleEditOption={(option, index, textState) => {
-                      var arr = (String)(props.values.options).trim("\n").split("\n")
+                      var arr = props.values.options.trim("\n").split("\n")
                       setTextState(textState)
                       if (textState === 0) {
                         arr[index] = option
@@ -327,29 +320,23 @@ function CreateEvent(props) {
                           str += arr[i] + "\n"
                         }
                         form.setFieldValue("options", str.trim("\n"));
-                        setIsDistinct(true)
-                      } else {
-                        if (textState === 2) {
-                          setIsDistinct(false)
-                        }
                       }
                     }}
                     handleDeleteOption={(index) => {
-                      var arr = (String)(props.values.options).trim("\n").split("\n");
+                      var arr = props.values.options.trim("\n").split("\n");
                       arr.splice(index, 1)
                       var str = ""
                       for (var i = 0; i < arr.length; i++) {
                         str += arr[i] + "\n"
                       }
                       form.setFieldValue("options", str.trim("\n"));
-                      setIsDistinct(true)
                       setTextState(0)
                     }}
                   />
                 )}
                 </Field>
-                <label className="warning">{!isDistinct ? "Lựa chọn này đã tồn tại. Vui lòng nhập lựa chọn khác!" : ""}</label>
-                <label className="warning">{textState === 1 ? "Lựa chọn không được bỏ trống. Vui lòng nhập lựa chọn!" : ""}</label>
+                <label className="warning">{textState === 2 ? "Lựa chọn này đã tồn tại. Vui lòng nhập lựa chọn khác!" : ""}</label>
+                {/* <label className="warning">{textState === 1 ? "Lựa chọn không được bỏ trống. Vui lòng nhập lựa chọn!" : ""}</label> */}
               </div>
               <div className="btn">
                 <Button className="createButton" type="submit" >
