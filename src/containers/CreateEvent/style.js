@@ -12,6 +12,9 @@ const Container = styled.div`
   padding: 0px;
   margin-top: 50px;
   box-shadow: ${theme.boxShadow};
+  textarea{
+    font-family: ${theme.fontFamily};
+  }
   .required{
     display: contents;
     color:red;
