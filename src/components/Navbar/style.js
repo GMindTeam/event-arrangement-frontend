@@ -14,7 +14,6 @@ export const Nav = styled.nav`
     justify-content: space-evenly;
     align-items: center;
     list-style: none;
-    margin-bottom: 0px;
   }
   a {
     color: white;
