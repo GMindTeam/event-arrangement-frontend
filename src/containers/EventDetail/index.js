@@ -341,6 +341,9 @@ function EventDetail(props) {
             <p className="eventDescription">{'Mô tả: ' + event.description}</p>
           </div>
         </div>
+        <Link to={routePath.editEvent + event.id}>
+                <Button className="btn edit-event-btn" onClick={handleEditEvent}>Chỉnh sửa sự kiện</Button>
+              </Link>
         <div className="table">
           <div className="text"><h3>Thống kê các phản hồi</h3></div>
           <div>
@@ -393,9 +396,7 @@ function EventDetail(props) {
         <div className="groupButton">
           <center>
               <Button className="btn" onClick={handleCreateResponse}>Tạo phản hồi</Button>
-              <Link to={routePath.editEvent + event.id}>
-                <Button className="btn" onClick={handleEditEvent}>Chỉnh sửa sự kiện</Button>
-              </Link>
+              
           </center>
 
         </div>
