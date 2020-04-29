@@ -62,10 +62,10 @@ function CreateEvent(props) {
         </Title>
         <Formik
           initialValues={{
-            title: (isCreate) ? "" : event.name,
-            description: (isCreate) ? "" : event.description,
-            options: (isCreate) ? "" : options,
-            type: (isCreate) ? "create" : "edit",
+            title: (props.type === "create") ? "" : event.name,
+            description: (props.type === "create") ? "" : event.description,
+            options: (props.type === "create") ? "" : options,
+            type: (props.type === "create") ? "create" : "edit",
             content: "",
             distinct: ""
           }}
@@ -163,43 +163,45 @@ function CreateEvent(props) {
         >
           {(props) => (
             <Form onSubmit={props.handleSubmit}>
-              <div className="text-input" error={props.touched.title && !!props.errors.title}>
+              <div className="text-input" error={props.touched.title ? props.errors.title : undefined}>
                 <label className="text">Tiêu đề sự kiện</label> <br />
-                <Field name="title" render={({ field }) => (
+                <Field name="title">{({ field }) => (
                   <input
+                    type="text"
                     className="content"
                     id="name"
                     placeholder="Nhập tiêu đề sự kiện"
-                    value={props.values.title}
                     {...field}
-                  />)} />
+                  />)}
+                </Field>
                 {props.touched.title && <label className="warning">{props.errors.title}</label>}
               </div>
-              <div className="text-input" error={props.touched.description && !!props.errors.description}>
+              <div className="text-input" error={props.touched.description ? props.errors.description : undefined}>
                 <label className="text">Mô tả sự kiện</label> <br />
-                <Field name="description" render={({ field }) => (
+                <Field name="description">{({ field }) => (
                   <input
+                    type="text"
                     className="content"
                     id="description"
                     placeholder="Nhập mô tả sự kiện"
-                    value={props.values.description}
                     {...field}
-                  />)} />
+                  />)}
+                </Field>
                 {props.touched.description && <label className="warning">{props.errors.description}</label>}
               </div>
               <div className="sub">
-                <div className="text-input" error={props.touched.options && !!props.errors.options}>
+                <div className="text-input" error={props.touched.options ? props.errors.options : undefined}>
                   <label className="text">Các lựa chọn</label> <br />
                   <label className="text"></label>
-                  <Field name="content" render={({ field, form }) => (
+                  <Field name="content">{({ field, form }) => (
                     <div className="wrapper-content">
                       <input
+                        type="text"
                         className="content"
                         placeholder="Nhập lựa chọn"
                         {...field}
                         onBlur={(e) => {
                           form.setFieldTouched("options", true);
-                          var tmp = e.target.value.trim("\s+").toLowerCase()
                           setIsDistinct(true)
                         }}
                       />
@@ -211,7 +213,6 @@ function CreateEvent(props) {
                           setIsDistinct(true)
                           var oldText = (String)(props.values.options).trim("\n")
                           var tmp = (String)(props.values.content).trim().toLowerCase()
-                          console.log(tmp)
                           var arr = oldText.toLowerCase().split("\n")
                           if (arr.indexOf(tmp) === -1) {
                             form.setFieldValue("options", oldText + "\n" + tmp)
@@ -226,11 +227,12 @@ function CreateEvent(props) {
                         <FontAwesomeIcon className="add-button" icon={faPlusSquare} />
                       </button>
                     </div>
-                  )} />
+                  )}
+                  </Field>
                   {(props.touched.options) && <label className="warning">{props.errors.options}</label>}
                   <div className="wrapper">
                     <div className="calendar">
-                      <Field name="datetime" render={({ field, form }) => (
+                      <Field name="datetime">{({ form }) => (
                         <DateTimeRangePicker
                           onChange={(date) => {
                             setDate(date)
@@ -294,13 +296,13 @@ function CreateEvent(props) {
                             setDate();
                           }}
                         />)}
-                      />
+                      </Field>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="right">
-                <Field render={({ field, form }) => (
+                <Field>{({ form }) => (
                   <OptionList
                     name="options"
                     type={props.values.type}
@@ -334,7 +336,8 @@ function CreateEvent(props) {
                       setTextState(0)
                     }}
                   />
-                )} />
+                )}
+                </Field>
                 <label className="warning">{!isDistinct ? "Lựa chọn này đã tồn tại. Vui lòng nhập lựa chọn khác!" : ""}</label>
                 <label className="warning">{textState === 1 ? "Lựa chọn không được bỏ trống. Vui lòng nhập lựa chọn!" : ""}</label>
               </div>
