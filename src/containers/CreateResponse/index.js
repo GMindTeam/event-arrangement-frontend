@@ -88,6 +88,7 @@ function CreateResponse(props) {
                 <label className="text">Tên người phản hồi</label> <p className="required">*</p>
                 <Field name="username">{({ field }) => (
                   <input
+                    type="text"
                     className="content"
                     id="name"
                     placeholder="Nhập tên người phản hồi"
@@ -127,6 +128,7 @@ function CreateResponse(props) {
                 <label className="text">Bình luận</label> <p className="required">*</p>
                 <Field name="comment">{({ field }) => (
                   <input
+                    type="text"
                     className="content"
                     id="comment"
                     placeholder="Nhập bình luận"
