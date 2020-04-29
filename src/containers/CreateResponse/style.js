@@ -11,6 +11,10 @@ const Container = styled.div`
   overflow: auto; 
   background-color: ${theme.fallbackColor};
   background-color: ${theme.blackOpacity};
+  .required{
+    display: contents;
+    color:red;
+  }
   .modal-content {
     justify-self: center;
     position: relative;

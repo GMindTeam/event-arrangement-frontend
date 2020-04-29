@@ -175,7 +175,8 @@ function CreateEvent(props) {
           {(props) => (
             <Form onSubmit={props.handleSubmit}>
               <div className="text-input" error={props.touched.title ? props.errors.title : undefined}>
-                <label className="text">Tiêu đề sự kiện</label> <p className="required">*</p> <br />
+                <label className="text">Tiêu đề sự kiện</label><p className="required">*</p> <br />
+                <p className="subtitle">* Tạo sự kiện để mọi người cùng tham gia: "Cách ly vui vẻ", "Đi học nào",...</p>
                 <Field name="title">{({ field }) => (
                   <input
                     className="content"
@@ -188,9 +189,10 @@ function CreateEvent(props) {
                 {props.touched.title && <label className="warning">{props.errors.title}</label>}
               </div>
               <div className="text-input" error={props.touched.description ? props.errors.description : undefined}>
-                <label className="text">Mô tả sự kiện</label> <p className="required">*</p> <br />
+                <label className="text">Mô tả sự kiện</label><p className="required">*</p> <br />
+                <p className="subtitle">* Thêm mô tả để mọi người hiểu hơn về sự kiện này</p>
                 <Field name="description">{({ field }) => (
-                  <input
+                  <textarea
                     className="content"
                     id="description"
                     placeholder="Nhập mô tả sự kiện"
@@ -204,16 +206,17 @@ function CreateEvent(props) {
                 <div className="text-input" error={props.touched.options ? props.errors.options : undefined}>
                   <label className="text">Các lựa chọn</label><br />
                   <label className="text"></label>
-                  <div className="guide"><FontAwesomeIcon className='icon-question' icon={faQuestionCircle} color={theme.mainColor1} size='sm' /></div>
-                  <div className="guide-modal">
+                  <div className="guide-option"><FontAwesomeIcon className='icon-question' icon={faQuestionCircle} color={theme.mainColor1} size='sm' /></div>
+                  <div className="guide-modal-option">
                     <div className="row">
-                    <ul>
-                    <li>Nhập và thêm option vào trong bảng.</li> 
-                      <li>Bạn có thể dùng calendar để thêm option nhanh.</li> 
-                      <li>Calendar còn có chức năng chọn một hoặc nhiều ngày cùng lúc.</li>
-                    </ul>
-                      
-                    </div></div>
+                      <ul>
+                        <li>Nhập tên option vào trong trường.</li>
+                        <li>Ấn button bên cạnh để thêm option vào list.</li>
+                        <li>Calendar còn có chức năng chọn một hoặc nhiều ngày cùng lúc.</li>
+                      </ul>
+
+                    </div>
+                  </div>
                   <Field name="content">{({ field, form }) => (
                     <div className="wrapper">
                       <input
@@ -252,6 +255,7 @@ function CreateEvent(props) {
                   {(props.touched.options) && <label className="warning">{props.errors.options}</label>}
                   <div className="wrapper">
                     <div className="calendar">
+                     
                       <Field name="datetime">{({ form }) => (
                         <DateTimeRangePicker
                           onChange={(date) => {
@@ -317,6 +321,16 @@ function CreateEvent(props) {
                           }}
                         />)}
                       </Field>
+                      <div className="guide-calendar"><FontAwesomeIcon className='icon-question' icon={faQuestionCircle} color={theme.mainColor1} size='sm' /></div>
+                      <div className="guide-modal-calendar">
+                        <div className="row">
+                          <ul>
+                            <li>Ấn button Calendar để sử dụng chức năng calendar.</li>
+                            <li>Chọn ngày trong calendar sẽ tự động thêm option vào trong list các lựa chọn.</li>
+                            <li>Calendar có chức năng chọn một hoặc nhiều ngày cùng lúc.</li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
