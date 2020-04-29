@@ -89,7 +89,11 @@ function EventDetail(props) {
           setEvent(response.data);
           setEventCopy(response.data);
           setLoading(false);
-          setCountResponse(response.data.responselist.length);
+          if(response.data.responselist instanceof Array)
+          {
+            setCountResponse(response.data.responselist.length);
+          }
+          
         }
       });
 
@@ -142,7 +146,10 @@ function EventDetail(props) {
         getEventDetail(props.match.params.eventID)
           .then(response => {
             if (componentIsMounted.current) {
-              setCountResponse(response.data.responselist.length);
+              if(response.data.responselist instanceof Array)
+              {
+                setCountResponse(response.data.responselist.length);
+              }
               setEvent(response.data);
               setEventCopy(response.data);
               setIsDeleteing(false);
@@ -217,7 +224,10 @@ function EventDetail(props) {
           getEventDetail(props.match.params.eventID)
             .then(response => {
               if (componentIsMounted.current) {
-                setCountResponse(response.data.responselist.length);
+                if(response.data.responselist instanceof Array)
+                {
+                  setCountResponse(response.data.responselist.length);
+                }
                 setEvent(response.data);
                 setEventCopy(response.data);
                 setIsCreating(false);
@@ -237,7 +247,10 @@ function EventDetail(props) {
           getEventDetail(props.match.params.eventID)
             .then(response => {
               if (componentIsMounted.current) {
-                setCountResponse(response.data.responselist.length);
+                if(response.data.responselist instanceof Array)
+                {
+                  setCountResponse(response.data.responselist.length);
+                }
                 setEvent(response.data);
                 setEventCopy(response.data);
                 setIsCreating(false);
