@@ -14,7 +14,11 @@ export const Nav = styled.nav`
     justify-content: space-evenly;
     align-items: center;
     list-style: none;
-    padding-left: 0px;
+    @media ${device.mobile} { 
+    }
+    @media ${device.tablet} { 
+      padding-left: 0px;
+    }
     margin:0px;
   }
   a {

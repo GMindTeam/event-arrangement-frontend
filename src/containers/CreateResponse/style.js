@@ -38,6 +38,12 @@ const Container = styled.div`
   }
   h2{
     margin-left: 20px;
+    @media ${device.mobile} { 
+      line-height: 50px;
+    }
+      @media ${device.tablet} { 
+        line-height: 65px;
+    }
   }
   .close {
   color: #aaaaaa;

@@ -13,7 +13,8 @@ export const EventCard = styled.div`
     }
     margin: auto;
     border-radius: 5px; 
-    margin-top: 50px;
+    margin-top: 40px;
+    margin-bottom: 10px;
     box-shadow: ${theme.boxShadow};
   .content{
     @media ${device.mobile} { 

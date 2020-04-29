@@ -59,14 +59,7 @@ export const CopyLinkStyle = styled.div`
 
 const Container = styled.div`
   margin: auto;
-  h2{
-    @media ${device.mobile} { 
-      line-height: 50px;
-  }
-    @media ${device.tablet} { 
-      line-height: 65px;
-  }
-  }
+
   background-color: ${theme.backgroundColor3};
   border-radius: 5px;
   margin-top: 50px;
