@@ -79,9 +79,11 @@ const Container = styled.div`
   .btn{
     @media ${device.mobile} { 
       padding: .5em .75em;
+      font-size:12px;
     }
     @media ${device.tablet} { 
       padding: .5em 2.5em;
+      font-size:13px;
     }
     @media ${device.laptop} { 
       padding: .5em 2.5em;
@@ -101,9 +103,13 @@ const Container = styled.div`
     justify-content: space-between;
     margin-left:-5%;
   }
-  .col{
+  .col-left{
     float:left;
-    width: 50%;
+    width: 40%;
+  }
+  .col-right{
+    float:left;
+    width: 60%;
   }
   .wrapper-button{
     height:20px;

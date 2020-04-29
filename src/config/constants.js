@@ -1,3 +1,3 @@
 export const appPath = {
-    domain: 'http://eventarrangement.appspot.com/event/',
+    domain: 'https://eventarrangement-275602.uc.r.appspot.com/event/',
   }

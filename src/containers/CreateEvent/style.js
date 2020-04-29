@@ -46,6 +46,7 @@ const Container = styled.div`
   .text {
     height: 100%;
     padding-top: 30px;
+    
   }
   .content {
     width: 100%;
@@ -149,6 +150,7 @@ const Container = styled.div`
     color: red;
     font-size: 13px;
   }
+
   .btn{
     text-align:center;
   }

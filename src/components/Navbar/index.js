@@ -2,7 +2,6 @@ import React from "react";
 import { Route, Link, Switch, BrowserRouter } from "react-router-dom";
 import CreateEvent from "../../containers/CreateEvent";
 import Home from "../../containers/Home";
-import Credit from "../../containers/Credit";
 import EventDetail from "../../containers/EventDetail";
 import { Nav} from "./style";
 import { routePath} from "../../config/routes";
@@ -19,9 +18,6 @@ export default function NavBar() {
                 <img alt="Logo" className="logo"  src={require("../../images/logo.PNG")} />
               </Link>
 
-              <li className="link credit">
-                <Link to={routePath.credit}>Thông tin</Link>
-              </li>
               <li className="link">
                 <Link to={routePath.createEvent}>
                   <div className="btn">
@@ -38,9 +34,6 @@ export default function NavBar() {
           {/* A <Switch> looks through its children <Route>s and
         renders the first one that matches the current URL. */}
           <Switch>
-            <Route path={routePath.credit}>
-              <Credit />
-            </Route>
             <Route path={routePath.createEvent}>
               <CreateEvent type="create"/>
             </Route>

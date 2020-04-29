@@ -34,10 +34,10 @@ function Alert(props) {
                         <p className='description'>{props.description}</p>
                         <center className="wrapper-button">
                         <div className="row">
-                            <div className="col">
+                            <div className="col-left">
                             <input type='button' value='Không' className=' btn btnNo' onClick={() => { props.handleCancel() }} />
                             </div>
-                            <div className="col">
+                            <div className="col-right">
                             <input type='button' value='Có, hãy xoá nó đi!' className=' btn btnYes' onClick={() => { props.handleConfirm() }} />
                             </div>
                         </div>
