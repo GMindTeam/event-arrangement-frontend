@@ -6,7 +6,7 @@ import qs from 'qs';
 const { GET, POST, DELETE, PUT } = METHOD;
 
 const mainRequestConfig = {
-  baseURL: 'https://miniproject-271309.appspot.com/api/',
+  baseURL: 'https://backend-dot-eventarrangement-275602.uc.r.appspot.com/api/',
   headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 }
 

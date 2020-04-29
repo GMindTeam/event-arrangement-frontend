@@ -14,6 +14,9 @@ export const CopyLinkStyle = styled.div`
     height: 50px;
     font-size: 16px;
   }
+  .edit-event-btn{
+    
+  }
   button {
     background-color: white;
     border: 0;

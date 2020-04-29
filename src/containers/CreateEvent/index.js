@@ -1,5 +1,5 @@
 
-import React, { useState, useContext, useEffect ,useRef} from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { Redirect } from "react-router-dom"
 import { Container } from "./style";
 import { createEvent, editEvent } from './../../api/index';
@@ -17,7 +17,7 @@ import { convertToTimestamp, formatDate } from "../../utils/commonHelper";
 import OptionList from "../../components/OptionList"
 import { getCookie, setCookie } from '../../utils/cookie'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 
 function CreateEvent(props) {
   const [event,] = useContext(EventContext);
@@ -97,8 +97,8 @@ function CreateEvent(props) {
                 createEvent(requestBody)
                   .then(response => {
                     if (componentIsMounted.current) {
-                    setEventID(response.data.id);
-                    setLoading(2);
+                      setEventID(response.data.id);
+                      setLoading(2);
                     }
                     const eventData = getCookie("eventData");   //get data from cookie
                     if (eventData !== "") {  //kiem tra neu cookie da ton tai
@@ -135,7 +135,7 @@ function CreateEvent(props) {
                 editEvent(requestBody, event.id)
                   .then(() => {
                     if (componentIsMounted.current) {
-                    setIsEditSuccessful(true);
+                      setIsEditSuccessful(true);
                     }
                     const eventData = getCookie("eventData");   //get data from cookie
                     if (eventData !== "") {  //kiem tra neu cookie da ton tai
@@ -173,7 +173,8 @@ function CreateEvent(props) {
           {(props) => (
             <Form onSubmit={props.handleSubmit}>
               <div className="text-input" error={props.touched.title ? props.errors.title : undefined}>
-                <label className="text">Tiêu đề sự kiện</label> <br />
+                <label className="text">Tiêu đề sự kiện</label><p className="required">*</p> <br />
+                <p className="subtitle">* Tạo sự kiện để mọi người cùng tham gia: "Cách ly vui vẻ", "Đi học nào",...</p>
                 <Field name="title">{({ field }) => (
                   <input
                     type="text"
@@ -186,10 +187,10 @@ function CreateEvent(props) {
                 {props.touched.title && <label className="warning">{props.errors.title}</label>}
               </div>
               <div className="text-input" error={props.touched.description ? props.errors.description : undefined}>
-                <label className="text">Mô tả sự kiện</label> <br />
+                <label className="text">Mô tả sự kiện</label><p className="required">*</p> <br />
+                <p className="subtitle">* Thêm mô tả để mọi người hiểu hơn về sự kiện này</p>
                 <Field name="description">{({ field }) => (
-                  <input
-                    type="text"
+                  <textarea
                     className="content"
                     id="description"
                     placeholder="Nhập mô tả sự kiện"
@@ -200,8 +201,19 @@ function CreateEvent(props) {
               </div>
               <div className="sub">
                 <div className="text-input" error={props.touched.options ? props.errors.options : undefined}>
-                  <label className="text">Các lựa chọn</label> <br />
+                  <label className="text">Các lựa chọn</label><br />
                   <label className="text"></label>
+                  <div className="guide-option"><FontAwesomeIcon className='icon-question' icon={faQuestionCircle} color={theme.mainColor1} size='sm' /></div>
+                  <div className="guide-modal-option">
+                    <div className="row">
+                      <ul>
+                        <li>Nhập tên option vào trong trường.</li>
+                        <li>Ấn button bên cạnh để thêm option vào list.</li>
+                        <li>Calendar còn có chức năng chọn một hoặc nhiều ngày cùng lúc.</li>
+                      </ul>
+
+                    </div>
+                  </div>
                   <Field name="content">{({ field, form }) => (
                     <div className="wrapper">
                       <input
@@ -234,7 +246,7 @@ function CreateEvent(props) {
                             setTextState(2);
                           }
                         }}>
-                        <FontAwesomeIcon  icon={faPlus} color='black' size='1x'/>
+                        <FontAwesomeIcon icon={faPlus} color='black' size='1x' />
                       </button>
                     </div>
                   )}
@@ -242,6 +254,7 @@ function CreateEvent(props) {
                   {(props.touched.options) && <label className="warning">{props.errors.options}</label>}
                   <div className="wrapper">
                     <div className="calendar">
+                     
                       <Field name="datetime">{({ form }) => (
                         <DateTimeRangePicker
                           onChange={(date) => {
@@ -300,6 +313,16 @@ function CreateEvent(props) {
                           }}
                         />)}
                       </Field>
+                      <div className="guide-calendar"><FontAwesomeIcon className='icon-question' icon={faQuestionCircle} color={theme.mainColor1} size='sm' /></div>
+                      <div className="guide-modal-calendar">
+                        <div className="row">
+                          <ul>
+                            <li>Ấn button Calendar để sử dụng chức năng calendar.</li>
+                            <li>Chọn ngày trong calendar sẽ tự động thêm option vào trong list các lựa chọn.</li>
+                            <li>Calendar có chức năng chọn một hoặc nhiều ngày cùng lúc.</li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
