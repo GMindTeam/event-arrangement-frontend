@@ -32,6 +32,9 @@ const Container = styled.div`
       width: 50%;
     }
   }
+  h2{
+    margin-left: 20px;
+  }
   .close {
   color: #aaaaaa;
   float: right;
@@ -86,35 +89,11 @@ const Container = styled.div`
   }
   .groupButton{
     text-align:center;
-    height: 2.7em;
+    height: 3.7em;
   }
-  .row{
-    display:flex;
-    width: 15%;
-    margin-left: 45%;
-    @media ${device.mobile} { 
-      margin-left: 40%;
-    }
-    @media ${device.tablet} { 
-      margin-left: 42%;
-    }
-    @media ${device.laptop} { 
-      margin-left: 45%;
-    }
-  }
-  .col{
-    flex:50%;
-  }
-  #loading{
-    
-    @media ${device.mobile} { 
-      line-height: 1.9em;
-    }
-    @media ${device.tablet} { 
-      line-height: 2em;
-    }
-    margin-left: 5px;
-  }
+
+
+ 
 `;
 
 export { Container };

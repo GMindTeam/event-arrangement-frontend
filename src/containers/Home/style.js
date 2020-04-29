@@ -1,11 +1,9 @@
 import styled from "styled-components";
 import { theme } from "../../config/mainTheme";
 import { device } from "../../config/breakpoint"
-
 export const EventCard = styled.div`
-
-    @media ${device.mobile} { 
-      width: 100%;
+@media ${device.mobile} { 
+      width: 90%;
     }
     @media ${device.tablet} { 
       width: 75%;
@@ -18,7 +16,6 @@ export const EventCard = styled.div`
     margin-top: 50px;
     box-shadow: ${theme.boxShadow};
   .content{
-    
     @media ${device.mobile} { 
       padding-left: .5em;
       padding-bottom: .5em;
@@ -44,6 +41,7 @@ export const EventCard = styled.div`
     }
   }
 `
+
 export const Button = styled.button`
   background: white;
   color: ${theme.mainColor1};

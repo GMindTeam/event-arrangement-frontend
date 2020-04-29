@@ -9,7 +9,7 @@ function ResponseTable(props) {
     if (props.type === "edit") {
       var titles = [...props.titles];
       var answerlist = [...props.responselist];
-      for(var i=0; i<titles.length; i++){
+      for (var i = 0; i < titles.length; i++) {
         var obj = {
           optionid: titles[i].id,
           content: titles[i].content,
@@ -35,7 +35,7 @@ function ResponseTable(props) {
     return () => {
 
     }
-  }, [props.responselist, props.titles,props.type])
+  }, [props.responselist, props.titles, props.type])
 
   function fetchOption() {
     if (responselist instanceof Array) {
@@ -51,8 +51,8 @@ function ResponseTable(props) {
             arr[i] = tmp
             setResponseList(arr);
             var isChecked = true;
-            for(var j=0; j<arr.length; j++){
-              if(arr[j].answer === "4" || arr[j].answer === undefined) isChecked = false
+            for (var j = 0; j < arr.length; j++) {
+              if (arr[j].answer === "4" || arr[j].answer === undefined) isChecked = false
             }
             return props.handleChangeResponse(arr, isChecked)
           }} />;
@@ -62,13 +62,19 @@ function ResponseTable(props) {
   return (
     <div>
       <Table>
-        <tr>
-          <th>Các lựa chọn</th>
-          <th>Đồng ý</th>
-          <th>Không đồng ý</th>
-          <th>Suy nghĩ</th>
-        </tr>
-        {fetchOption()}
+        <table>
+          <thead>
+            <tr>
+              <th>Các lựa chọn</th>
+              <th>Đồng ý</th>
+              <th>Không đồng ý</th>
+              <th>Suy nghĩ</th>
+            </tr>
+          </thead>
+          <tbody>
+            {fetchOption()}
+          </tbody>
+        </table>
       </Table>
     </div>
   );

@@ -1,4 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
+
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { Redirect } from "react-router-dom"
 import { Container } from "./style";
 import { createEvent, editEvent } from './../../api/index';
@@ -14,6 +15,10 @@ import Title from '../../components/Title'
 import { theme } from '../../config/mainTheme'
 import { convertToTimestamp, formatDate } from "../../utils/commonHelper";
 import OptionList from "../../components/OptionList"
+import { getCookie, setCookie } from '../../utils/cookie'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+
 function CreateEvent(props) {
   const [event,] = useContext(EventContext);
   const [options,] = useContext(OptionContext);
@@ -23,42 +28,26 @@ function CreateEvent(props) {
   const [isCreate, setIsCreate] = useState(false);
   const [isDistinct, setIsDistinct] = useState(true);
   const [isEditSuccessful, setIsEditSuccessful] = useState(false);
-  const [isOk, setIsOk] = useState(false)
   const [textState, setTextState] = useState(0)
-  function setCookie(cname, cvalue, exdays) {
-    const data = JSON.stringify(cvalue);
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires=" + d.toGMTString();
-    document.cookie = cname + "=" + data + ";" + expires + ";path=/";
-  }
-
-  function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) === ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) === 0) {
-        return JSON.parse(c.substring(name.length, c.length));
-      }
-    }
-    return "";
-  }
+  const componentIsMounted = useRef(true);  // check if eventdetail is mounted
   useEffect(() => {
+    return () => {
+      componentIsMounted.current = false;
+    }
+  }, [])
+
+  useEffect(() => {
+    setLoading(0);
     if (props.type === "create") {
       setIsCreate(true);
     }
     else {
-      setIsOk(true);
       setIsCreate(false);
     }
     return () => {
     }
   }, [props.type])
+
   const validationSchema = Yup.object().shape({
     title: Yup.string()
       .required('Tiêu đề không được bỏ trống. Vui lòng nhập tiêu đề!'),
@@ -76,22 +65,19 @@ function CreateEvent(props) {
 
       <Container>
         <Title>
-          {isCreate ? <h3>Tạo sự kiện</h3> : <h3>Chỉnh sửa sự kiện</h3>}
+          {isCreate ? <h2>Tạo sự kiện</h2> : <h2>Chỉnh sửa sự kiện</h2>}
         </Title>
         <Formik
           initialValues={{
-            title: (isCreate) ? "" : event.name,
-            description: (isCreate) ? "" : event.description,
-            options: (isCreate) ? "" : options,
-            type: (isCreate) ? "create" : "edit",
+            title: (props.type === "create") ? "" : event.name,
+            description: (props.type === "create") ? "" : event.description,
+            options: (props.type === "create") ? "" : options,
+            type: (props.type === "create") ? "create" : "edit",
             content: "",
             distinct: ""
           }}
           enableReinitialize={true}
           onSubmit={(values) => {
-
-
-
             var optionSplited = values.options.split("\n");
             setLoading(1);
             if (
@@ -106,26 +92,27 @@ function CreateEvent(props) {
               };
               optionSplited.forEach((option) => {
                 if (option !== "")
-                   requestBody.options.push({ "content": option })
+                  requestBody.options.push({ "content": option })
                 return false;
               });
               if (isCreate) {
                 createEvent(requestBody)
                   .then(response => {
-                    setEventID(response.data.id);
-                    setLoading(2);
+                    if (componentIsMounted.current) {
+                      setEventID(response.data.id);
+                      setLoading(2);
+                    }
                     const eventData = getCookie("eventData");   //get data from cookie
                     if (eventData !== "") {  //kiem tra neu cookie da ton tai
-                        var newEventObject = {    //object moi de them vao cookie
-                          eventid: response.data.id,
-                          name: response.data.name,
-                          description: response.data.description
-                        };
-                        if(eventData.createdEvent instanceof Array)
-                        {
-                          eventData.createdEvent.push(newEventObject);    
-                          setCookie("eventData", eventData, 30);    //push them object va luu vao cookie
-                        }
+                      var newEventObject = {    //object moi de them vao cookie
+                        eventid: response.data.id,
+                        name: response.data.name,
+                        description: response.data.description
+                      };
+                      if (eventData.createdEvent instanceof Array) {
+                        eventData.createdEvent.push(newEventObject);
+                        setCookie("eventData", eventData, 30);    //push them object va luu vao cookie
+                      }
                     }
                     else {    //neu cookie chua ton tai thi tao cookie moi
                       var array = {
@@ -143,41 +130,39 @@ function CreateEvent(props) {
                     }
 
                   })
-                  .catch(function (error) {
-                    console.log(error);
+                  .catch(function () {
                   });
               }
               else {
                 editEvent(requestBody, event.id)
                   .then(() => {
-                    setIsEditSuccessful(true);
+                    if (componentIsMounted.current) {
+                      setIsEditSuccessful(true);
+                    }
                     const eventData = getCookie("eventData");   //get data from cookie
                     if (eventData !== "") {  //kiem tra neu cookie da ton tai
-                        if(eventData.createdEvent instanceof Array)
-                        {
-                          eventData.createdEvent.forEach((createdEvent,index) => {   //check coi event da co trong creaedEvent trong cookie chua
-                            if (createdEvent.eventid === event.id) {
-                              eventData.createdEvent[index].name = values.title; //doi lai event name trong cookie
-                              eventData.createdEvent[index].description = values.description; //doi lai event description trong cookie
-                            }
-                          })
-                          setCookie("eventData", eventData, 30);    //push them object va luu vao cookie
-                        }
-                        if(eventData.responsedEvent instanceof Array)
-                        {
-                          eventData.responsedEvent.forEach((responsedEvent,index) => {   //check coi event da co trong responsed event trong cookie chua
-                            if (responsedEvent.eventid === event.id) {
-                              eventData.responsedEvent[index].name = values.title;      //doi lai event name trong cookie
-                              eventData.responsedEvent[index].description = values.description;  //doi lai event description trong cookie
-                            }
-                          })
-                          setCookie("eventData", eventData, 30);    //push them object va luu vao cookie
-                        }
-                        
+                      if (eventData.createdEvent instanceof Array) {
+                        eventData.createdEvent.forEach((createdEvent, index) => {   //check coi event da co trong creaedEvent trong cookie chua
+                          if (createdEvent.eventid === event.id) {
+                            eventData.createdEvent[index].name = values.title; //doi lai event name trong cookie
+                            eventData.createdEvent[index].description = values.description; //doi lai event description trong cookie
+                          }
+                        })
+                        setCookie("eventData", eventData, 30);    //push them object va luu vao cookie
+                      }
+                      if (eventData.responsedEvent instanceof Array) {
+                        eventData.responsedEvent.forEach((responsedEvent, index) => {   //check coi event da co trong responsed event trong cookie chua
+                          if (responsedEvent.eventid === event.id) {
+                            eventData.responsedEvent[index].name = values.title;      //doi lai event name trong cookie
+                            eventData.responsedEvent[index].description = values.description;  //doi lai event description trong cookie
+                          }
+                        })
+                        setCookie("eventData", eventData, 30);    //push them object va luu vao cookie
+                      }
+
                     }
                   })
-                  .catch(function (error) {
-                    console.log(error);
+                  .catch(function () {
                   });
               }
             } else {  //when all the field is not filled it will show the error
@@ -189,147 +174,155 @@ function CreateEvent(props) {
         >
           {(props) => (
             <Form onSubmit={props.handleSubmit}>
-              <div className="text-input" error={props.touched.title && !!props.errors.title}>
-                <label className="text">Tiêu đề sự kiện</label> <br />
-                <Field name="title" render={({ field }) => (
+              <div className="text-input" error={props.touched.title ? props.errors.title : undefined}>
+                <label className="text">Tiêu đề sự kiện</label> <p className="required">*</p> <br />
+                <Field name="title">{({ field }) => (
                   <input
                     className="content"
                     id="name"
                     placeholder="Nhập tiêu đề sự kiện"
+                    value={props.values.title}
                     {...field}
-                  />)} />
+                  />)}
+                </Field>
                 {props.touched.title && <label className="warning">{props.errors.title}</label>}
               </div>
-              <div className="text-input" error={props.touched.description && !!props.errors.description}>
-                <label className="text">Mô tả sự kiện</label> <br />
-                <Field name="description" render={({ field }) => (
+              <div className="text-input" error={props.touched.description ? props.errors.description : undefined}>
+                <label className="text">Mô tả sự kiện</label> <p className="required">*</p> <br />
+                <Field name="description">{({ field }) => (
                   <input
                     className="content"
                     id="description"
                     placeholder="Nhập mô tả sự kiện"
+                    value={props.values.description}
                     {...field}
-                  />)} />
+                  />)}
+                </Field>
                 {props.touched.description && <label className="warning">{props.errors.description}</label>}
               </div>
               <div className="sub">
-                  <div className="text-input" error={props.touched.options && !!props.errors.options}>
-                    <label className="text">Các lựa chọn</label> <br />
-                    <label className="text"></label>
-                    <Field name="content" render={({ field, form }) => (
+                <div className="text-input" error={props.touched.options ? props.errors.options : undefined}>
+                  <label className="text">Các lựa chọn</label><br />
+                  <label className="text"></label>
+                  <div className="guide"><FontAwesomeIcon className='icon-question' icon={faQuestionCircle} color={theme.mainColor1} size='sm' /></div>
+                  <div className="guide-modal">
+                    <div className="row">
+                    <ul>
+                    <li>Nhập và thêm option vào trong bảng.</li> 
+                      <li>Bạn có thể dùng calendar để thêm option nhanh.</li> 
+                      <li>Calendar còn có chức năng chọn một hoặc nhiều ngày cùng lúc.</li>
+                    </ul>
+                      
+                    </div></div>
+                  <Field name="content">{({ field, form }) => (
+                    <div className="wrapper">
                       <input
-                        className="content"
+                        className="content option-input"
                         placeholder="Nhập lựa chọn"
                         {...field}
                         onBlur={(e) => {
                           form.setFieldTouched("options", true);
-                          var tmp = e.target.value.trim("\s+").toLowerCase()
-                          if (tmp === "") {
-                            setIsOk(true);
-                          }
                           setIsDistinct(true)
                         }}
-                        onKeyDown={(e) => {
+                      />
+                      <button
+                        className="wrapper-button btn-add"
+                        type="submit"
+                        onClick={(e) => {
+                          e.preventDefault()
                           setIsDistinct(true)
-                          if (e.keyCode === 13) {
-                            e.preventDefault()
-                            var oldText = (String)(props.values.options).trim("\n")
-                            var tmp = e.target.value.trim("\s+").toLowerCase()
-                            var arr = oldText.toLowerCase().split("\n")
-                            if (arr.indexOf(tmp) === -1) {
-                              setIsOk(true)
-                              form.setFieldValue("options", oldText + "\n" + e.target.value)
-                              form.setFieldValue("content", "")
-                              setIsDistinct(true)
-                            } else if (tmp === "") {
-                              setIsOk(true)
-                            }
-                            else {
-                              setIsOk(false)
-                              setIsDistinct(false)
-                            }
+                          var oldText = (String)(props.values.options).trim("\n")
+                          var tmp = (String)(props.values.content).trim().toLowerCase()
+                          var arr = oldText.toLowerCase().split("\n")
+                          if (arr.indexOf(tmp) === -1) {
+                            form.setFieldValue("options", oldText + "\n" + tmp)
+                            form.setFieldValue("content", "")
+                            setIsDistinct(true)
+                          } else if (tmp === "") {
                           }
-                        }}
-                      />)} />
-                    {(props.touched.options) && <label className="warning">{props.errors.options}</label>}
-                 <div className="wrapper">
-                  <div className="calendar">
-                    <Field name="datetime" render={({ field, form }) => (
-                      <DateTimeRangePicker
-                        onChange={(date) => {
-                          setDate(date)
-                        }}
-                        onBlur={() => {
-                          if (!isDistinct) {
-                            form.setFieldError("distinct", "This option already exists")
+                          else {
+                            setIsDistinct(false)
                           }
-                        }}
-                        value={date}
-                        onCalendarClose={() => {
-                          form.setFieldTouched("options", true);
-                          var text = date + "";
-                          var oldText = (String)(props.values.options).trim("\n");
-                          var listDate = text.split(",");
-                          var startDate = listDate[0];
-                          startDate = startDate.replace(",", " ");
-                          var numbersd = convertToTimestamp(startDate);
-                          var endDate = listDate[1];
-                          var numbered = 0;
-                          var arr = oldText.split("\n")
-                          if (date !== undefined) {
-                            if (endDate !== undefined) {
-                              endDate = endDate.replace(",", " ");
-                              numbered = convertToTimestamp(endDate);
+                        }}>
+                        <FontAwesomeIcon icon={faPlus} color='black' size='1x' />
+                      </button>
+                    </div>
+                  )}
+                  </Field>
+                  {(props.touched.options) && <label className="warning">{props.errors.options}</label>}
+                  <div className="wrapper">
+                    <div className="calendar">
+                      <Field name="datetime">{({ form }) => (
+                        <DateTimeRangePicker
+                          onChange={(date) => {
+                            setDate(date)
+                          }}
+                          onBlur={() => {
+                            if (!isDistinct) {
+                              form.setFieldError("distinct", "This option already exists")
                             }
-                            if (endDate === undefined) {
-                              text = new Date(numbersd);
-                              var newtext = formatDate(text);
-                              if (arr.indexOf(newtext + " 18:00~") === -1) {
-                                oldText = oldText + "\n" + newtext + " 18:00~";
-                                setIsDistinct(true)
-                                setIsOk(true)
-                              } else {
-                                console.log("not distinct")
-                                setIsDistinct(false)
-                                setIsOk(false)
+                          }}
+                          value={date}
+                          onCalendarClose={() => {
+                            form.setFieldTouched("options", true);
+                            var text = date + "";
+                            var oldText = (String)(props.values.options).trim("\n");
+                            var listDate = text.split(",");
+                            var startDate = listDate[0];
+                            startDate = startDate.replace(",", " ");
+                            var numbersd = convertToTimestamp(startDate);
+                            var endDate = listDate[1];
+                            var numbered = 0;
+                            var arr = oldText.split("\n")
+                            if (date !== undefined) {
+                              if (endDate !== undefined) {
+                                endDate = endDate.replace(",", " ");
+                                numbered = convertToTimestamp(endDate);
                               }
-                            }
-                            else {
-                              var check = 0;
-                              var count = 0;
-                              while (numbersd <= numbered) {
+                              if (endDate === undefined) {
                                 text = new Date(numbersd);
-                                newtext = formatDate(text);
-                                count += 1
+                                var newtext = formatDate(text);
                                 if (arr.indexOf(newtext + " 18:00~") === -1) {
                                   oldText = oldText + "\n" + newtext + " 18:00~";
+                                  setIsDistinct(true)
                                 } else {
-                                  check += 1
+                                  setIsDistinct(false)
                                 }
-                                numbersd += 86400000;
                               }
-                              if (count === check) {
-                                console.log("distinct")
-                                setIsDistinct(false)
-                                setIsOk(true)
-                              } else {
-                                setIsDistinct(true)
-                                setIsOk(false)
+                              else {
+                                var check = 0;
+                                var count = 0;
+                                while (numbersd <= numbered) {
+                                  text = new Date(numbersd);
+                                  newtext = formatDate(text);
+                                  count += 1
+                                  if (arr.indexOf(newtext + " 18:00~") === -1) {
+                                    oldText = oldText + "\n" + newtext + " 18:00~";
+                                  } else {
+                                    check += 1
+                                  }
+                                  numbersd += 86400000;
+                                }
+                                if (count === check) {
+                                  setIsDistinct(false)
+                                } else {
+                                  setIsDistinct(true)
+                                }
                               }
+                              form.setFieldValue("options", oldText.trim("\n") + "\n");
+                            } else {
+
                             }
-                            form.setFieldValue("options", oldText.trim("\n") + "\n");
-                          } else {
-                            setIsOk(true)
-                          }
-                          setDate();
-                        }}
-                      />)}
-                    />
-                  </div>
+                            setDate();
+                          }}
+                        />)}
+                      </Field>
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="right">
-                <Field render={({ field, form }) => (
+                <Field>{({ form }) => (
                   <OptionList
                     name="options"
                     type={props.values.type}
@@ -343,38 +336,36 @@ function CreateEvent(props) {
                         for (var i = 0; i < arr.length; i++) {
                           str += arr[i] + "\n"
                         }
-                        form.setFieldValue("options", str.trim("\n"))
-                        setIsOk(true)
+                        form.setFieldValue("options", str.trim("\n"));
                         setIsDistinct(true)
                       } else {
-                        setIsOk(false)
                         if (textState === 2) {
                           setIsDistinct(false)
                         }
                       }
                     }}
                     handleDeleteOption={(index) => {
-                      var arr = (String)(props.values.options).trim("\n").split("\n")
-                      var arr1 = arr.splice(index, 1)
+                      var arr = (String)(props.values.options).trim("\n").split("\n");
+                      arr.splice(index, 1)
                       var str = ""
                       for (var i = 0; i < arr.length; i++) {
                         str += arr[i] + "\n"
                       }
-                      form.setFieldValue("options", str.trim("\n"))
-                      setIsOk(true)
+                      form.setFieldValue("options", str.trim("\n"));
                       setIsDistinct(true)
                       setTextState(0)
                     }}
                   />
-                )} />
-                <label className="warning">{isDistinct ? "" : "Lựa chọn này đã tồn tại. Vui lòng nhập lựa chọn khác!"}</label>
+                )}
+                </Field>
+                <label className="warning">{!isDistinct ? "Lựa chọn này đã tồn tại. Vui lòng nhập lựa chọn khác!" : ""}</label>
                 <label className="warning">{textState === 1 ? "Lựa chọn không được bỏ trống. Vui lòng nhập lựa chọn!" : ""}</label>
               </div>
-                <div className="btn">
-              <Button className="createButton" type="submit" >
-                {isCreate ? 'Tạo sự kiện' : 'Lưu'}
-              </Button>
-                </div>
+              <div className="btn">
+                <Button className="createButton" type="submit" >
+                  {isCreate ? 'Tạo sự kiện' : 'Lưu'}
+                </Button>
+              </div>
             </Form>)}
         </Formik>
       </Container>
@@ -387,9 +378,9 @@ function CreateEvent(props) {
       color={theme.mainColor1}
     />;
   }
-     //when server return response.It mean create successful
+  //when server return response.It mean create successful
   return <Redirect to={routePath.eventDetail + eventID} />
-  
+
 }
 
 export default CreateEvent;

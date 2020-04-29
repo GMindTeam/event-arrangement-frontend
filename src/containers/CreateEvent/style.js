@@ -12,18 +12,24 @@ const Container = styled.div`
   padding: 0px;
   margin-top: 50px;
   box-shadow: ${theme.boxShadow};
+  .required{
+    display: contents;
+    color:red;
+  }
 
   @media ${device.mobile} { 
     max-width: 100%;
     border-radius: none;
     margin-top: 0px;
     box-shadow: none;
+    min-height:90vh;
   }
   @media ${device.tablet} { 
     max-width: 75%;
     border-radius: 5px;
     margin-top: 50px;
     box-shadow: ${theme.boxShadow};
+    min-height:auto;
   }
   @media ${device.laptop} { 
     max-width: 50%;
@@ -56,6 +62,45 @@ const Container = styled.div`
     bottom: 10px;
     margin-top: 15px;
   }
+  .guide{
+    border: none;
+    position: absolute;
+    top: 0px;
+    right: 15px;
+    
+
+  }
+  .guide-modal{
+        display: none;
+        background-color: white;
+        font-size: 11px;
+        width: 42%;
+        position: absolute;
+        right: 23px;
+        padding: 1em 2em;
+        padding-left: 0px;
+        z-index:1;
+        border-top-left-radius: 15px;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        border: 2px solid ${theme.mainColor1};
+        box-shadow: ${theme.boxShadow};
+      }
+  .icon-question{
+    box-shadow : ${theme.buttonShadow};
+    border-radius: 14px;
+  
+
+    
+  }
+  .guide:hover+.guide-modal {
+    display: block;
+  }
+  .react-datetimerange-picker__calendar-button__icon 
+  .react-datetimerange-picker__button__icon
+  {
+    color: ${theme.mainColor1}
+  }
   .react-datetimerange-picker__inputGroup,
   .react-datetimerange-picker__range-divider,
   .react-datetimerange-picker__clear-button{
@@ -70,6 +115,7 @@ const Container = styled.div`
     border: 2px solid #9c27b0;
     border-radius: 3em;
     padding: 0.2em 1em;
+    background-color: #ab47bc;
   }
   .warning {
     color: red;
@@ -105,6 +151,35 @@ const Container = styled.div`
   }
   .DateTimeRangePicker {
   }
+  .wrapper-content {
+    display: flex;
+  }
+  .wrapper-button {
+    border: none;
+    outline: none;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+  }
+  .btn-add{
+    background-color: ${theme.mainColor3};
+    border: 2px solid  ${theme.mainColor1};
+    border-radius: 100px;
+    font-size: 15px;
+    height: 33px;
+    width: 33px;
+    position: absolute;
+    top: 32px;
+    right: 4px;
+    :hover{
+      box-shadow: ${theme.buttonShadow};
+    }
+  }
+  .option-input{
+    border-top-right-radius: 21px;
+    border-bottom-right-radius: 21px;
+  }
+
 `;
 
 export { Container };

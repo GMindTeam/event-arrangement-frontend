@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { Button } from "./style";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faCheck, faTimes, faQuestion} from '@fortawesome/free-solid-svg-icons';
 function EventRow(props) {
 
   useEffect(() => {
@@ -22,13 +24,13 @@ function EventRow(props) {
       return props.response.response_detail_list.map((responseDetail, i) => {
         var answer = responseDetail.response_answer;
         if (answer === "1") {
-          return <td>Đồng ý</td>;
+          return <td key={i}><FontAwesomeIcon icon={faCheck} /></td>;
         } else if (answer === "2") {
-          return <td>Không đồng ý</td>;
+          return <td key={i}><FontAwesomeIcon icon={faTimes} /></td>;
         } else if (answer === "3"){
-          return <td>Suy nghĩ</td>;
+          return <td key={i}><FontAwesomeIcon icon={faQuestion} /></td>;
         }
-        else return <td>Chưa phản hồi</td>;
+        else return <td key={i}>Chưa phản hồi</td>;
       });
     }
   }

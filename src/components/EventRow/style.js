@@ -11,4 +11,15 @@ background: white;
   :hover {
     box-shadow: ${theme.buttonShadow};
   }
+  .svg-inline--fa.fa-w-16 {
+    color: #00CC00;
+    font-size: 20px;
+  }
+  .svg-inline--fa.fa-w-11 {
+    color: #FF3300;
+    font-size: 20px;
+  }
+  .svg-inline--fa.fa-w-12 {
+    font-size: 20px;
+  }
 `;

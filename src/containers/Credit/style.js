@@ -16,13 +16,13 @@ export const Container = styled.div`
   grid-gap: 10px;
   grid-auto-rows: minmax(100px, auto);
 
-  h1 {
+  h2 {
     color: ${theme.mainColor1};
     font-family: ${theme.fontFamily};
     text-align: center;
     font-weight: 700;
   }
-  h3,
+  h2,
   h4 {
     font-family: ${theme.fontFamily};
     text-align: center;

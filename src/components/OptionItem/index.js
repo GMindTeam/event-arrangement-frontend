@@ -18,6 +18,7 @@ function OptionItem(props) {
         var arr = (String)(props.options).split("\n")
         setIsClicked(!isClicked)
         if (tmp === "") {
+            setOption(oldOption)
             return props.handleEdit(option, props.index, 1)
         }
         else if (arr.indexOf(tmp) === -1 || tmp === oldOption) {
@@ -25,6 +26,7 @@ function OptionItem(props) {
             setOption(tmp)
             return props.handleEdit(option, props.index, 0)
         } else {
+            setOption(oldOption)
             return props.handleEdit(option, props.index, 2)
         }
     }
@@ -39,12 +41,12 @@ function OptionItem(props) {
                     setOption(e.target.value)
                 }}
                 onBlur={(e) => {
-                    var tmp = e.target.value.trim("\s")
+                    var tmp = e.target.value.trim();
                     handleChangeText(tmp)
 
                 }}
                 onKeyDown={(e) => {
-                    var tmp = e.target.value.trim("\s")
+                    var tmp = e.target.value.trim();
                     if (e.keyCode === 13) {
                         handleChangeText(tmp)
                     }
@@ -54,7 +56,6 @@ function OptionItem(props) {
             <button
                 type="submit"
                 onClick={(e) => {
-                    console.log(isClicked)
                     if (isClicked) {
                         document.getElementById(props.index).disabled = "";
                     }

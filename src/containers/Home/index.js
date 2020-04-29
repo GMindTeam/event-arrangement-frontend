@@ -39,22 +39,22 @@ export default function Home(props) {
     function fetchCreatedEventFromCookie() {
         
         if (createdEventList instanceof Array) {
-            return createdEventList.map((event, i) => {
+            return createdEventList.map((CurrentEvent, key) => {
                 return (
-                    <EventCard>
+                    <EventCard key={key}>
                         <Title><h3>Event bạn đã tạo</h3></Title>
                         <div className="content">
                             <div className="button">
                                 <Button onClick={() => {
-                                    let path = routePath.eventDetail + event.eventid;
+                                    let path = routePath.eventDetail + CurrentEvent.eventid;
                                     history.push(path);
                                 }}>Chi Tiết</Button>
                             </div>
                             <div>
-                                <h2 className="eventName">{event.name}</h2>
+                                <h2 className="eventName">{CurrentEvent.name}</h2>
                             </div>
                             <div>
-                                <p className="eventDescription">{event.description}</p>
+                                <p className="eventDescription">{CurrentEvent.description}</p>
                             </div>
                         </div>
                     </EventCard>);
@@ -65,7 +65,7 @@ export default function Home(props) {
         if (responsedEventList instanceof Array) {
             return responsedEventList.map((event, i) => {
                 return (
-                    <EventCard>
+                    <EventCard key={i}>
                         <Title><h3>Event bạn đã phản hồi</h3></Title>
                         <div className="content">
                             <div className="button">
@@ -89,7 +89,7 @@ export default function Home(props) {
 
     return (
         <div>
-            { createdEventList.length === 0 && responsedEventList.length === 0 ? <div className="mesage"  ><center><h3>Cùng tạo event nào!!</h3></center></div>: ''}
+            { createdEventList.length === 0 && responsedEventList.length === 0 ? <div className="mesage"  ><center><h2>Cùng tạo event nào!!</h2></center></div>: ''}
             {fetchCreatedEventFromCookie()}
             {fetchResponsedEventFromCookie()}
         </div>
